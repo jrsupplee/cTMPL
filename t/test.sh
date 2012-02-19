@@ -78,209 +78,209 @@ cat << "EOF" > tmplfile
 
 Testing a single bad attribute
 
-<TMPL_LOOP name>
-<TMPL_LOOP name >
-<TMPL_LOOP =>
-<TMPL_LOOP = >
-<TMPL_LOOP "var">
-<TMPL_LOOP "var" >
-<TMPL_LOOP name=>
-<TMPL_LOOP name = >
-<TMPL_LOOP ="var">
-<TMPL_LOOP = "var" >
-<TMPL_LOOP name=*>      * needs quotes
-<TMPL_LOOP name = * >   * needs quotes
-<TMPL_LOOP name="var>
-<TMPL_LOOP name = "var >
-<TMPL_LOOP name='var>
-<TMPL_LOOP name = 'var >
-<TMPL_LOOP name=var">
-<TMPL_LOOP name = var" >
-<TMPL_LOOP name=var'>
-<TMPL_LOOP name = var' >
-<TMPL_LOOP name="var'>
-<TMPL_LOOP name = "var' >
-<TMPL_LOOP name='var">
-<TMPL_LOOP name = 'var" >
+{{LOOP name}}
+{{LOOP name }}
+{{LOOP =}}
+{{LOOP = }}
+{{LOOP "var"}}
+{{LOOP "var" }}
+{{LOOP name=}}
+{{LOOP name = }}
+{{LOOP ="var"}}
+{{LOOP = "var" }}
+{{LOOP name=*}}      * needs quotes
+{{LOOP name = * }}   * needs quotes
+{{LOOP name="var}}
+{{LOOP name = "var }}
+{{LOOP name='var}}
+{{LOOP name = 'var }}
+{{LOOP name=var"}}
+{{LOOP name = var" }}
+{{LOOP name=var'}}
+{{LOOP name = var' }}
+{{LOOP name="var'}}
+{{LOOP name = "var' }}
+{{LOOP name='var"}}
+{{LOOP name = 'var" }}
 
-<!--TMPL_LOOP name-->
-<!-- TMPL_LOOP name -->
-<!--TMPL_LOOP =-->
-<!-- TMPL_LOOP = -->
-<!--TMPL_LOOP "var"-->
-<!-- TMPL_LOOP "var" -->
-<!--TMPL_LOOP name=-->
-<!-- TMPL_LOOP name = -->
-<!--TMPL_LOOP ="var"-->
-<!-- TMPL_LOOP = "var" -->
-<!--TMPL_LOOP name=*-->      * needs quotes
-<!-- TMPL_LOOP name = * -->   * needs quotes
-<!--TMPL_LOOP name="var-->
-<!-- TMPL_LOOP name = "var -->
-<!--TMPL_LOOP name='var-->
-<!-- TMPL_LOOP name = 'var -->
-<!--TMPL_LOOP name=var"-->
-<!-- TMPL_LOOP name = var" -->
-<!--TMPL_LOOP name=var'-->
-<!-- TMPL_LOOP name = var' -->
-<!--TMPL_LOOP name="var'-->
-<!-- TMPL_LOOP name = "var' -->
-<!--TMPL_LOOP name='var"-->
-<!-- TMPL_LOOP name = 'var" -->
+{{!--LOOP name--}}
+{{!-- LOOP name --}}
+{{!--LOOP =--}}
+{{!-- LOOP = --}}
+{{!--LOOP "var"--}}
+{{!-- LOOP "var" --}}
+{{!--LOOP name=--}}
+{{!-- LOOP name = --}}
+{{!--LOOP ="var"--}}
+{{!-- LOOP = "var" --}}
+{{!--LOOP name=*--}}      * needs quotes
+{{!-- LOOP name = * --}}   * needs quotes
+{{!--LOOP name="var--}}
+{{!-- LOOP name = "var --}}
+{{!--LOOP name='var--}}
+{{!-- LOOP name = 'var --}}
+{{!--LOOP name=var"--}}
+{{!-- LOOP name = var" --}}
+{{!--LOOP name=var'--}}
+{{!-- LOOP name = var' --}}
+{{!--LOOP name="var'--}}
+{{!-- LOOP name = "var' --}}
+{{!--LOOP name='var"--}}
+{{!-- LOOP name = 'var" --}}
 
 Testing good attribute followed by bad
 
-<TMPL_VAR default="value"name>
-<TMPL_VAR default = "value" name >
-<TMPL_VAR default="value"=>
-<TMPL_VAR default = "value" = >
-<TMPL_VAR default="value""var">
-<TMPL_VAR default = "value" "var" >
-<TMPL_VAR default="value"name=>
-<TMPL_VAR default = "value" name = >
-<TMPL_VAR default="value"="var">
-<TMPL_VAR default = "value" = "var" >
-<TMPL_VAR default="value"name=*>         * needs quotes
-<TMPL_VAR default = "value" name = * >   * needs quotes
-<TMPL_VAR default="value"name="var>
-<TMPL_VAR default = "value" name = "var >
-<TMPL_VAR default="value"name='var>
-<TMPL_VAR default = "value" name = 'var >
-<TMPL_VAR default="value"name=var">
-<TMPL_VAR default = "value" name = var" >
-<TMPL_VAR default="value"name=var'>
-<TMPL_VAR default = "value" name = var' >
-<TMPL_VAR default="value"name="var'>
-<TMPL_VAR default = "value" name = "var' >
-<TMPL_VAR default="value"name='var">
-<TMPL_VAR default = "value" name = 'var" >
+{{VAR default="value"name}}
+{{VAR default = "value" name }}
+{{VAR default="value"=}}
+{{VAR default = "value" = }}
+{{VAR default="value""var"}}
+{{VAR default = "value" "var" }}
+{{VAR default="value"name=}}
+{{VAR default = "value" name = }}
+{{VAR default="value"="var"}}
+{{VAR default = "value" = "var" }}
+{{VAR default="value"name=*}}         * needs quotes
+{{VAR default = "value" name = * }}   * needs quotes
+{{VAR default="value"name="var}}
+{{VAR default = "value" name = "var }}
+{{VAR default="value"name='var}}
+{{VAR default = "value" name = 'var }}
+{{VAR default="value"name=var"}}
+{{VAR default = "value" name = var" }}
+{{VAR default="value"name=var'}}
+{{VAR default = "value" name = var' }}
+{{VAR default="value"name="var'}}
+{{VAR default = "value" name = "var' }}
+{{VAR default="value"name='var"}}
+{{VAR default = "value" name = 'var" }}
 
-<TMPL_VAR default="value"name/>
-<TMPL_VAR default = "value" name />
-<TMPL_VAR default="value"=/>
-<TMPL_VAR default = "value" = />
-<TMPL_VAR default="value""var"/>
-<TMPL_VAR default = "value" "var" />
-<TMPL_VAR default="value"name=/>
-<TMPL_VAR default = "value" name = />
-<TMPL_VAR default="value"="var"/>
-<TMPL_VAR default = "value" = "var" />
-<TMPL_VAR default="value"name=*/>         * needs quotes
-<TMPL_VAR default = "value" name = * />   * needs quotes
-<TMPL_VAR default="value"name="var/>
-<TMPL_VAR default = "value" name = "var />
-<TMPL_VAR default="value"name='var/>
-<TMPL_VAR default = "value" name = 'var />
-<TMPL_VAR default="value"name=var"/>
-<TMPL_VAR default = "value" name = var" />
-<TMPL_VAR default="value"name=var'/>
-<TMPL_VAR default = "value" name = var' />
-<TMPL_VAR default="value"name="var'/>
-<TMPL_VAR default = "value" name = "var' />
-<TMPL_VAR default="value"name='var"/>
-<TMPL_VAR default = "value" name = 'var" />
+{{VAR default="value"name/}}
+{{VAR default = "value" name /}}
+{{VAR default="value"=/}}
+{{VAR default = "value" = /}}
+{{VAR default="value""var"/}}
+{{VAR default = "value" "var" /}}
+{{VAR default="value"name=/}}
+{{VAR default = "value" name = /}}
+{{VAR default="value"="var"/}}
+{{VAR default = "value" = "var" /}}
+{{VAR default="value"name=*/}}         * needs quotes
+{{VAR default = "value" name = * /}}   * needs quotes
+{{VAR default="value"name="var/}}
+{{VAR default = "value" name = "var /}}
+{{VAR default="value"name='var/}}
+{{VAR default = "value" name = 'var /}}
+{{VAR default="value"name=var"/}}
+{{VAR default = "value" name = var" /}}
+{{VAR default="value"name=var'/}}
+{{VAR default = "value" name = var' /}}
+{{VAR default="value"name="var'/}}
+{{VAR default = "value" name = "var' /}}
+{{VAR default="value"name='var"/}}
+{{VAR default = "value" name = 'var" /}}
 
-<!--TMPL_VAR default="value"name-->
-<!-- TMPL_VAR default = "value" name -->
-<!--TMPL_VAR default="value"=-->
-<!-- TMPL_VAR default = "value" = -->
-<!--TMPL_VAR default="value""var"-->
-<!-- TMPL_VAR default = "value" "var" -->
-<!--TMPL_VAR default="value"name=-->
-<!-- TMPL_VAR default = "value" name = -->
-<!--TMPL_VAR default="value"="var"-->
-<!-- TMPL_VAR default = "value" = "var" -->
-<!--TMPL_VAR default="value"name=*-->         * needs quotes
-<!-- TMPL_VAR default = "value" name = * -->   * needs quotes
-<!--TMPL_VAR default="value"name="var-->
-<!-- TMPL_VAR default = "value" name = "var -->
-<!--TMPL_VAR default="value"name='var-->
-<!-- TMPL_VAR default = "value" name = 'var -->
-<!--TMPL_VAR default="value"name=var"-->
-<!-- TMPL_VAR default = "value" name = var" -->
-<!--TMPL_VAR default="value"name=var'-->
-<!-- TMPL_VAR default = "value" name = var' -->
-<!--TMPL_VAR default="value"name="var'-->
-<!-- TMPL_VAR default = "value" name = "var' -->
-<!--TMPL_VAR default="value"name='var"-->
-<!-- TMPL_VAR default = "value" name = 'var" -->
+{{!--VAR default="value"name--}}
+{{!-- VAR default = "value" name --}}
+{{!--VAR default="value"=--}}
+{{!-- VAR default = "value" = --}}
+{{!--VAR default="value""var"--}}
+{{!-- VAR default = "value" "var" --}}
+{{!--VAR default="value"name=--}}
+{{!-- VAR default = "value" name = --}}
+{{!--VAR default="value"="var"--}}
+{{!-- VAR default = "value" = "var" --}}
+{{!--VAR default="value"name=*--}}         * needs quotes
+{{!-- VAR default = "value" name = * --}}   * needs quotes
+{{!--VAR default="value"name="var--}}
+{{!-- VAR default = "value" name = "var --}}
+{{!--VAR default="value"name='var--}}
+{{!-- VAR default = "value" name = 'var --}}
+{{!--VAR default="value"name=var"--}}
+{{!-- VAR default = "value" name = var" --}}
+{{!--VAR default="value"name=var'--}}
+{{!-- VAR default = "value" name = var' --}}
+{{!--VAR default="value"name="var'--}}
+{{!-- VAR default = "value" name = "var' --}}
+{{!--VAR default="value"name='var"--}}
+{{!-- VAR default = "value" name = 'var" --}}
 
 Testing bad attribute followed by good
 
-<TMPL_VAR namedefault="value">
-<TMPL_VAR name default = "value" >
-<TMPL_VAR =default="value">
-<TMPL_VAR = default = "value" >
-<TMPL_VAR "var"default="value">
-<TMPL_VAR "var" default = "value" >
-<TMPL_VAR name=default="value">
-<TMPL_VAR name = default = "value" >
-<TMPL_VAR ="var"default="value">
-<TMPL_VAR = "var" default = "value" >
-<TMPL_VAR name=*default="value">         * needs quotes
-<TMPL_VAR name = * default = "value" >   * needs quotes
-<TMPL_VAR name="vardefault="value">
-<TMPL_VAR name = "var default = "value" >
-<TMPL_VAR name='vardefault="value">
-<TMPL_VAR name = 'var default = "value" >
-<TMPL_VAR name=var"default="value">
-<TMPL_VAR name = var" default = "value" >
-<TMPL_VAR name=var'default="value">
-<TMPL_VAR name = var' default = "value" >
-<TMPL_VAR name="var'default="value">
-<TMPL_VAR name = "var' default = "value" >
-<TMPL_VAR name='var"default="value">
-<TMPL_VAR name = 'var" default = "value" >
+{{VAR namedefault="value"}}
+{{VAR name default = "value" }}
+{{VAR =default="value"}}
+{{VAR = default = "value" }}
+{{VAR "var"default="value"}}
+{{VAR "var" default = "value" }}
+{{VAR name=default="value"}}
+{{VAR name = default = "value" }}
+{{VAR ="var"default="value"}}
+{{VAR = "var" default = "value" }}
+{{VAR name=*default="value"}}         * needs quotes
+{{VAR name = * default = "value" }}   * needs quotes
+{{VAR name="vardefault="value"}}
+{{VAR name = "var default = "value" }}
+{{VAR name='vardefault="value"}}
+{{VAR name = 'var default = "value" }}
+{{VAR name=var"default="value"}}
+{{VAR name = var" default = "value" }}
+{{VAR name=var'default="value"}}
+{{VAR name = var' default = "value" }}
+{{VAR name="var'default="value"}}
+{{VAR name = "var' default = "value" }}
+{{VAR name='var"default="value"}}
+{{VAR name = 'var" default = "value" }}
 
-<TMPL_VAR namedefault="value"/>
-<TMPL_VAR name default = "value" />
-<TMPL_VAR =default="value"/>
-<TMPL_VAR = default = "value" />
-<TMPL_VAR "var"default="value"/>
-<TMPL_VAR "var" default = "value" />
-<TMPL_VAR name=default="value"/>
-<TMPL_VAR name = default = "value" />
-<TMPL_VAR ="var"default="value"/>
-<TMPL_VAR = "var" default = "value" />
-<TMPL_VAR name=*default="value"/>         * needs quotes
-<TMPL_VAR name = * default = "value" />   * needs quotes
-<TMPL_VAR name="vardefault="value"/>
-<TMPL_VAR name = "var default = "value" />
-<TMPL_VAR name='vardefault="value"/>
-<TMPL_VAR name = 'var default = "value" />
-<TMPL_VAR name=var"default="value"/>
-<TMPL_VAR name = var" default = "value" />
-<TMPL_VAR name=var'default="value"/>
-<TMPL_VAR name = var' default = "value" />
-<TMPL_VAR name="var'default="value"/>
-<TMPL_VAR name = "var' default = "value" />
-<TMPL_VAR name='var"default="value"/>
-<TMPL_VAR name = 'var" default = "value" />
+{{VAR namedefault="value"/}}
+{{VAR name default = "value" /}}
+{{VAR =default="value"/}}
+{{VAR = default = "value" /}}
+{{VAR "var"default="value"/}}
+{{VAR "var" default = "value" /}}
+{{VAR name=default="value"/}}
+{{VAR name = default = "value" /}}
+{{VAR ="var"default="value"/}}
+{{VAR = "var" default = "value" /}}
+{{VAR name=*default="value"/}}         * needs quotes
+{{VAR name = * default = "value" /}}   * needs quotes
+{{VAR name="vardefault="value"/}}
+{{VAR name = "var default = "value" /}}
+{{VAR name='vardefault="value"/}}
+{{VAR name = 'var default = "value" /}}
+{{VAR name=var"default="value"/}}
+{{VAR name = var" default = "value" /}}
+{{VAR name=var'default="value"/}}
+{{VAR name = var' default = "value" /}}
+{{VAR name="var'default="value"/}}
+{{VAR name = "var' default = "value" /}}
+{{VAR name='var"default="value"/}}
+{{VAR name = 'var" default = "value" /}}
 
-<!--TMPL_VAR namedefault="value"-->
-<!-- TMPL_VAR name default = "value" -->
-<!--TMPL_VAR =default="value"-->
-<!-- TMPL_VAR = default = "value" -->
-<!--TMPL_VAR "var"default="value"-->
-<!-- TMPL_VAR "var" default = "value" -->
-<!--TMPL_VAR name=default="value"-->
-<!-- TMPL_VAR name = default = "value" -->
-<!--TMPL_VAR ="var"default="value"-->
-<!-- TMPL_VAR = "var" default = "value" -->
-<!--TMPL_VAR name=*default="value"-->         * needs quotes
-<!-- TMPL_VAR name = * default = "value" -->   * needs quotes
-<!--TMPL_VAR name="vardefault="value"-->
-<!-- TMPL_VAR name = "var default = "value" -->
-<!--TMPL_VAR name='vardefault="value"-->
-<!-- TMPL_VAR name = 'var default = "value" -->
-<!--TMPL_VAR name=var"default="value"-->
-<!-- TMPL_VAR name = var" default = "value" -->
-<!--TMPL_VAR name=var'default="value"-->
-<!-- TMPL_VAR name = var' default = "value" -->
-<!--TMPL_VAR name="var'default="value"-->
-<!-- TMPL_VAR name = "var' default = "value" -->
-<!--TMPL_VAR name='var"default="value"-->
-<!-- TMPL_VAR name = 'var" default = "value" -->
+{{!--VAR namedefault="value"--}}
+{{!-- VAR name default = "value" --}}
+{{!--VAR =default="value"--}}
+{{!-- VAR = default = "value" --}}
+{{!--VAR "var"default="value"--}}
+{{!-- VAR "var" default = "value" --}}
+{{!--VAR name=default="value"--}}
+{{!-- VAR name = default = "value" --}}
+{{!--VAR ="var"default="value"--}}
+{{!-- VAR = "var" default = "value" --}}
+{{!--VAR name=*default="value"--}}         * needs quotes
+{{!-- VAR name = * default = "value" --}}   * needs quotes
+{{!--VAR name="vardefault="value"--}}
+{{!-- VAR name = "var default = "value" --}}
+{{!--VAR name='vardefault="value"--}}
+{{!-- VAR name = 'var default = "value" --}}
+{{!--VAR name=var"default="value"--}}
+{{!-- VAR name = var" default = "value" --}}
+{{!--VAR name=var'default="value"--}}
+{{!-- VAR name = var' default = "value" --}}
+{{!--VAR name="var'default="value"--}}
+{{!-- VAR name = "var' default = "value" --}}
+{{!--VAR name='var"default="value"--}}
+{{!-- VAR name = 'var" default = "value" --}}
 EOF
 
 cp tmplfile expected
@@ -295,278 +295,278 @@ TEST=5  ########################################
 # which we consider ordinary text
 
 cat << "EOF" > tmplfile
-<TMPL_LOOP>
-<TMPL_LOOP >
-<TMPL_LOOP nam = "var">
-<TMPL_LOOP namex = "var">
-<TMPL_LOOP color = "red">
-<TMPL_LOOP name = "var" name = "var">
-<TMPL_LOOP name = "var" name = "var2">
-<TMPL_LOOP name = "var" default = "value">
-<TMPL_LOOP name = "var" fmt = "fmtname">
-<TMPL_LOOP name = "var" value = "testvalue">
+{{LOOP}}
+{{LOOP }}
+{{LOOP nam = "var"}}
+{{LOOP namex = "var"}}
+{{LOOP color = "red"}}
+{{LOOP name = "var" name = "var"}}
+{{LOOP name = "var" name = "var2"}}
+{{LOOP name = "var" default = "value"}}
+{{LOOP name = "var" fmt = "fmtname"}}
+{{LOOP name = "var" value = "testvalue"}}
 
-<!--TMPL_LOOP-->
-<!-- TMPL_LOOP -->
-<!--TMPL_LOOP nam = "var"-->
-<!--TMPL_LOOP namex = "var"-->
-<!--TMPL_LOOP color = "red"-->
-<!--TMPL_LOOP name = "var" name = "var"-->
-<!--TMPL_LOOP name = "var" name = "var2"-->
-<!--TMPL_LOOP name = "var" default = "value"-->
-<!--TMPL_LOOP name = "var" fmt = "fmtname"-->
-<!--TMPL_LOOP name = "var" value = "testvalue"-->
+{{!--LOOP--}}
+{{!-- LOOP --}}
+{{!--LOOP nam = "var"--}}
+{{!--LOOP namex = "var"--}}
+{{!--LOOP color = "red"--}}
+{{!--LOOP name = "var" name = "var"--}}
+{{!--LOOP name = "var" name = "var2"--}}
+{{!--LOOP name = "var" default = "value"--}}
+{{!--LOOP name = "var" fmt = "fmtname"--}}
+{{!--LOOP name = "var" value = "testvalue"--}}
 
-<TMPL_INCLUDE>
-<TMPL_INCLUDE >
-<TMPL_INCLUDE nam = "var">
-<TMPL_INCLUDE namex = "var">
-<TMPL_INCLUDE color = "red">
-<TMPL_INCLUDE name = "var" name = "var">
-<TMPL_INCLUDE name = "var" name = "var2">
-<TMPL_INCLUDE name = "var" default = "value">
-<TMPL_INCLUDE name = "var" fmt = "fmtname">
-<TMPL_INCLUDE name = "var" value = "testvalue">
+{{INCLUDE}}
+{{INCLUDE }}
+{{INCLUDE nam = "var"}}
+{{INCLUDE namex = "var"}}
+{{INCLUDE color = "red"}}
+{{INCLUDE name = "var" name = "var"}}
+{{INCLUDE name = "var" name = "var2"}}
+{{INCLUDE name = "var" default = "value"}}
+{{INCLUDE name = "var" fmt = "fmtname"}}
+{{INCLUDE name = "var" value = "testvalue"}}
 
-<TMPL_INCLUDE/>
-<TMPL_INCLUDE />
-<TMPL_INCLUDE nam = "var" />
-<TMPL_INCLUDE namex = "var" />
-<TMPL_INCLUDE color = "red" />
-<TMPL_INCLUDE name = "var" name = "var"/>
-<TMPL_INCLUDE name = "var" name = "var2" />
-<TMPL_INCLUDE name = "var" default = "value"/>
-<TMPL_INCLUDE name = "var" fmt = "fmtname" />
-<TMPL_INCLUDE name = "var" value = "testvalue" />
+{{INCLUDE/}}
+{{INCLUDE /}}
+{{INCLUDE nam = "var" /}}
+{{INCLUDE namex = "var" /}}
+{{INCLUDE color = "red" /}}
+{{INCLUDE name = "var" name = "var"/}}
+{{INCLUDE name = "var" name = "var2" /}}
+{{INCLUDE name = "var" default = "value"/}}
+{{INCLUDE name = "var" fmt = "fmtname" /}}
+{{INCLUDE name = "var" value = "testvalue" /}}
 
-<!--TMPL_INCLUDE-->
-<!-- TMPL_INCLUDE -->
-<!--TMPL_INCLUDE nam = "var"-->
-<!--TMPL_INCLUDE namex = "var"-->
-<!--TMPL_INCLUDE color = "red"-->
-<!--TMPL_INCLUDE name = "var" name = "var"-->
-<!--TMPL_INCLUDE name = "var" name = "var2"-->
-<!--TMPL_INCLUDE name = "var" default = "value"-->
-<!--TMPL_INCLUDE name = "var" fmt = "fmtname"-->
-<!--TMPL_INCLUDE name = "var" value = "testvalue"-->
+{{!--INCLUDE--}}
+{{!-- INCLUDE --}}
+{{!--INCLUDE nam = "var"--}}
+{{!--INCLUDE namex = "var"--}}
+{{!--INCLUDE color = "red"--}}
+{{!--INCLUDE name = "var" name = "var"--}}
+{{!--INCLUDE name = "var" name = "var2"--}}
+{{!--INCLUDE name = "var" default = "value"--}}
+{{!--INCLUDE name = "var" fmt = "fmtname"--}}
+{{!--INCLUDE name = "var" value = "testvalue"--}}
 
-<TMPL_VAR>
-<TMPL_VAR >
-<TMPL_VAR nam = "var">
-<TMPL_VAR namex = "var">
-<TMPL_VAR color = "red">
-<TMPL_VAR default = "value">
-<TMPL_VAR fmt = "fmtname">
-<TMPL_VAR default = "value" fmt = "fmtname">
-<TMPL_VAR name = "var" value = "testvalue">
-<TMPL_VAR name = "var" color = "red">
-<TMPL_VAR name = "var" default = "value" fmt = "fmtname" name = "var">
-<TMPL_VAR name = "var" default = "value" fmt = "fmtname" name = "xxx">
-<TMPL_VAR default = "xxx" name = "var" default = "value" fmt = "fmtname">
-<TMPL_VAR fmt = "xxx" name = "var" default = "value" fmt = "fmtname">
+{{VAR}}
+{{VAR }}
+{{VAR nam = "var"}}
+{{VAR namex = "var"}}
+{{VAR color = "red"}}
+{{VAR default = "value"}}
+{{VAR fmt = "fmtname"}}
+{{VAR default = "value" fmt = "fmtname"}}
+{{VAR name = "var" value = "testvalue"}}
+{{VAR name = "var" color = "red"}}
+{{VAR name = "var" default = "value" fmt = "fmtname" name = "var"}}
+{{VAR name = "var" default = "value" fmt = "fmtname" name = "xxx"}}
+{{VAR default = "xxx" name = "var" default = "value" fmt = "fmtname"}}
+{{VAR fmt = "xxx" name = "var" default = "value" fmt = "fmtname"}}
 
-<TMPL_VAR/>
-<TMPL_VAR />
-<TMPL_VAR nam = "var" />
-<TMPL_VAR namex = "var" />
-<TMPL_VAR color = "red" />
-<TMPL_VAR default = "value" />
-<TMPL_VAR fmt = "fmtname" />
-<TMPL_VAR default = "value" fmt = "fmtname" />
-<TMPL_VAR name = "var" value = "testvalue"/>
-<TMPL_VAR name = "var" color = "red" />
-<TMPL_VAR name = "var" default = "value" fmt = "fmtname" name = "var" />
-<TMPL_VAR name = "var" default = "value" fmt = "fmtname" name = "xxx"/>
-<TMPL_VAR default = "xxx" name = "var" default = "value" fmt = "fmtname" />
-<TMPL_VAR fmt = "xxx" name = "var" default = "value" fmt = "fmtname"/>
+{{VAR/}}
+{{VAR /}}
+{{VAR nam = "var" /}}
+{{VAR namex = "var" /}}
+{{VAR color = "red" /}}
+{{VAR default = "value" /}}
+{{VAR fmt = "fmtname" /}}
+{{VAR default = "value" fmt = "fmtname" /}}
+{{VAR name = "var" value = "testvalue"/}}
+{{VAR name = "var" color = "red" /}}
+{{VAR name = "var" default = "value" fmt = "fmtname" name = "var" /}}
+{{VAR name = "var" default = "value" fmt = "fmtname" name = "xxx"/}}
+{{VAR default = "xxx" name = "var" default = "value" fmt = "fmtname" /}}
+{{VAR fmt = "xxx" name = "var" default = "value" fmt = "fmtname"/}}
 
-<!--TMPL_VAR-->
-<!-- TMPL_VAR -->
-<!--TMPL_VAR nam = "var"-->
-<!--TMPL_VAR namex = "var"-->
-<!--TMPL_VAR color = "red"-->
-<!--TMPL_VAR default = "value"-->
-<!--TMPL_VAR fmt = "fmtname"-->
-<!--TMPL_VAR default = "value" fmt = "fmtname"-->
-<!--TMPL_VAR name = "var" value = "testvalue"-->
-<!--TMPL_VAR name = "var" color = "red"-->
-<!--TMPL_VAR name = "var" default = "value" fmt = "fmtname" name = "var"-->
-<!--TMPL_VAR name = "var" default = "value" fmt = "fmtname" name = "xxx"-->
-<!--TMPL_VAR default = "xxx" name = "var" default = "value" fmt = "fmtname"-->
-<!--TMPL_VAR fmt = "xxx" name = "var" default = "value" fmt = "fmtname"-->
+{{!--VAR--}}
+{{!-- VAR --}}
+{{!--VAR nam = "var"--}}
+{{!--VAR namex = "var"--}}
+{{!--VAR color = "red"--}}
+{{!--VAR default = "value"--}}
+{{!--VAR fmt = "fmtname"--}}
+{{!--VAR default = "value" fmt = "fmtname"--}}
+{{!--VAR name = "var" value = "testvalue"--}}
+{{!--VAR name = "var" color = "red"--}}
+{{!--VAR name = "var" default = "value" fmt = "fmtname" name = "var"--}}
+{{!--VAR name = "var" default = "value" fmt = "fmtname" name = "xxx"--}}
+{{!--VAR default = "xxx" name = "var" default = "value" fmt = "fmtname"--}}
+{{!--VAR fmt = "xxx" name = "var" default = "value" fmt = "fmtname"--}}
 
-<TMPL_IF>
-<TMPL_IF >
-<TMPL_IF nam = "var">
-<TMPL_IF namex = "var">
-<TMPL_IF color = "red">
-<TMPL_IF value = "testvalue">
-<TMPL_IF name = "var" default = "value">
-<TMPL_IF name = "var" fmt = "fmtname">
-<TMPL_IF name = "var" color = "red">
-<TMPL_IF name = "var" value = "testvalue" name = "var">
-<TMPL_IF name = "var" value = "testvalue" name = "xxx">
-<TMPL_IF value = "xxx" name = "var" value = "testvalue">
+{{IF}}
+{{IF }}
+{{IF nam = "var"}}
+{{IF namex = "var"}}
+{{IF color = "red"}}
+{{IF value = "testvalue"}}
+{{IF name = "var" default = "value"}}
+{{IF name = "var" fmt = "fmtname"}}
+{{IF name = "var" color = "red"}}
+{{IF name = "var" value = "testvalue" name = "var"}}
+{{IF name = "var" value = "testvalue" name = "xxx"}}
+{{IF value = "xxx" name = "var" value = "testvalue"}}
 
-<!--TMPL_IF-->
-<!-- TMPL_IF -->
-<!--TMPL_IF nam = "var"-->
-<!--TMPL_IF namex = "var"-->
-<!--TMPL_IF color = "red"-->
-<!--TMPL_IF value = "testvalue"-->
-<!--TMPL_IF name = "var" default = "value"-->
-<!--TMPL_IF name = "var" fmt = "fmtname"-->
-<!--TMPL_IF name = "var" color = "red"-->
-<!--TMPL_IF name = "var" value = "testvalue" name = "var"-->
-<!--TMPL_IF name = "var" value = "testvalue" name = "xxx"-->
-<!--TMPL_IF value = "xxx" name = "var" value = "testvalue"-->
+{{!--IF--}}
+{{!-- IF --}}
+{{!--IF nam = "var"--}}
+{{!--IF namex = "var"--}}
+{{!--IF color = "red"--}}
+{{!--IF value = "testvalue"--}}
+{{!--IF name = "var" default = "value"--}}
+{{!--IF name = "var" fmt = "fmtname"--}}
+{{!--IF name = "var" color = "red"--}}
+{{!--IF name = "var" value = "testvalue" name = "var"--}}
+{{!--IF name = "var" value = "testvalue" name = "xxx"--}}
+{{!--IF value = "xxx" name = "var" value = "testvalue"--}}
 
-<TMPL_ELSIF>
-<TMPL_ELSIF >
-<TMPL_ELSIF nam = "var">
-<TMPL_ELSIF namex = "var">
-<TMPL_ELSIF color = "red">
-<TMPL_ELSIF value = "testvalue">
-<TMPL_ELSIF name = "var" default = "value">
-<TMPL_ELSIF name = "var" fmt = "fmtname">
-<TMPL_ELSIF name = "var" color = "red">
-<TMPL_ELSIF name = "var" value = "testvalue" name = "var">
-<TMPL_ELSIF name = "var" value = "testvalue" name = "xxx">
-<TMPL_ELSIF value = "xxx" name = "var" value = "testvalue">
+{{ELSIF}}
+{{ELSIF }}
+{{ELSIF nam = "var"}}
+{{ELSIF namex = "var"}}
+{{ELSIF color = "red"}}
+{{ELSIF value = "testvalue"}}
+{{ELSIF name = "var" default = "value"}}
+{{ELSIF name = "var" fmt = "fmtname"}}
+{{ELSIF name = "var" color = "red"}}
+{{ELSIF name = "var" value = "testvalue" name = "var"}}
+{{ELSIF name = "var" value = "testvalue" name = "xxx"}}
+{{ELSIF value = "xxx" name = "var" value = "testvalue"}}
 
-<TMPL_ELSIF/>
-<TMPL_ELSIF />
-<TMPL_ELSIF nam = "var" />
-<TMPL_ELSIF namex = "var" />
-<TMPL_ELSIF color = "red" />
-<TMPL_ELSIF value = "testvalue"/>
-<TMPL_ELSIF name = "var" default = "value"/>
-<TMPL_ELSIF name = "var" fmt = "fmtname" />
-<TMPL_ELSIF name = "var" color = "red"/>
-<TMPL_ELSIF name = "var" value = "testvalue" name = "var" />
-<TMPL_ELSIF name = "var" value = "testvalue" name = "xxx"/>
-<TMPL_ELSIF value = "xxx" name = "var" value = "testvalue" />
+{{ELSIF/}}
+{{ELSIF /}}
+{{ELSIF nam = "var" /}}
+{{ELSIF namex = "var" /}}
+{{ELSIF color = "red" /}}
+{{ELSIF value = "testvalue"/}}
+{{ELSIF name = "var" default = "value"/}}
+{{ELSIF name = "var" fmt = "fmtname" /}}
+{{ELSIF name = "var" color = "red"/}}
+{{ELSIF name = "var" value = "testvalue" name = "var" /}}
+{{ELSIF name = "var" value = "testvalue" name = "xxx"/}}
+{{ELSIF value = "xxx" name = "var" value = "testvalue" /}}
 
-<!--TMPL_ELSIF-->
-<!-- TMPL_ELSIF -->
-<!--TMPL_ELSIF nam = "var"-->
-<!--TMPL_ELSIF namex = "var"-->
-<!--TMPL_ELSIF color = "red"-->
-<!--TMPL_ELSIF value = "testvalue"-->
-<!--TMPL_ELSIF name = "var" default = "value"-->
-<!--TMPL_ELSIF name = "var" fmt = "fmtname"-->
-<!--TMPL_ELSIF name = "var" color = "red"-->
-<!--TMPL_ELSIF name = "var" value = "testvalue" name = "var"-->
-<!--TMPL_ELSIF name = "var" value = "testvalue" name = "xxx"-->
-<!--TMPL_ELSIF value = "xxx" name = "var" value = "testvalue"-->
+{{!--ELSIF--}}
+{{!-- ELSIF --}}
+{{!--ELSIF nam = "var"--}}
+{{!--ELSIF namex = "var"--}}
+{{!--ELSIF color = "red"--}}
+{{!--ELSIF value = "testvalue"--}}
+{{!--ELSIF name = "var" default = "value"--}}
+{{!--ELSIF name = "var" fmt = "fmtname"--}}
+{{!--ELSIF name = "var" color = "red"--}}
+{{!--ELSIF name = "var" value = "testvalue" name = "var"--}}
+{{!--ELSIF name = "var" value = "testvalue" name = "xxx"--}}
+{{!--ELSIF value = "xxx" name = "var" value = "testvalue"--}}
 
-<TMPL_ELSE name = "var">
-<TMPL_ELSE color = "red">
-<TMPL_ELSE name = "var" value = "testvalue">
-<TMPL_ELSE name = "var" fmt = "fmtname">
-<TMPL_ELSE name = "var" default = "value">
+{{ELSE name = "var"}}
+{{ELSE color = "red"}}
+{{ELSE name = "var" value = "testvalue"}}
+{{ELSE name = "var" fmt = "fmtname"}}
+{{ELSE name = "var" default = "value"}}
 
-<TMPL_ELSE name = "var" />
-<TMPL_ELSE color = "red"/>
-<TMPL_ELSE name = "var" value = "testvalue" />
-<TMPL_ELSE name = "var" fmt = "fmtname"/>
-<TMPL_ELSE name = "var" default = "value" />
+{{ELSE name = "var" /}}
+{{ELSE color = "red"/}}
+{{ELSE name = "var" value = "testvalue" /}}
+{{ELSE name = "var" fmt = "fmtname"/}}
+{{ELSE name = "var" default = "value" /}}
 
-<!--TMPL_ELSE name = "var"-->
-<!--TMPL_ELSE color = "red"-->
-<!--TMPL_ELSE name = "var" value = "testvalue"-->
-<!--TMPL_ELSE name = "var" fmt = "fmtname"-->
-<!--TMPL_ELSE name = "var" default = "value"-->
+{{!--ELSE name = "var"--}}
+{{!--ELSE color = "red"--}}
+{{!--ELSE name = "var" value = "testvalue"--}}
+{{!--ELSE name = "var" fmt = "fmtname"--}}
+{{!--ELSE name = "var" default = "value"--}}
 
-</TMPL_IF name = "var">
-</TMPL_IF color = "red">
-</TMPL_IF name = "var" value = "testvalue">
-</TMPL_IF name = "var" fmt = "fmtname">
-</TMPL_IF name = "var" default = "value">
+{{/IF name = "var"}}
+{{/IF color = "red"}}
+{{/IF name = "var" value = "testvalue"}}
+{{/IF name = "var" fmt = "fmtname"}}
+{{/IF name = "var" default = "value"}}
 
-<!--/TMPL_IF name = "var"-->
-<!--/TMPL_IF color = "red"-->
-<!--/TMPL_IF name = "var" value = "testvalue"-->
-<!--/TMPL_IF name = "var" fmt = "fmtname"-->
-<!--/TMPL_IF name = "var" default = "value"-->
+{{!--/IF name = "var"--}}
+{{!--/IF color = "red"--}}
+{{!--/IF name = "var" value = "testvalue"--}}
+{{!--/IF name = "var" fmt = "fmtname"--}}
+{{!--/IF name = "var" default = "value"--}}
 
-</TMPL_LOOP name = "var">
-</TMPL_LOOP color = "red">
-</TMPL_LOOP name = "var" value = "testvalue">
-</TMPL_LOOP name = "var" fmt = "fmtname">
-</TMPL_LOOP name = "var" default = "value">
+{{/LOOP name = "var"}}
+{{/LOOP color = "red"}}
+{{/LOOP name = "var" value = "testvalue"}}
+{{/LOOP name = "var" fmt = "fmtname"}}
+{{/LOOP name = "var" default = "value"}}
 
-<!--/TMPL_LOOP name = "var"-->
-<!--/TMPL_LOOP color = "red"-->
-<!--/TMPL_LOOP name = "var" value = "testvalue"-->
-<!--/TMPL_LOOP name = "var" fmt = "fmtname"-->
-<!--/TMPL_LOOP name = "var" default = "value"-->
+{{!--/LOOP name = "var"--}}
+{{!--/LOOP color = "red"--}}
+{{!--/LOOP name = "var" value = "testvalue"--}}
+{{!--/LOOP name = "var" fmt = "fmtname"--}}
+{{!--/LOOP name = "var" default = "value"--}}
 
-<TMPL_BREAK lev = 1>
-<TMPL_BREAK levelx = 1>
-<TMPL_BREAK color = "red">
-<TMPL_BREAK value = "testvalue">
-<TMPL_BREAK level = "1" default = "value">
-<TMPL_BREAK level = "2" fmt = "fmtname">
-<TMPL_BREAK level = 1 name = "var">
-<TMPL_BREAK level = 1 color = "red">
-<TMPL_BREAK level = 1 level = 1>
-<TMPL_BREAK name = "var" level = "1" >
+{{BREAK lev = 1}}
+{{BREAK levelx = 1}}
+{{BREAK color = "red"}}
+{{BREAK value = "testvalue"}}
+{{BREAK level = "1" default = "value"}}
+{{BREAK level = "2" fmt = "fmtname"}}
+{{BREAK level = 1 name = "var"}}
+{{BREAK level = 1 color = "red"}}
+{{BREAK level = 1 level = 1}}
+{{BREAK name = "var" level = "1" }}
 
-<TMPL_BREAK lev = 1/>
-<TMPL_BREAK levelx = 1/>
-<TMPL_BREAK color = "red"/>
-<TMPL_BREAK value = "testvalue"/>
-<TMPL_BREAK level = "1" default = "value"/>
-<TMPL_BREAK level = "2" fmt = "fmtname"/>
-<TMPL_BREAK level = 1 name = "var"/>
-<TMPL_BREAK level = 1 color = "red"/>
-<TMPL_BREAK level = 1 level = 1/>
-<TMPL_BREAK name = "var" level = "1" />
+{{BREAK lev = 1/}}
+{{BREAK levelx = 1/}}
+{{BREAK color = "red"/}}
+{{BREAK value = "testvalue"/}}
+{{BREAK level = "1" default = "value"/}}
+{{BREAK level = "2" fmt = "fmtname"/}}
+{{BREAK level = 1 name = "var"/}}
+{{BREAK level = 1 color = "red"/}}
+{{BREAK level = 1 level = 1/}}
+{{BREAK name = "var" level = "1" /}}
 
-<!-- TMPL_BREAK lev = 1 -->
-<!-- TMPL_BREAK levelx = 1 -->
-<!-- TMPL_BREAK color = "red" -->
-<!-- TMPL_BREAK value = "testvalue" -->
-<!-- TMPL_BREAK level = "1" default = "value" -->
-<!-- TMPL_BREAK level = "2" fmt = "fmtname" -->
-<!-- TMPL_BREAK level = 1 name = "var" -->
-<!-- TMPL_BREAK level = 1 color = "red" -->
-<!-- TMPL_BREAK level = 1 level = 1 -->
-<!-- TMPL_BREAK name = "var" level = "1"  -->
+{{!-- BREAK lev = 1 --}}
+{{!-- BREAK levelx = 1 --}}
+{{!-- BREAK color = "red" --}}
+{{!-- BREAK value = "testvalue" --}}
+{{!-- BREAK level = "1" default = "value" --}}
+{{!-- BREAK level = "2" fmt = "fmtname" --}}
+{{!-- BREAK level = 1 name = "var" --}}
+{{!-- BREAK level = 1 color = "red" --}}
+{{!-- BREAK level = 1 level = 1 --}}
+{{!-- BREAK name = "var" level = "1"  --}}
 
-<TMPL_CONTINUE lev = 1>
-<TMPL_CONTINUE levelx = 1>
-<TMPL_CONTINUE color = "red">
-<TMPL_CONTINUE value = "testvalue">
-<TMPL_CONTINUE level = "1" default = "value">
-<TMPL_CONTINUE level = "2" fmt = "fmtname">
-<TMPL_CONTINUE level = 1 name = "var">
-<TMPL_CONTINUE level = 1 color = "red">
-<TMPL_CONTINUE level = 1 level = 1>
-<TMPL_CONTINUE name = "var" level = "1" >
+{{CONTINUE lev = 1}}
+{{CONTINUE levelx = 1}}
+{{CONTINUE color = "red"}}
+{{CONTINUE value = "testvalue"}}
+{{CONTINUE level = "1" default = "value"}}
+{{CONTINUE level = "2" fmt = "fmtname"}}
+{{CONTINUE level = 1 name = "var"}}
+{{CONTINUE level = 1 color = "red"}}
+{{CONTINUE level = 1 level = 1}}
+{{CONTINUE name = "var" level = "1" }}
 
-<TMPL_CONTINUE lev = 1/>
-<TMPL_CONTINUE levelx = 1/>
-<TMPL_CONTINUE color = "red"/>
-<TMPL_CONTINUE value = "testvalue"/>
-<TMPL_CONTINUE level = "1" default = "value"/>
-<TMPL_CONTINUE level = "2" fmt = "fmtname"/>
-<TMPL_CONTINUE level = 1 name = "var"/>
-<TMPL_CONTINUE level = 1 color = "red"/>
-<TMPL_CONTINUE level = 1 level = 1/>
-<TMPL_CONTINUE name = "var" level = "1" />
+{{CONTINUE lev = 1/}}
+{{CONTINUE levelx = 1/}}
+{{CONTINUE color = "red"/}}
+{{CONTINUE value = "testvalue"/}}
+{{CONTINUE level = "1" default = "value"/}}
+{{CONTINUE level = "2" fmt = "fmtname"/}}
+{{CONTINUE level = 1 name = "var"/}}
+{{CONTINUE level = 1 color = "red"/}}
+{{CONTINUE level = 1 level = 1/}}
+{{CONTINUE name = "var" level = "1" /}}
 
-<!-- TMPL_CONTINUE lev = 1 -->
-<!-- TMPL_CONTINUE levelx = 1 -->
-<!-- TMPL_CONTINUE color = "red" -->
-<!-- TMPL_CONTINUE value = "testvalue" -->
-<!-- TMPL_CONTINUE level = "1" default = "value" -->
-<!-- TMPL_CONTINUE level = "2" fmt = "fmtname" -->
-<!-- TMPL_CONTINUE level = 1 name = "var" -->
-<!-- TMPL_CONTINUE level = 1 color = "red" -->
-<!-- TMPL_CONTINUE level = 1 level = 1 -->
-<!-- TMPL_CONTINUE name = "var" level = "1"  -->
+{{!-- CONTINUE lev = 1 --}}
+{{!-- CONTINUE levelx = 1 --}}
+{{!-- CONTINUE color = "red" --}}
+{{!-- CONTINUE value = "testvalue" --}}
+{{!-- CONTINUE level = "1" default = "value" --}}
+{{!-- CONTINUE level = "2" fmt = "fmtname" --}}
+{{!-- CONTINUE level = 1 name = "var" --}}
+{{!-- CONTINUE level = 1 color = "red" --}}
+{{!-- CONTINUE level = 1 level = 1 --}}
+{{!-- CONTINUE name = "var" level = "1"  --}}
 
 EOF
 
@@ -582,145 +582,145 @@ TEST=6  ########################################
 
 cat << "EOF" > tmplfile
 
-< TMPL_VAR name = "var">
-<TMPL_VARname = "var">
-< TMPL_VAR name = "var" />
-<TMPL_VARname = "var"/>
-< TMPL_VARname = "var">
-< !--TMPL_VAR name = "var"-->
-<! --TMPL_VAR name = "var"-->
-<!- -TMPL_VAR name = "var"-->
-<!--TMPL_VAR name = var-->
-<!--TMPL_VAR name = "var"- ->
-<!--TMPL_VAR name = "var"-- >
-<!--TMPL_VARname = "var"-->
-<!-- TMPL_VARname = "var"-->
+{{ VAR name = "var"}}
+{{VARname = "var"}}
+{{ VAR name = "var" /}}
+{{VARname = "var"/}}
+{{ VARname = "var"}}
+{{ !--VAR name = "var"--}}
+{{! --VAR name = "var"--}}
+{{!- -VAR name = "var"--}}
+{{!--VAR name = var--}}
+{{!--VAR name = "var"- -}}
+{{!--VAR name = "var"-- }}
+{{!--VARname = "var"--}}
+{{!-- VARname = "var"--}}
 
-< TMPL_INCLUDE name = "var">
-<TMPL_INCLUDEname = "var">
-< TMPL_INCLUDE name = "var" />
-<TMPL_INCLUDEname = "var"/>
-< !--TMPL_INCLUDE name = "var"-->
-<! --TMPL_INCLUDE name = "var"-->
-<!- -TMPL_INCLUDE name = "var"-->
-<!--TMPL_INCLUDE name = "var"- ->
-<!--TMPL_INCLUDE name = "var"-- >
-< TMPL_INCLUDEname = "var">
-<!--TMPL_INCLUDEname = "var"-->
-<!-- TMPL_INCLUDEname = "var"-->
+{{ INCLUDE name = "var"}}
+{{INCLUDEname = "var"}}
+{{ INCLUDE name = "var" /}}
+{{INCLUDEname = "var"/}}
+{{ !--INCLUDE name = "var"--}}
+{{! --INCLUDE name = "var"--}}
+{{!- -INCLUDE name = "var"--}}
+{{!--INCLUDE name = "var"- -}}
+{{!--INCLUDE name = "var"-- }}
+{{ INCLUDEname = "var"}}
+{{!--INCLUDEname = "var"--}}
+{{!-- INCLUDEname = "var"--}}
 
-< TMPL_LOOP name = "var">
-<TMPL_LOOPname = "var">
-< TMPL_LOOPname = "var">
-< !--TMPL_LOOP name = "var"-->
-<! --TMPL_LOOP name = "var"-->
-<!- -TMPL_LOOP name = "var"-->
-<!--TMPL_LOOP name = var-->
-<!--TMPL_LOOP name = "var"- ->
-<!--TMPL_LOOP name = "var"-- >
-<!--TMPL_LOOPname = "var"-->
-<!-- TMPL_LOOPname = "var"-->
+{{ LOOP name = "var"}}
+{{LOOPname = "var"}}
+{{ LOOPname = "var"}}
+{{ !--LOOP name = "var"--}}
+{{! --LOOP name = "var"--}}
+{{!- -LOOP name = "var"--}}
+{{!--LOOP name = var--}}
+{{!--LOOP name = "var"- -}}
+{{!--LOOP name = "var"-- }}
+{{!--LOOPname = "var"--}}
+{{!-- LOOPname = "var"--}}
 
-< TMPL_IF name = "var">
-<TMPL_IFname = "var">
-< TMPL_IFname = "var">
-< !--TMPL_IF name = "var"-->
-<! --TMPL_IF name = "var"-->
-<!- -TMPL_IF name = "var"-->
-<!--TMPL_IF name = var-->
-<!--TMPL_IF name = "var"- ->
-<!--TMPL_IF name = "var"-- >
-<!--TMPL_IFname = "var"-->
-<!-- TMPL_IFname = "var"-->
+{{ IF name = "var"}}
+{{IFname = "var"}}
+{{ IFname = "var"}}
+{{ !--IF name = "var"--}}
+{{! --IF name = "var"--}}
+{{!- -IF name = "var"--}}
+{{!--IF name = var--}}
+{{!--IF name = "var"- -}}
+{{!--IF name = "var"-- }}
+{{!--IFname = "var"--}}
+{{!-- IFname = "var"--}}
 
-< TMPL_ELSIF name = "var">
-<TMPL_ELSIFname = "var">
-< TMPL_ELSIFname = "var">
-< TMPL_ELSIF name = "var" />
-<TMPL_ELSIFname = "var"/>
-< TMPL_ELSIFname = "var" />
-< !--TMPL_ELSIF name = "var"-->
-<! --TMPL_ELSIF name = "var"-->
-<!- -TMPL_ELSIF name = "var"-->
-<!--TMPL_ELSIF name = var-->
-<!--TMPL_ELSIF name = "var"- ->
-<!--TMPL_ELSIF name = "var"-- >
-<!--TMPL_ELSIFname = "var"-->
-<!-- TMPL_ELSIFname = "var"-->
+{{ ELSIF name = "var"}}
+{{ELSIFname = "var"}}
+{{ ELSIFname = "var"}}
+{{ ELSIF name = "var" /}}
+{{ELSIFname = "var"/}}
+{{ ELSIFname = "var" /}}
+{{ !--ELSIF name = "var"--}}
+{{! --ELSIF name = "var"--}}
+{{!- -ELSIF name = "var"--}}
+{{!--ELSIF name = var--}}
+{{!--ELSIF name = "var"- -}}
+{{!--ELSIF name = "var"-- }}
+{{!--ELSIFname = "var"--}}
+{{!-- ELSIFname = "var"--}}
 
-< TMPL_ELSE>
-< TMPL_ELSE >
-< TMPL_ELSE/>
-< TMPL_ELSE />
-< !--TMPL_ELSE-->
-<! --TMPL_ELSE-->
-<!- -TMPL_ELSE-->
-<!--TMPL_ELSE- ->
-<!--TMPL_ELSE-- >
+{{ ELSE}}
+{{ ELSE }}
+{{ ELSE/}}
+{{ ELSE /}}
+{{ !--ELSE--}}
+{{! --ELSE--}}
+{{!- -ELSE--}}
+{{!--ELSE- -}}
+{{!--ELSE-- }}
 
-< /TMPL_IF>
-< /TMPL_IF >
-</ TMPL_IF>
-</ TMPL_IF >
-< !--/TMPL_IF-->
-<! --/TMPL_IF-->
-<!- -/TMPL_IF-->
-<!--/TMPL_IF- ->
-<!--/TMPL_IF-- >
-<!--/ TMPL_IF-->
-<!-- / TMPL_IF -->
+{{ /IF}}
+{{ /IF }}
+{{/ IF}}
+{{/ IF }}
+{{ !--/IF--}}
+{{! --/IF--}}
+{{!- -/IF--}}
+{{!--/IF- -}}
+{{!--/IF-- }}
+{{!--/ IF--}}
+{{!-- / IF --}}
 
-< /TMPL_LOOP>
-< /TMPL_LOOP >
-</ TMPL_LOOP>
-</ TMPL_LOOP >
-< !--/TMPL_LOOP-->
-<! --/TMPL_LOOP-->
-<!- -/TMPL_LOOP-->
-<!--/TMPL_LOOP- ->
-<!--/TMPL_LOOP-- >
-<!--/ TMPL_LOOP-->
-<!-- / TMPL_LOOP -->
+{{ /LOOP}}
+{{ /LOOP }}
+{{/ LOOP}}
+{{/ LOOP }}
+{{ !--/LOOP--}}
+{{! --/LOOP--}}
+{{!- -/LOOP--}}
+{{!--/LOOP- -}}
+{{!--/LOOP-- }}
+{{!--/ LOOP--}}
+{{!-- / LOOP --}}
 
-< TMPL_BREAK>
-< TMPL_BREAK level=1>
-<TMPL_BREAKlevel=1>
-< TMPL_BREAK />
-< TMPL_BREAK level=1/>
-<TMPL_BREAKlevel=1/>
-< !--TMPL_BREAK -->
-< !--TMPL_BREAK level=1 -->
-<! --TMPL_BREAK -->
-<! --TMPL_BREAK level = "1"-->
-<!- -TMPL_BREAK -->
-<!- -TMPL_BREAK level = 1 -->
-<!--TMPL_BREAK - ->
-<!--TMPL_BREAK level = "1"- ->
-<!--TMPL_BREAK-- >
-<!--TMPL_BREAK level = "1"-- >
-<!--TMPL_BREAK level=1-->
-<!--TMPL_BREAKlevel=1 -->
-<!-- TMPL_BREAKlevel=1 -->
+{{ BREAK}}
+{{ BREAK level=1}}
+{{BREAKlevel=1}}
+{{ BREAK /}}
+{{ BREAK level=1/}}
+{{BREAKlevel=1/}}
+{{ !--BREAK --}}
+{{ !--BREAK level=1 --}}
+{{! --BREAK --}}
+{{! --BREAK level = "1"--}}
+{{!- -BREAK --}}
+{{!- -BREAK level = 1 --}}
+{{!--BREAK - -}}
+{{!--BREAK level = "1"- -}}
+{{!--BREAK-- }}
+{{!--BREAK level = "1"-- }}
+{{!--BREAK level=1--}}
+{{!--BREAKlevel=1 --}}
+{{!-- BREAKlevel=1 --}}
 
-< TMPL_CONTINUE>
-< TMPL_CONTINUE level=1>
-<TMPL_CONTINUElevel=1>
-< TMPL_CONTINUE />
-< TMPL_CONTINUE level=1/>
-<TMPL_CONTINUElevel=1/>
-< !--TMPL_CONTINUE -->
-< !--TMPL_CONTINUE level=1 -->
-<! --TMPL_CONTINUE -->
-<! --TMPL_CONTINUE level = "1"-->
-<!- -TMPL_CONTINUE -->
-<!- -TMPL_CONTINUE level = 1 -->
-<!--TMPL_CONTINUE - ->
-<!--TMPL_CONTINUE level = "1"- ->
-<!--TMPL_CONTINUE-- >
-<!--TMPL_CONTINUE level = "1"-- >
-<!--TMPL_CONTINUE level=1-->
-<!--TMPL_CONTINUElevel=1 -->
-<!-- TMPL_CONTINUElevel=1 -->
+{{ CONTINUE}}
+{{ CONTINUE level=1}}
+{{CONTINUElevel=1}}
+{{ CONTINUE /}}
+{{ CONTINUE level=1/}}
+{{CONTINUElevel=1/}}
+{{ !--CONTINUE --}}
+{{ !--CONTINUE level=1 --}}
+{{! --CONTINUE --}}
+{{! --CONTINUE level = "1"--}}
+{{!- -CONTINUE --}}
+{{!- -CONTINUE level = 1 --}}
+{{!--CONTINUE - -}}
+{{!--CONTINUE level = "1"- -}}
+{{!--CONTINUE-- }}
+{{!--CONTINUE level = "1"-- }}
+{{!--CONTINUE level=1--}}
+{{!--CONTINUElevel=1 --}}
+{{!-- CONTINUElevel=1 --}}
 
 EOF
 
@@ -736,87 +736,87 @@ TEST=7  ########################################
 
 cat << "EOF" > tmplfile
 
-<TMPL_VAR name = "var"-->
-<TMPL_VAR name = "var" -->
-<!--TMPL_VAR name = "var">
-<!-- TMPL_VAR name = "var" >
-<!--TMPL_VAR name = "var"/>
-<!-- TMPL_VAR name = "var" />
+{{VAR name = "var"--}}
+{{VAR name = "var" --}}
+{{!--VAR name = "var"}}
+{{!-- VAR name = "var" }}
+{{!--VAR name = "var"/}}
+{{!-- VAR name = "var" /}}
 
-<TMPL_INCLUDE name = "var"-->
-<TMPL_INCLUDE name = "var" -->
-<!--TMPL_INCLUDE name = "var">
-<!-- TMPL_INCLUDE name = "var" >
-<!--TMPL_INCLUDE name = "var"/>
-<!-- TMPL_INCLUDE name = "var" />
+{{INCLUDE name = "var"--}}
+{{INCLUDE name = "var" --}}
+{{!--INCLUDE name = "var"}}
+{{!-- INCLUDE name = "var" }}
+{{!--INCLUDE name = "var"/}}
+{{!-- INCLUDE name = "var" /}}
 
-<TMPL_LOOP name = "var"/>
-<TMPL_LOOP name = "var" />
-<TMPL_LOOP name = "var"-->
-<TMPL_LOOP name = "var" -->
-<!--TMPL_LOOP name = "var">
-<!-- TMPL_LOOP name = "var" >
+{{LOOP name = "var"/}}
+{{LOOP name = "var" /}}
+{{LOOP name = "var"--}}
+{{LOOP name = "var" --}}
+{{!--LOOP name = "var"}}
+{{!-- LOOP name = "var" }}
 
-<TMPL_IF name = "var"/>
-<TMPL_IF name = "var" />
-<TMPL_IF name = "var"-->
-<TMPL_IF name = "var" -->
-<!--TMPL_IF name = "var">
-<!-- TMPL_IF name = "var" >
+{{IF name = "var"/}}
+{{IF name = "var" /}}
+{{IF name = "var"--}}
+{{IF name = "var" --}}
+{{!--IF name = "var"}}
+{{!-- IF name = "var" }}
 
-<TMPL_ELSIF name = "var"-->
-<TMPL_ELSIF name = "var" -->
-<!--TMPL_ELSIF name = "var">
-<!-- TMPL_ELSIF name = "var" >
-<!--TMPL_ELSIF name = "var"/>
-<!-- TMPL_ELSIF name = "var" />
+{{ELSIF name = "var"--}}
+{{ELSIF name = "var" --}}
+{{!--ELSIF name = "var"}}
+{{!-- ELSIF name = "var" }}
+{{!--ELSIF name = "var"/}}
+{{!-- ELSIF name = "var" /}}
 
-<TMPL_ELSE-->
-<TMPL_ELSE -->
-<!--TMPL_ELSE>
-<!-- TMPL_ELSE >
-<!--TMPL_ELSE/>
-<!-- TMPL_ELSE />
+{{ELSE--}}
+{{ELSE --}}
+{{!--ELSE}}
+{{!-- ELSE }}
+{{!--ELSE/}}
+{{!-- ELSE /}}
 
-</TMPL_IF/>
-</TMPL_IF />
-</TMPL_IF-->
-</TMPL_IF -->
-<!--/TMPL_IF>
-<!-- /TMPL_IF >
+{{/IF/}}
+{{/IF /}}
+{{/IF--}}
+{{/IF --}}
+{{!--/IF}}
+{{!-- /IF }}
 
-</TMPL_LOOP/>
-</TMPL_LOOP />
-</TMPL_LOOP-->
-</TMPL_LOOP -->
-<!--/TMPL_LOOP>
-<!-- /TMPL_LOOP >
+{{/LOOP/}}
+{{/LOOP /}}
+{{/LOOP--}}
+{{/LOOP --}}
+{{!--/LOOP}}
+{{!-- /LOOP }}
 
-<TMPL_BREAK-->
-<TMPL_BREAK -->
-<!--TMPL_BREAK>
-<!-- TMPL_BREAK >
-<!--TMPL_BREAK/>
-<!-- TMPL_BREAK />
-<TMPL_BREAK level="2"-->
-<TMPL_BREAK level="2" -->
-<!--TMPL_BREAK level=2>
-<!-- TMPL_BREAK level=2>
-<!--TMPL_BREAK level=2 />
-<!-- TMPL_BREAK level=2 />
+{{BREAK--}}
+{{BREAK --}}
+{{!--BREAK}}
+{{!-- BREAK }}
+{{!--BREAK/}}
+{{!-- BREAK /}}
+{{BREAK level="2"--}}
+{{BREAK level="2" --}}
+{{!--BREAK level=2}}
+{{!-- BREAK level=2}}
+{{!--BREAK level=2 /}}
+{{!-- BREAK level=2 /}}
 
-<TMPL_CONTINUE-->
-<TMPL_CONTINUE -->
-<!--TMPL_CONTINUE>
-<!-- TMPL_CONTINUE >
-<!--TMPL_CONTINUE/>
-<!-- TMPL_CONTINUE />
-<TMPL_CONTINUE level="2"-->
-<TMPL_CONTINUE level="2" -->
-<!--TMPL_CONTINUE level=2>
-<!-- TMPL_CONTINUE level=2>
-<!--TMPL_CONTINUE level=2 />
-<!-- TMPL_CONTINUE level=2 />
+{{CONTINUE--}}
+{{CONTINUE --}}
+{{!--CONTINUE}}
+{{!-- CONTINUE }}
+{{!--CONTINUE/}}
+{{!-- CONTINUE /}}
+{{CONTINUE level="2"--}}
+{{CONTINUE level="2" --}}
+{{!--CONTINUE level=2}}
+{{!-- CONTINUE level=2}}
+{{!--CONTINUE level=2 /}}
+{{!-- CONTINUE level=2 /}}
 EOF
 
 cp tmplfile expected
@@ -827,103 +827,103 @@ check
 
 TEST=8  ########################################
 
-# Testing TMPL_VAR tag with just "name =" attribute
+# Testing VAR tag with just "name =" attribute
 
 cat << "EOF" > tmplfile
 
-X<TMPL_VAR name="bogus">X
-X<TMPL_VAR name ="bogus">X
-X<TMPL_VAR name= "bogus">X
-X<TMPL_VAR name="bogus" >X
-X<TMPL_VAR name = "bogus" >X
-X<TMPL_VAR     name      =      "bogus"    >X
-X<TMPL_VAR
+X{{VAR name="bogus"}}X
+X{{VAR name ="bogus"}}X
+X{{VAR name= "bogus"}}X
+X{{VAR name="bogus" }}X
+X{{VAR name = "bogus" }}X
+X{{VAR     name      =      "bogus"    }}X
+X{{VAR
   name
   =
   "bogus"
-  >X
-X<TMPL_VAR name = "bogus"><TMPL_VAR name = "bogus">X
-X<TmPl_vAr NaMe = "bogus">X
+  }}X
+X{{VAR name = "bogus"}}{{VAR name = "bogus"}}X
+X{{vAr NaMe = "bogus"}}X
 
-X<TMPL_VAR name="bogus"/>X
-X<TMPL_VAR name ="bogus"/>X
-X<TMPL_VAR name= "bogus"/>X
-X<TMPL_VAR name="bogus" />X
-X<TMPL_VAR name = "bogus" />X
-X<TMPL_VAR     name      =      "bogus"    />X
-X<TMPL_VAR
+X{{VAR name="bogus"/}}X
+X{{VAR name ="bogus"/}}X
+X{{VAR name= "bogus"/}}X
+X{{VAR name="bogus" /}}X
+X{{VAR name = "bogus" /}}X
+X{{VAR     name      =      "bogus"    /}}X
+X{{VAR
   name
   =
   "bogus"
-  />X
-X<TMPL_VAR name = "bogus"/><TMPL_VAR name = "bogus"/>X
-X<TmPl_vAr NaMe = "bogus"/>X
+  /}}X
+X{{VAR name = "bogus"/}}{{VAR name = "bogus"/}}X
+X{{vAr NaMe = "bogus"/}}X
 
-X<!--TMPL_VAR name="bogus"-->X
-X<!-- TMPL_VAR name="bogus"-->X
-X<!--TMPL_VAR name ="bogus"-->X
-X<!--TMPL_VAR name= "bogus"-->X
-X<!--TMPL_VAR name="bogus" -->X
-X<!-- TMPL_VAR name = "bogus" -->X
-X<!--   TMPL_VAR     name      =      "bogus"    -->X
-X<!--
-  TMPL_VAR
+X{{!--VAR name="bogus"--}}X
+X{{!-- VAR name="bogus"--}}X
+X{{!--VAR name ="bogus"--}}X
+X{{!--VAR name= "bogus"--}}X
+X{{!--VAR name="bogus" --}}X
+X{{!-- VAR name = "bogus" --}}X
+X{{!--   VAR     name      =      "bogus"    --}}X
+X{{!--
+  VAR
   name
   =
   "bogus"
-  -->X
-X<!--TMPL_VAR name = "bogus"--><!--TMPL_VAR name = "bogus"-->X
-X<!--TmPl_vAr NaMe = "bogus"-->X
+  --}}X
+X{{!--VAR name = "bogus"--}}{{!--VAR name = "bogus"--}}X
+X{{!--vAr NaMe = "bogus"--}}X
 
-X<TMPL_VAR name="var">X
-X<TMPL_VAR name ="var">X
-X<TMPL_VAR name= "var">X
-X<TMPL_VAR name="var" >X
-X<TMPL_VAR name = "var" >X
-X<TMPL_VAR     name      =      "var"    >X
-X<TMPL_VAR
+X{{VAR name="var"}}X
+X{{VAR name ="var"}}X
+X{{VAR name= "var"}}X
+X{{VAR name="var" }}X
+X{{VAR name = "var" }}X
+X{{VAR     name      =      "var"    }}X
+X{{VAR
   name
   =
   "var"
-  >X
-X<TMPL_VAR name = "var"><TMPL_VAR name = "var">X
-X<TmPl_vAr NaMe = "var">X
+  }}X
+X{{VAR name = "var"}}{{VAR name = "var"}}X
+X{{vAr NaMe = "var"}}X
 
-X<TMPL_VAR name="var"/>X
-X<TMPL_VAR name ="var"/>X
-X<TMPL_VAR name= "var"/>X
-X<TMPL_VAR name="var" />X
-X<TMPL_VAR name = "var" />X
-X<TMPL_VAR     name      =      "var"    />X
-X<TMPL_VAR
+X{{VAR name="var"/}}X
+X{{VAR name ="var"/}}X
+X{{VAR name= "var"/}}X
+X{{VAR name="var" /}}X
+X{{VAR name = "var" /}}X
+X{{VAR     name      =      "var"    /}}X
+X{{VAR
   name
   =
   "var"
-  />X
-X<TMPL_VAR name = "var"/><TMPL_VAR name = "var"/>X
-X<TmPl_vAr NaMe = "var"/>X
+  /}}X
+X{{VAR name = "var"/}}{{VAR name = "var"/}}X
+X{{vAr NaMe = "var"/}}X
 
-X<!--TMPL_VAR name="var"-->X
-X<!-- TMPL_VAR name="var"-->X
-X<!--TMPL_VAR name ="var"-->X
-X<!--TMPL_VAR name= "var"-->X
-X<!--TMPL_VAR name="var" -->X
-X<!-- TMPL_VAR name = "var" -->X
-X<!--    TMPL_VAR     name      =      "var"    -->X
-X<!--
-  TMPL_VAR
+X{{!--VAR name="var"--}}X
+X{{!-- VAR name="var"--}}X
+X{{!--VAR name ="var"--}}X
+X{{!--VAR name= "var"--}}X
+X{{!--VAR name="var" --}}X
+X{{!-- VAR name = "var" --}}X
+X{{!--    VAR     name      =      "var"    --}}X
+X{{!--
+  VAR
   name
   =
   "var"
-  -->X
-X<!--TMPL_VAR name = "var"--><!--TMPL_VAR name = "var"-->X
-X<!--TmPl_vAr NaMe = "var"-->X
+  --}}X
+X{{!--VAR name = "var"--}}{{!--VAR name = "var"--}}X
+X{{!--vAr NaMe = "var"--}}X
 
-X<TMPL_VAR name = "var"><TMPL_VAR name = "bogus">X
-X<TMPL_VAR name = "bogus"><TMPL_VAR name = "var">X
+X{{VAR name = "var"}}{{VAR name = "bogus"}}X
+X{{VAR name = "bogus"}}{{VAR name = "var"}}X
 
-X<TMPL_VAR name =
-  "This variable has an extremely long, but nevertheless legal, name">X
+X{{VAR name =
+  "This variable has an extremely long, but nevertheless legal, name"}}X
 
 EOF
 
@@ -1006,127 +1006,127 @@ check
 
 TEST=9  ########################################
 
-# Testing tmpl_var tag with "default=" attribute
+# Testing var tag with "default=" attribute
 
 cat << "EOF" > tmplfile
 
-X<TMPL_VAR name="bogus"default="DEFAULT">X
-X<TMPL_VAR name ="bogus"default="DEFAULT">X
-X<TMPL_VAR name= "bogus"default="DEFAULT">X
-X<TMPL_VAR name="bogus" default="DEFAULT">X
-X<TMPL_VAR name="bogus"default ="DEFAULT">X
-X<TMPL_VAR name="bogus"default= "DEFAULT">X
-X<TMPL_VAR name="bogus"default="DEFAULT" >X
-X<TMPL_VAR   name   =   "bogus"   default   =   "DEFAULT"   >X
-X<TMPL_VAR
+X{{VAR name="bogus"default="DEFAULT"}}X
+X{{VAR name ="bogus"default="DEFAULT"}}X
+X{{VAR name= "bogus"default="DEFAULT"}}X
+X{{VAR name="bogus" default="DEFAULT"}}X
+X{{VAR name="bogus"default ="DEFAULT"}}X
+X{{VAR name="bogus"default= "DEFAULT"}}X
+X{{VAR name="bogus"default="DEFAULT" }}X
+X{{VAR   name   =   "bogus"   default   =   "DEFAULT"   }}X
+X{{VAR
   name
   =
   "bogus"
   default
   =
   "DEFAULT"
-  >X
-X<TmPl_VaR nAmE="bogus" DefAUlT="DEFAULT" />X
-X<TMPL_VAR default="DEFAULT" name = "bogus"/>X
+  }}X
+X{{VaR nAmE="bogus" DefAUlT="DEFAULT" /}}X
+X{{VAR default="DEFAULT" name = "bogus"/}}X
 
-X<TMPL_VAR name="bogus"default="DEFAULT"/>X
-X<TMPL_VAR name ="bogus"default="DEFAULT"/>X
-X<TMPL_VAR name= "bogus"default="DEFAULT"/>X
-X<TMPL_VAR name="bogus" default="DEFAULT"/>X
-X<TMPL_VAR name="bogus"default ="DEFAULT"/>X
-X<TMPL_VAR name="bogus"default= "DEFAULT"/>X
-X<TMPL_VAR name="bogus"default="DEFAULT" />X
-X<TMPL_VAR   name   =   "bogus"   default   =   "DEFAULT"   />X
-X<TMPL_VAR
+X{{VAR name="bogus"default="DEFAULT"/}}X
+X{{VAR name ="bogus"default="DEFAULT"/}}X
+X{{VAR name= "bogus"default="DEFAULT"/}}X
+X{{VAR name="bogus" default="DEFAULT"/}}X
+X{{VAR name="bogus"default ="DEFAULT"/}}X
+X{{VAR name="bogus"default= "DEFAULT"/}}X
+X{{VAR name="bogus"default="DEFAULT" /}}X
+X{{VAR   name   =   "bogus"   default   =   "DEFAULT"   /}}X
+X{{VAR
   name
   =
   "bogus"
   default
   =
   "DEFAULT"
-  />X
-X<TmPl_VaR nAmE="bogus" DefAUlT="DEFAULT" />X
-X<TMPL_VAR default="DEFAULT" name = "bogus"/>X
+  /}}X
+X{{VaR nAmE="bogus" DefAUlT="DEFAULT" /}}X
+X{{VAR default="DEFAULT" name = "bogus"/}}X
 
-X<!--TMPL_VAR name="bogus"default="DEFAULT"-->X
-X<!-- TMPL_VAR name="bogus"default="DEFAULT"-->X
-X<!--TMPL_VAR name ="bogus"default="DEFAULT"-->X
-X<!--TMPL_VAR name= "bogus"default="DEFAULT"-->X
-X<!--TMPL_VAR name="bogus" default="DEFAULT"-->X
-X<!--TMPL_VAR name="bogus"default ="DEFAULT"-->X
-X<!--TMPL_VAR name="bogus"default= "DEFAULT"-->X
-X<!--TMPL_VAR name="bogus"default="DEFAULT" -->X
-X<!--  TMPL_VAR   name   =   "bogus"   default   =   "DEFAULT"   -->X
-X<!--
-  TMPL_VAR
+X{{!--VAR name="bogus"default="DEFAULT"--}}X
+X{{!-- VAR name="bogus"default="DEFAULT"--}}X
+X{{!--VAR name ="bogus"default="DEFAULT"--}}X
+X{{!--VAR name= "bogus"default="DEFAULT"--}}X
+X{{!--VAR name="bogus" default="DEFAULT"--}}X
+X{{!--VAR name="bogus"default ="DEFAULT"--}}X
+X{{!--VAR name="bogus"default= "DEFAULT"--}}X
+X{{!--VAR name="bogus"default="DEFAULT" --}}X
+X{{!--  VAR   name   =   "bogus"   default   =   "DEFAULT"   --}}X
+X{{!--
+  VAR
   name
   =
   "bogus"
   default
   =
   "DEFAULT"
-  -->X
-X<!--TmPl_VaR nAmE="bogus" DefAUlT="DEFAULT"-->X
-X<!--TMPL_VAR default="DEFAULT" name = "bogus"-->X
+  --}}X
+X{{!--VaR nAmE="bogus" DefAUlT="DEFAULT"--}}X
+X{{!--VAR default="DEFAULT" name = "bogus"--}}X
 
-X<TMPL_VAR name="var"default="DEFAULT">X
-X<TMPL_VAR name ="var"default="DEFAULT">X
-X<TMPL_VAR name= "var"default="DEFAULT">X
-X<TMPL_VAR name="var" default="DEFAULT">X
-X<TMPL_VAR name="var"default ="DEFAULT">X
-X<TMPL_VAR name="var"default= "DEFAULT">X
-X<TMPL_VAR name="var"default="DEFAULT" >X
-X<TMPL_VAR   name   =   "var"   default   =   "DEFAULT"   >X
-X<TMPL_VAR
+X{{VAR name="var"default="DEFAULT"}}X
+X{{VAR name ="var"default="DEFAULT"}}X
+X{{VAR name= "var"default="DEFAULT"}}X
+X{{VAR name="var" default="DEFAULT"}}X
+X{{VAR name="var"default ="DEFAULT"}}X
+X{{VAR name="var"default= "DEFAULT"}}X
+X{{VAR name="var"default="DEFAULT" }}X
+X{{VAR   name   =   "var"   default   =   "DEFAULT"   }}X
+X{{VAR
   name
   =
   "var"
   default
   =
   "DEFAULT"
-  >X
-X<TmPl_VaR nAmE="var" DefAUlT="DEFAULT">X
-X<TMPL_VAR default="DEFAULT" name="var">X
+  }}X
+X{{VaR nAmE="var" DefAUlT="DEFAULT"}}X
+X{{VAR default="DEFAULT" name="var"}}X
 
-X<TMPL_VAR name="var"default="DEFAULT"/>X
-X<TMPL_VAR name ="var"default="DEFAULT"/>X
-X<TMPL_VAR name= "var"default="DEFAULT"/>X
-X<TMPL_VAR name="var" default="DEFAULT"/>X
-X<TMPL_VAR name="var"default ="DEFAULT"/>X
-X<TMPL_VAR name="var"default= "DEFAULT"/>X
-X<TMPL_VAR name="var"default="DEFAULT" />X
-X<TMPL_VAR   name   =   "var"   default   =   "DEFAULT"   />X
-X<TMPL_VAR
+X{{VAR name="var"default="DEFAULT"/}}X
+X{{VAR name ="var"default="DEFAULT"/}}X
+X{{VAR name= "var"default="DEFAULT"/}}X
+X{{VAR name="var" default="DEFAULT"/}}X
+X{{VAR name="var"default ="DEFAULT"/}}X
+X{{VAR name="var"default= "DEFAULT"/}}X
+X{{VAR name="var"default="DEFAULT" /}}X
+X{{VAR   name   =   "var"   default   =   "DEFAULT"   /}}X
+X{{VAR
   name
   =
   "var"
   default
   =
   "DEFAULT"
-  />X
-X<TmPl_VaR nAmE="var" DefAUlT="DEFAULT"/>X
-X<TMPL_VAR default="DEFAULT" name="var"/>X
+  /}}X
+X{{VaR nAmE="var" DefAUlT="DEFAULT"/}}X
+X{{VAR default="DEFAULT" name="var"/}}X
 
-X<!--TMPL_VAR name="var"default="DEFAULT"-->X
-X<!-- TMPL_VAR name="var"default="DEFAULT"-->X
-X<!--TMPL_VAR name ="var"default="DEFAULT"-->X
-X<!--TMPL_VAR name= "var"default="DEFAULT"-->X
-X<!--TMPL_VAR name="var" default="DEFAULT"-->X
-X<!--TMPL_VAR name="var"default ="DEFAULT"-->X
-X<!--TMPL_VAR name="var"default= "DEFAULT"-->X
-X<!--TMPL_VAR name="var"default="DEFAULT" -->X
-X<!--  TMPL_VAR   name   =   "var"   default   =   "DEFAULT"   -->X
-X<!--
-  TMPL_VAR
+X{{!--VAR name="var"default="DEFAULT"--}}X
+X{{!-- VAR name="var"default="DEFAULT"--}}X
+X{{!--VAR name ="var"default="DEFAULT"--}}X
+X{{!--VAR name= "var"default="DEFAULT"--}}X
+X{{!--VAR name="var" default="DEFAULT"--}}X
+X{{!--VAR name="var"default ="DEFAULT"--}}X
+X{{!--VAR name="var"default= "DEFAULT"--}}X
+X{{!--VAR name="var"default="DEFAULT" --}}X
+X{{!--  VAR   name   =   "var"   default   =   "DEFAULT"   --}}X
+X{{!--
+  VAR
   name
   =
   "var"
   default
   =
   "DEFAULT"
-  -->X
-X<!--TmPl_VaR nAmE="var" DefAUlT="DEFAULT"-->X
-X<!--TMPL_VAR default="DEFAULT" name="var"-->X
+  --}}X
+X{{!--VaR nAmE="var" DefAUlT="DEFAULT"--}}X
+X{{!--VAR default="DEFAULT" name="var"--}}X
 
 EOF
 
@@ -1214,127 +1214,127 @@ check
 
 TEST=10  ########################################
 
-# Testing tmpl_var tag with "fmt=" attribute
+# Testing var tag with "fmt=" attribute
 
 cat << "EOF" > tmplfile
 
-X<TMPL_VAR name="bogus"fmt="entity">X
-X<TMPL_VAR name ="bogus"fmt="entity">X
-X<TMPL_VAR name= "bogus"fmt="entity">X
-X<TMPL_VAR name="bogus" fmt="entity">X
-X<TMPL_VAR name="bogus"fmt ="entity">X
-X<TMPL_VAR name="bogus"fmt= "entity">X
-X<TMPL_VAR name="bogus"fmt="entity" >X
-X<TMPL_VAR   name   =   "bogus"   fmt   =   "entity"   >X
-X<TMPL_VAR
+X{{VAR name="bogus"fmt="entity"}}X
+X{{VAR name ="bogus"fmt="entity"}}X
+X{{VAR name= "bogus"fmt="entity"}}X
+X{{VAR name="bogus" fmt="entity"}}X
+X{{VAR name="bogus"fmt ="entity"}}X
+X{{VAR name="bogus"fmt= "entity"}}X
+X{{VAR name="bogus"fmt="entity" }}X
+X{{VAR   name   =   "bogus"   fmt   =   "entity"   }}X
+X{{VAR
   name
   =
   "bogus"
   fmt
   =
   "entity"
-  >X
-X<TmPl_VaR nAmE="bogus" fMt="entity" >X
-X<TMPL_VAR fmt="entity" name = "bogus">X
+  }}X
+X{{VaR nAmE="bogus" fMt="entity" }}X
+X{{VAR fmt="entity" name = "bogus"}}X
 
-X<TMPL_VAR name="bogus"fmt="entity"/>X
-X<TMPL_VAR name ="bogus"fmt="entity"/>X
-X<TMPL_VAR name= "bogus"fmt="entity"/>X
-X<TMPL_VAR name="bogus" fmt="entity"/>X
-X<TMPL_VAR name="bogus"fmt ="entity"/>X
-X<TMPL_VAR name="bogus"fmt= "entity"/>X
-X<TMPL_VAR name="bogus"fmt="entity" />X
-X<TMPL_VAR   name   =   "bogus"   fmt   =   "entity"   />X
-X<TMPL_VAR
+X{{VAR name="bogus"fmt="entity"/}}X
+X{{VAR name ="bogus"fmt="entity"/}}X
+X{{VAR name= "bogus"fmt="entity"/}}X
+X{{VAR name="bogus" fmt="entity"/}}X
+X{{VAR name="bogus"fmt ="entity"/}}X
+X{{VAR name="bogus"fmt= "entity"/}}X
+X{{VAR name="bogus"fmt="entity" /}}X
+X{{VAR   name   =   "bogus"   fmt   =   "entity"   /}}X
+X{{VAR
   name
   =
   "bogus"
   fmt
   =
   "entity"
-  />X
-X<TmPl_VaR nAmE="bogus" fMt="entity" />X
-X<TMPL_VAR fmt="entity" name = "bogus"/>X
+  /}}X
+X{{VaR nAmE="bogus" fMt="entity" /}}X
+X{{VAR fmt="entity" name = "bogus"/}}X
 
-X<!--TMPL_VAR name="bogus"fmt="entity"-->X
-X<!-- TMPL_VAR name="bogus"fmt="entity"-->X
-X<!--TMPL_VAR name ="bogus"fmt="entity"-->X
-X<!--TMPL_VAR name= "bogus"fmt="entity"-->X
-X<!--TMPL_VAR name="bogus" fmt="entity"-->X
-X<!--TMPL_VAR name="bogus"fmt ="entity"-->X
-X<!--TMPL_VAR name="bogus"fmt= "entity"-->X
-X<!--TMPL_VAR name="bogus"fmt="entity" -->X
-X<!--  TMPL_VAR   name   =   "bogus"   fmt   =   "entity"   -->X
-X<!--
-  TMPL_VAR
+X{{!--VAR name="bogus"fmt="entity"--}}X
+X{{!-- VAR name="bogus"fmt="entity"--}}X
+X{{!--VAR name ="bogus"fmt="entity"--}}X
+X{{!--VAR name= "bogus"fmt="entity"--}}X
+X{{!--VAR name="bogus" fmt="entity"--}}X
+X{{!--VAR name="bogus"fmt ="entity"--}}X
+X{{!--VAR name="bogus"fmt= "entity"--}}X
+X{{!--VAR name="bogus"fmt="entity" --}}X
+X{{!--  VAR   name   =   "bogus"   fmt   =   "entity"   --}}X
+X{{!--
+  VAR
   name
   =
   "bogus"
   fmt
   =
   "entity"
-  -->X
-X<!--TmPl_VaR nAmE="bogus" FmT="entity"-->X
-X<!--TMPL_VAR fmt="entity" name = "bogus"-->X
+  --}}X
+X{{!--VaR nAmE="bogus" FmT="entity"--}}X
+X{{!--VAR fmt="entity" name = "bogus"--}}X
 
-X<TMPL_VAR name="var"fmt="entity">X
-X<TMPL_VAR name ="var"fmt="entity">X
-X<TMPL_VAR name= "var"fmt="entity">X
-X<TMPL_VAR name="var" fmt="entity">X
-X<TMPL_VAR name="var"fmt ="entity">X
-X<TMPL_VAR name="var"fmt= "entity">X
-X<TMPL_VAR name="var"fmt="entity" >X
-X<TMPL_VAR   name   =   "var"   fmt   =   "entity"   >X
-X<TMPL_VAR
+X{{VAR name="var"fmt="entity"}}X
+X{{VAR name ="var"fmt="entity"}}X
+X{{VAR name= "var"fmt="entity"}}X
+X{{VAR name="var" fmt="entity"}}X
+X{{VAR name="var"fmt ="entity"}}X
+X{{VAR name="var"fmt= "entity"}}X
+X{{VAR name="var"fmt="entity" }}X
+X{{VAR   name   =   "var"   fmt   =   "entity"   }}X
+X{{VAR
   name
   =
   "var"
   fmt
   =
   "entity"
-  >X
-X<TmPl_VaR nAmE="var" fmT="entity">X
-X<TMPL_VAR fmt="entity" name="var">X
+  }}X
+X{{VaR nAmE="var" fmT="entity"}}X
+X{{VAR fmt="entity" name="var"}}X
 
-X<TMPL_VAR name="var"fmt="entity"/>X
-X<TMPL_VAR name ="var"fmt="entity"/>X
-X<TMPL_VAR name= "var"fmt="entity"/>X
-X<TMPL_VAR name="var" fmt="entity"/>X
-X<TMPL_VAR name="var"fmt ="entity"/>X
-X<TMPL_VAR name="var"fmt= "entity"/>X
-X<TMPL_VAR name="var"fmt="entity" />X
-X<TMPL_VAR   name   =   "var"   fmt   =   "entity"   />X
-X<TMPL_VAR
+X{{VAR name="var"fmt="entity"/}}X
+X{{VAR name ="var"fmt="entity"/}}X
+X{{VAR name= "var"fmt="entity"/}}X
+X{{VAR name="var" fmt="entity"/}}X
+X{{VAR name="var"fmt ="entity"/}}X
+X{{VAR name="var"fmt= "entity"/}}X
+X{{VAR name="var"fmt="entity" /}}X
+X{{VAR   name   =   "var"   fmt   =   "entity"   /}}X
+X{{VAR
   name
   =
   "var"
   fmt
   =
   "entity"
-  />X
-X<TmPl_VaR nAmE="var" fmT="entity"/>X
-X<TMPL_VAR fmt="entity" name="var"/>X
+  /}}X
+X{{VaR nAmE="var" fmT="entity"/}}X
+X{{VAR fmt="entity" name="var"/}}X
 
-X<!--TMPL_VAR name="var"fmt="entity"-->X
-X<!-- TMPL_VAR name="var"fmt="entity"-->X
-X<!--TMPL_VAR name ="var"fmt="entity"-->X
-X<!--TMPL_VAR name= "var"fmt="entity"-->X
-X<!--TMPL_VAR name="var" fmt="entity"-->X
-X<!--TMPL_VAR name="var"fmt ="entity"-->X
-X<!--TMPL_VAR name="var"fmt= "entity"-->X
-X<!--TMPL_VAR name="var"fmt="entity" -->X
-X<!--  TMPL_VAR   name   =   "var"   fmt   =   "entity"   -->X
-X<!--
-  TMPL_VAR
+X{{!--VAR name="var"fmt="entity"--}}X
+X{{!-- VAR name="var"fmt="entity"--}}X
+X{{!--VAR name ="var"fmt="entity"--}}X
+X{{!--VAR name= "var"fmt="entity"--}}X
+X{{!--VAR name="var" fmt="entity"--}}X
+X{{!--VAR name="var"fmt ="entity"--}}X
+X{{!--VAR name="var"fmt= "entity"--}}X
+X{{!--VAR name="var"fmt="entity" --}}X
+X{{!--  VAR   name   =   "var"   fmt   =   "entity"   --}}X
+X{{!--
+  VAR
   name
   =
   "var"
   fmt
   =
   "entity"
-  -->X
-X<!--TmPl_VaR nAmE="var" fMt="entity"-->X
-X<!--TMPL_VAR fmt="entity" name="var"-->X
+  --}}X
+X{{!--VaR nAmE="var" fMt="entity"--}}X
+X{{!--VAR fmt="entity" name="var"--}}X
 
 EOF
 
@@ -1422,51 +1422,51 @@ check
 
 TEST=11  ########################################
 
-# Testing TMPL_VAR with "fmt =" and "default ="
+# Testing VAR with "fmt =" and "default ="
 
 cat << "EOF" > tmplfile
 
-X<TMPL_VAR name="var" fmt="entity" default="<<DEFAULT>>">X
-X<TMPL_VAR name="var" default="<<DEFAULT>>" fmt="entity">X
-X<TMPL_VAR default="<<DEFAULT>>" name="var" fmt="entity">X
-X<TMPL_VAR default="<<DEFAULT>>" fmt="entity" name="var">X
-X<TMPL_VAR fmt="entity" name="var" default="<<DEFAULT>>">X
-X<TMPL_VAR fmt="entity" default="<<DEFAULT>>" name="var">X
+X{{VAR name="var" fmt="entity" default="<<DEFAULT>>"}}X
+X{{VAR name="var" default="<<DEFAULT>>" fmt="entity"}}X
+X{{VAR default="<<DEFAULT>>" name="var" fmt="entity"}}X
+X{{VAR default="<<DEFAULT>>" fmt="entity" name="var"}}X
+X{{VAR fmt="entity" name="var" default="<<DEFAULT>>"}}X
+X{{VAR fmt="entity" default="<<DEFAULT>>" name="var"}}X
 
-X<TMPL_VAR name="var" fmt="entity" default="<<DEFAULT>>"/>X
-X<TMPL_VAR name="var" default="<<DEFAULT>>" fmt="entity"/>X
-X<TMPL_VAR default="<<DEFAULT>>" name="var" fmt="entity"/>X
-X<TMPL_VAR default="<<DEFAULT>>" fmt="entity" name="var"/>X
-X<TMPL_VAR fmt="entity" name="var" default="<<DEFAULT>>"/>X
-X<TMPL_VAR fmt="entity" default="<<DEFAULT>>" name="var"/>X
+X{{VAR name="var" fmt="entity" default="<<DEFAULT>>"/}}X
+X{{VAR name="var" default="<<DEFAULT>>" fmt="entity"/}}X
+X{{VAR default="<<DEFAULT>>" name="var" fmt="entity"/}}X
+X{{VAR default="<<DEFAULT>>" fmt="entity" name="var"/}}X
+X{{VAR fmt="entity" name="var" default="<<DEFAULT>>"/}}X
+X{{VAR fmt="entity" default="<<DEFAULT>>" name="var"/}}X
 
-X<!--TMPL_VAR name="var" fmt="entity" default="<<DEFAULT>>"-->X
-X<!--TMPL_VAR name="var" default="<<DEFAULT>>" fmt="entity"-->X
-X<!--TMPL_VAR default="<<DEFAULT>>" name="var" fmt="entity"-->X
-X<!--TMPL_VAR default="<<DEFAULT>>" fmt="entity" name="var"-->X
-X<!--TMPL_VAR fmt="entity" name="var" default="<<DEFAULT>>"-->X
-X<!--TMPL_VAR fmt="entity" default="<<DEFAULT>>" name="var"-->X
+X{{!--VAR name="var" fmt="entity" default="<<DEFAULT>>"--}}X
+X{{!--VAR name="var" default="<<DEFAULT>>" fmt="entity"--}}X
+X{{!--VAR default="<<DEFAULT>>" name="var" fmt="entity"--}}X
+X{{!--VAR default="<<DEFAULT>>" fmt="entity" name="var"--}}X
+X{{!--VAR fmt="entity" name="var" default="<<DEFAULT>>"--}}X
+X{{!--VAR fmt="entity" default="<<DEFAULT>>" name="var"--}}X
 
-X<TMPL_VAR name="bogus" fmt="entity" default="<<DEFAULT>>">X
-X<TMPL_VAR name="bogus" default="<<DEFAULT>>" fmt="entity">X
-X<TMPL_VAR default="<<DEFAULT>>" name="bogus" fmt="entity">X
-X<TMPL_VAR default="<<DEFAULT>>" fmt="entity" name="bogus">X
-X<TMPL_VAR fmt="entity" name="bogus" default="<<DEFAULT>>">X
-X<TMPL_VAR fmt="entity" default="<<DEFAULT>>" name="bogus">X
+X{{VAR name="bogus" fmt="entity" default="<<DEFAULT>>"}}X
+X{{VAR name="bogus" default="<<DEFAULT>>" fmt="entity"}}X
+X{{VAR default="<<DEFAULT>>" name="bogus" fmt="entity"}}X
+X{{VAR default="<<DEFAULT>>" fmt="entity" name="bogus"}}X
+X{{VAR fmt="entity" name="bogus" default="<<DEFAULT>>"}}X
+X{{VAR fmt="entity" default="<<DEFAULT>>" name="bogus"}}X
 
-X<TMPL_VAR name="bogus" fmt="entity" default="<<DEFAULT>>"/>X
-X<TMPL_VAR name="bogus" default="<<DEFAULT>>" fmt="entity"/>X
-X<TMPL_VAR default="<<DEFAULT>>" name="bogus" fmt="entity"/>X
-X<TMPL_VAR default="<<DEFAULT>>" fmt="entity" name="bogus"/>X
-X<TMPL_VAR fmt="entity" name="bogus" default="<<DEFAULT>>"/>X
-X<TMPL_VAR fmt="entity" default="<<DEFAULT>>" name="bogus"/>X
+X{{VAR name="bogus" fmt="entity" default="<<DEFAULT>>"/}}X
+X{{VAR name="bogus" default="<<DEFAULT>>" fmt="entity"/}}X
+X{{VAR default="<<DEFAULT>>" name="bogus" fmt="entity"/}}X
+X{{VAR default="<<DEFAULT>>" fmt="entity" name="bogus"/}}X
+X{{VAR fmt="entity" name="bogus" default="<<DEFAULT>>"/}}X
+X{{VAR fmt="entity" default="<<DEFAULT>>" name="bogus"/}}X
 
-X<!--TMPL_VAR name="bogus" fmt="entity" default="<<DEFAULT>>"-->X
-X<!--TMPL_VAR name="bogus" default="<<DEFAULT>>" fmt="entity"-->X
-X<!--TMPL_VAR default="<<DEFAULT>>" name="bogus" fmt="entity"-->X
-X<!--TMPL_VAR default="<<DEFAULT>>" fmt="entity" name="bogus"-->X
-X<!--TMPL_VAR fmt="entity" name="bogus" default="<<DEFAULT>>"-->X
-X<!--TMPL_VAR fmt="entity" default="<<DEFAULT>>" name="bogus"-->X
+X{{!--VAR name="bogus" fmt="entity" default="<<DEFAULT>>"--}}X
+X{{!--VAR name="bogus" default="<<DEFAULT>>" fmt="entity"--}}X
+X{{!--VAR default="<<DEFAULT>>" name="bogus" fmt="entity"--}}X
+X{{!--VAR default="<<DEFAULT>>" fmt="entity" name="bogus"--}}X
+X{{!--VAR fmt="entity" name="bogus" default="<<DEFAULT>>"--}}X
+X{{!--VAR fmt="entity" default="<<DEFAULT>>" name="bogus"--}}X
 
 EOF
 
@@ -1522,15 +1522,15 @@ check
 
 TEST=12  ########################################
 
-# Testing attribute quoting styles with TMPL_VAR
+# Testing attribute quoting styles with VAR
 
 cat << "EOF" > tmplfile
 
-X<TMPL_VAR name="var" fmt="entity" default="DEFAULT">X
-X<TMPL_VAR name='var' fmt='entity' default='DEFAULT'>X
-X<TMPL_VAR name=var   fmt=entity   default=DEFAULT>X
-X<TMPL_VAR name="var" fmt='entity' default=DEFAULT>X
-X<TMPL_VAR name=var   fmt="entity" default='DEFAULT'>X
+X{{VAR name="var" fmt="entity" default="DEFAULT"}}X
+X{{VAR name='var' fmt='entity' default='DEFAULT'}}X
+X{{VAR name=var   fmt=entity   default=DEFAULT}}X
+X{{VAR name="var" fmt='entity' default=DEFAULT}}X
+X{{VAR name=var   fmt="entity" default='DEFAULT'}}X
 
 EOF
 
@@ -1550,19 +1550,19 @@ check
 
 TEST=13  ########################################
 
-# Testing TMPL_VAR with undefined format function
+# Testing VAR with undefined format function
 
 cat << "EOF" > tmplfile
 
-<TMPL_VAR name = "var" fmt="entity">
-<TMPL_VAR name = "var" fmt="bogus1" />
-<TMPL_VAR fmt="entity" name = "var">
-<TMPL_VAR fmt="bogus2" name = "var">
-<!--
+{{VAR name = "var" fmt="entity"}}
+{{VAR name = "var" fmt="bogus1" /}}
+{{VAR fmt="entity" name = "var"}}
+{{VAR fmt="bogus2" name = "var"}}
+{{!--
 
 
 
-TMPL_VAR
+VAR
 
 
 
@@ -1574,14 +1574,14 @@ name="var"
 
 
 
--->
+--}}
 
 EOF
 
 cat << "EOF" > expected
-Ignoring bad TMPL_VAR tag (bad "fmt=" attribute) in file "tmplfile" line 3
-Ignoring bad TMPL_VAR tag (bad "fmt=" attribute) in file "tmplfile" line 5
-Ignoring bad TMPL_VAR tag (bad "fmt=" attribute) in file "tmplfile" line 10
+Ignoring bad VAR tag (bad "fmt=" attribute) in file "tmplfile" line 3
+Ignoring bad VAR tag (bad "fmt=" attribute) in file "tmplfile" line 5
+Ignoring bad VAR tag (bad "fmt=" attribute) in file "tmplfile" line 10
 EOF
 
 template tmplfile var '<"test&value">' > /dev/null 2> result
@@ -1590,15 +1590,15 @@ check
 
 TEST=14  ########################################
 
-# Testing accepted TMPL_LOOP tag syntax
+# Testing accepted LOOP tag syntax
 
 cat << "EOF" > tmplfile
 
-X<TMPL_LOOP name="loop">X</TMPL_LOOP>X
-X<TMPL_LOOP name='loop'>X</TMPL_LOOP>X
-X<TMPL_LOOP name=loop>X</TMPL_LOOP>X
-X<TMPL_LOOP   name  =  "loop"  >X</TMPL_LOOP>X
-X<TMPL_LOOP
+X{{LOOP name="loop"}}X{{/LOOP}}X
+X{{LOOP name='loop'}}X{{/LOOP}}X
+X{{LOOP name=loop}}X{{/LOOP}}X
+X{{LOOP   name  =  "loop"  }}X{{/LOOP}}X
+X{{LOOP
 
   name
 
@@ -1606,25 +1606,25 @@ X<TMPL_LOOP
 
   "loop"
 
-  >X</TMPL_LOOP>X
-X<TmPl_LoOp NaMe = "loop">X</TMPL_LOOP>X
+  }}X{{/LOOP}}X
+X{{LoOp NaMe = "loop"}}X{{/LOOP}}X
 
-X<!--TMPL_LOOP name="loop"-->X</TMPL_LOOP>X
-X<!--TMPL_LOOP name='loop'-->X</TMPL_LOOP>X
-X<!--TMPL_LOOP name=loop -->X</TMPL_LOOP>X
-X<!--   TMPL_LOOP   name  =  "loop"  -->X</TMPL_LOOP>X
-X<!--
+X{{!--LOOP name="loop"--}}X{{/LOOP}}X
+X{{!--LOOP name='loop'--}}X{{/LOOP}}X
+X{{!--LOOP name=loop --}}X{{/LOOP}}X
+X{{!--   LOOP   name  =  "loop"  --}}X{{/LOOP}}X
+X{{!--
 
-  TMPL_LOOP
-  
+  LOOP
+
   name
 
   =
 
   "loop"
 
-  -->X</TMPL_LOOP>X
-X<!--TmPl_LoOp NaMe = "loop"-->X</TMPL_LOOP>X
+  --}}X{{/LOOP}}X
+X{{!--LoOp NaMe = "loop"--}}X{{/LOOP}}X
 
 EOF
 
@@ -1646,34 +1646,34 @@ XXX
 
 EOF
 
-template tmplfile loop { var testvalue } >result 2>&1
+template tmplfile loop { var testvalue } > result 2>&1
 
 check
 
 TEST=15  ########################################
 
-# Testing accepted </TMPL_LOOP> tag syntax
+# Testing accepted {{/LOOP}} tag syntax
 
 cat << "EOF" > tmplfile
 
-X<TMPL_LOOP name=loop>X</TMPL_LOOP>X
-X<TMPL_LOOP name=loop>X</TMPL_LOOP >X
-X<TMPL_LOOP name=loop>X</TMPL_LOOP   >X
-X<TMPL_LOOP name=loop>X</TMPL_LOOP
+X{{LOOP name=loop}}X{{/LOOP}}X
+X{{LOOP name=loop}}X{{/LOOP }}X
+X{{LOOP name=loop}}X{{/LOOP   }}X
+X{{LOOP name=loop}}X{{/LOOP
 
->X
-X<TMPL_LOOP name=loop>X</tMpL_LooP>X
+}}X
+X{{LOOP name=loop}}X{{/LooP}}X
 
-X<TMPL_LOOP name=loop>X<!--/TMPL_LOOP-->X
-X<TMPL_LOOP name=loop>X<!-- /TMPL_LOOP -->X
-X<TMPL_LOOP name=loop>X<!--   /TMPL_LOOP   -->X
-X<TMPL_LOOP name=loop>X<!--
+X{{LOOP name=loop}}X{{!--/LOOP--}}X
+X{{LOOP name=loop}}X{{!-- /LOOP --}}X
+X{{LOOP name=loop}}X{{!--   /LOOP   --}}X
+X{{LOOP name=loop}}X{{!--
 
 
-/TMPL_LOOP
+/LOOP
 
--->X
-X<TMPL_LOOP name=loop>X<!--/tMpL_lOOp-->X
+--}}X
+X{{LOOP name=loop}}X{{!--/lOOp--}}X
 
 EOF
 
@@ -1699,17 +1699,17 @@ check
 
 TEST=16  ########################################
 
-# Testing accepted TMPL_INCLUDE tag syntax
+# Testing accepted INCLUDE tag syntax
 
 cp /dev/null inclfile1
 
 cat << "EOF" > tmplfile
 
-X<TMPL_INCLUDE name="inclfile1">X
-X<TMPL_INCLUDE name='inclfile1'>X
-X<TMPL_INCLUDE name=inclfile1>X
-X<TMPL_INCLUDE   name  =  "inclfile1"  >X
-X<TMPL_INCLUDE
+X{{INCLUDE name="inclfile1"}}X
+X{{INCLUDE name='inclfile1'}}X
+X{{INCLUDE name=inclfile1}}X
+X{{INCLUDE   name  =  "inclfile1"  }}X
+X{{INCLUDE
 
   name
   
@@ -1717,14 +1717,14 @@ X<TMPL_INCLUDE
 
   "inclfile1"
 
-  >X
-X<tMPl_InCluDe NAMe="inclfile1">X
+  }}X
+X{{InCluDe NAMe="inclfile1"}}X
 
-X<TMPL_INCLUDE name="inclfile1"/>X
-X<TMPL_INCLUDE name='inclfile1'/>X
-X<TMPL_INCLUDE name=inclfile1/>X
-X<TMPL_INCLUDE   name  =  "inclfile1"  />X
-X<TMPL_INCLUDE
+X{{INCLUDE name="inclfile1"/}}X
+X{{INCLUDE name='inclfile1'/}}X
+X{{INCLUDE name=inclfile1/}}X
+X{{INCLUDE   name  =  "inclfile1"  /}}X
+X{{INCLUDE
 
   name
   
@@ -1732,16 +1732,16 @@ X<TMPL_INCLUDE
 
   "inclfile1"
 
-  />X
-X<tMPl_InCluDe NAMe="inclfile1"/>X
+  /}}X
+X{{InCluDe NAMe="inclfile1"/}}X
 
-X<!--TMPL_INCLUDE name="inclfile1"-->X
-X<!--TMPL_INCLUDE name='inclfile1'-->X
-X<!--TMPL_INCLUDE name=inclfile1 -->X
-X<!--TMPL_INCLUDE   name  =  "inclfile1"  -->X
-X<!--
+X{{!--INCLUDE name="inclfile1"--}}X
+X{{!--INCLUDE name='inclfile1'--}}X
+X{{!--INCLUDE name=inclfile1 --}}X
+X{{!--INCLUDE   name  =  "inclfile1"  --}}X
+X{{!--
 
-  TMPL_INCLUDE
+  INCLUDE
 
   name
 
@@ -1749,8 +1749,8 @@ X<!--
 
   "inclfile1"
 
-  -->X
-X<!--tMPl_InClUDe NaMe="inclfile1"-->X
+  --}}X
+X{{!--InClUDe NaMe="inclfile1"--}}X
 
 EOF
 
@@ -1785,15 +1785,15 @@ check
 
 TEST=17  ########################################
 
-# Testing accepted TMPL_IF tag syntax
+# Testing accepted IF tag syntax
 
 cat << "EOF" > tmplfile
 
-X<TMPL_IF name="var">X</TMPL_IF>X
-X<TMPL_IF name='var'>X</TMPL_IF>X
-X<TMPL_IF name=var>X</TMPL_IF>X
-X<TMPL_IF   name  =  "var"  >X</TMPL_IF>X
-X<TMPL_IF
+X{{IF name="var"}}X{{/IF}}X
+X{{IF name='var'}}X{{/IF}}X
+X{{IF name=var}}X{{/IF}}X
+X{{IF   name  =  "var"  }}X{{/IF}}X
+X{{IF
 
   name
 
@@ -1801,32 +1801,16 @@ X<TMPL_IF
 
   "var"
 
-  >X</TMPL_IF>X
-X<TmPl_if NaMe = "var">X</TMPL_IF>X
+  }}X{{/IF}}X
+X{{if NaMe = "var"}}X{{/IF}}X
 
-X<!--TMPL_IF name="var"-->X</TMPL_IF>X
-X<!--TMPL_IF name='var'-->X</TMPL_IF>X
-X<!--TMPL_IF name=var -->X</TMPL_IF>X
-X<!--   TMPL_IF   name  =  "var"  -->X</TMPL_IF>X
-X<!--
+X{{!--IF name="var"--}}X{{/IF}}X
+X{{!--IF name='var'--}}X{{/IF}}X
+X{{!--IF name=var --}}X{{/IF}}X
+X{{!--   IF   name  =  "var"  --}}X{{/IF}}X
+X{{!--
 
-  TMPL_IF
-  
-  name
-
-  =
-
-  "var"
-
-  -->X</TMPL_IF>X
-X<!--TmPl_iF NaMe = "var"-->X</TMPL_IF>X
-
-X<TMPL_IF name="var" value="testvalue">X</TMPL_IF>X
-X<TMPL_IF name="var" value='testvalue'>X</TMPL_IF>X
-X<TMPL_IF name="var" value=testvalue>X</TMPL_IF>X
-X<TMPL_IF name=var value=testvalue>X</TMPL_IF>X
-X<TMPL_IF   name  =  "var"  value   =  "testvalue"  >X</TMPL_IF>X
-X<TMPL_IF
+  IF
 
   name
 
@@ -1834,23 +1818,15 @@ X<TMPL_IF
 
   "var"
 
-  value
+  --}}X{{/IF}}X
+X{{!--iF NaMe = "var"--}}X{{/IF}}X
 
-  =
-
-  "testvalue"
-
-  >X</TMPL_IF>X
-X<TmPl_if NaMe = "var" vAluE="testvalue">X</TMPL_IF>X
-X<TMPL_IF value="testvalue" name="var">X</TMPL_IF>X
-
-X<!--TMPL_IF name="var" value="testvalue"-->X</TMPL_IF>X
-X<!--TMPL_IF name="var" value='testvalue'-->X</TMPL_IF>X
-X<!--TMPL_IF name="var" value=testvalue -->X</TMPL_IF>X
-X<!--TMPL_IF name=var value=testvalue -->X</TMPL_IF>X
-X<!--TMPL_IF   name  =  "var"  value   =  "testvalue"   -->X</TMPL_IF>X
-X<!--
-  TMPL_IF
+X{{IF name="var" value="testvalue"}}X{{/IF}}X
+X{{IF name="var" value='testvalue'}}X{{/IF}}X
+X{{IF name="var" value=testvalue}}X{{/IF}}X
+X{{IF name=var value=testvalue}}X{{/IF}}X
+X{{IF   name  =  "var"  value   =  "testvalue"  }}X{{/IF}}X
+X{{IF
 
   name
 
@@ -1864,9 +1840,33 @@ X<!--
 
   "testvalue"
 
-  -->X</TMPL_IF>X
-X<!--TmPl_if NaMe = "var" vAluE="testvalue"-->X</TMPL_IF>X
-X<!--TMPL_IF value="testvalue" name="var"-->X</TMPL_IF>X
+  }}X{{/IF}}X
+X{{if NaMe = "var" vAluE="testvalue"}}X{{/IF}}X
+X{{IF value="testvalue" name="var"}}X{{/IF}}X
+
+X{{!--IF name="var" value="testvalue"--}}X{{/IF}}X
+X{{!--IF name="var" value='testvalue'--}}X{{/IF}}X
+X{{!--IF name="var" value=testvalue --}}X{{/IF}}X
+X{{!--IF name=var value=testvalue --}}X{{/IF}}X
+X{{!--IF   name  =  "var"  value   =  "testvalue"   --}}X{{/IF}}X
+X{{!--
+  IF
+
+  name
+
+  =
+
+  "var"
+
+  value
+
+  =
+
+  "testvalue"
+
+  --}}X{{/IF}}X
+X{{!--if NaMe = "var" vAluE="testvalue"--}}X{{/IF}}X
+X{{!--IF value="testvalue" name="var"--}}X{{/IF}}X
 
 EOF
 
@@ -1912,15 +1912,15 @@ check
 
 TEST=18  ########################################
 
-# Testing accepted TMPL_ELSIF tag syntax
+# Testing accepted ELSIF tag syntax
 
 cat << "EOF" > tmplfile
 
-X<TMPL_IF name=x>X<TMPL_ELSIF name="var">X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSIF name='var'>X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSIF name=var>X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSIF   name  =  "var"  >X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSIF
+X{{IF name=x}}X{{ELSIF name="var"}}X{{/IF}}X
+X{{IF name=x}}X{{ELSIF name='var'}}X{{/IF}}X
+X{{IF name=x}}X{{ELSIF name=var}}X{{/IF}}X
+X{{IF name=x}}X{{ELSIF   name  =  "var"  }}X{{/IF}}X
+X{{IF name=x}}X{{ELSIF
 
   name
 
@@ -1928,47 +1928,14 @@ X<TMPL_IF name=x>X<TMPL_ELSIF
 
   "var"
 
-  >X</TMPL_IF>X
-X<TMPL_IF name=x>X<TmPl_ElSif NaMe = "var">X</TMPL_IF>X
+  }}X{{/IF}}X
+X{{IF name=x}}X{{ElSif NaMe = "var"}}X{{/IF}}X
 
-X<TMPL_IF name=x>X<TMPL_ELSIF name="var"/>X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSIF name='var'/>X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSIF name=var/>X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSIF   name  =  "var"  />X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSIF
-
-  name
-
-  =
-
-  "var"
-
-  />X</TMPL_IF>X
-X<TMPL_IF name=x>X<TmPl_ElSif NaMe = "var"/>X</TMPL_IF>X
-
-X<TMPL_IF name=x>X<!--TMPL_ELSIF name="var"-->X</TMPL_IF>X
-X<TMPL_IF name=x>X<!--TMPL_ELSIF name='var'-->X</TMPL_IF>X
-X<TMPL_IF name=x>X<!--TMPL_ELSIF name=var -->X</TMPL_IF>X
-X<TMPL_IF name=x>X<!--   TMPL_ELSIF   name  =  "var"  -->X</TMPL_IF>X
-X<TMPL_IF name=x>X<!--
-
-  TMPL_ELSIF
-  
-  name
-
-  =
-
-  "var"
-
-  -->X</TMPL_IF>X
-X<TMPL_IF name=x>X<!--TmPl_eLSiF NaMe = "var"-->X</TMPL_IF>X
-
-X<TMPL_IF name=x>X<TMPL_ELSIF name="var" value="testvalue">X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSIF name="var" value='testvalue'>X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSIF name="var" value=testvalue>X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSIF name=var value=testvalue>X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSIF   name  =  "var"  value   =  "testvalue"  >X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSIF
+X{{IF name=x}}X{{ELSIF name="var"/}}X{{/IF}}X
+X{{IF name=x}}X{{ELSIF name='var'/}}X{{/IF}}X
+X{{IF name=x}}X{{ELSIF name=var/}}X{{/IF}}X
+X{{IF name=x}}X{{ELSIF   name  =  "var"  /}}X{{/IF}}X
+X{{IF name=x}}X{{ELSIF
 
   name
 
@@ -1976,22 +1943,32 @@ X<TMPL_IF name=x>X<TMPL_ELSIF
 
   "var"
 
-  value
+  /}}X{{/IF}}X
+X{{IF name=x}}X{{ElSif NaMe = "var"/}}X{{/IF}}X
+
+X{{IF name=x}}X{{!--ELSIF name="var"--}}X{{/IF}}X
+X{{IF name=x}}X{{!--ELSIF name='var'--}}X{{/IF}}X
+X{{IF name=x}}X{{!--ELSIF name=var --}}X{{/IF}}X
+X{{IF name=x}}X{{!--   ELSIF   name  =  "var"  --}}X{{/IF}}X
+X{{IF name=x}}X{{!--
+
+  ELSIF
+
+  name
 
   =
 
-  "testvalue"
+  "var"
 
-  >X</TMPL_IF>X
-X<TMPL_IF name=x>X<TmPl_eLSif NaMe = "var" vAluE="testvalue">X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSIF value="testvalue" name="var">X</TMPL_IF>X
+  --}}X{{/IF}}X
+X{{IF name=x}}X{{!--eLSiF NaMe = "var"--}}X{{/IF}}X
 
-X<TMPL_IF name=x>X<TMPL_ELSIF name="var" value="testvalue"/>X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSIF name="var" value='testvalue'/>X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSIF name="var" value=testvalue/>X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSIF name=var value=testvalue/>X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSIF   name  =  "var"  value   =  "testvalue"  />X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSIF
+X{{IF name=x}}X{{ELSIF name="var" value="testvalue"}}X{{/IF}}X
+X{{IF name=x}}X{{ELSIF name="var" value='testvalue'}}X{{/IF}}X
+X{{IF name=x}}X{{ELSIF name="var" value=testvalue}}X{{/IF}}X
+X{{IF name=x}}X{{ELSIF name=var value=testvalue}}X{{/IF}}X
+X{{IF name=x}}X{{ELSIF   name  =  "var"  value   =  "testvalue"  }}X{{/IF}}X
+X{{IF name=x}}X{{ELSIF
 
   name
 
@@ -2005,17 +1982,16 @@ X<TMPL_IF name=x>X<TMPL_ELSIF
 
   "testvalue"
 
-  />X</TMPL_IF>X
-X<TMPL_IF name=x>X<TmPl_eLSif NaMe = "var" vAluE="testvalue"/>X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSIF value="testvalue" name="var"/>X</TMPL_IF>X
+  }}X{{/IF}}X
+X{{IF name=x}}X{{eLSif NaMe = "var" vAluE="testvalue"}}X{{/IF}}X
+X{{IF name=x}}X{{ELSIF value="testvalue" name="var"}}X{{/IF}}X
 
-X<TMPL_IF name=x>X<!--TMPL_ELSIF name="var" value="testvalue"-->X</TMPL_IF>X
-X<TMPL_IF name=x>X<!--TMPL_ELSIF name="var" value='testvalue'-->X</TMPL_IF>X
-X<TMPL_IF name=x>X<!--TMPL_ELSIF name="var" value=testvalue -->X</TMPL_IF>X
-X<TMPL_IF name=x>X<!--TMPL_ELSIF name=var value=testvalue -->X</TMPL_IF>X
-X<TMPL_IF name=x>X<!--TMPL_ELSIF   name  =  "var"  value   =  "testvalue"   -->X</TMPL_IF>X
-X<TMPL_IF name=x>X<!--
-  TMPL_ELSIF
+X{{IF name=x}}X{{ELSIF name="var" value="testvalue"/}}X{{/IF}}X
+X{{IF name=x}}X{{ELSIF name="var" value='testvalue'/}}X{{/IF}}X
+X{{IF name=x}}X{{ELSIF name="var" value=testvalue/}}X{{/IF}}X
+X{{IF name=x}}X{{ELSIF name=var value=testvalue/}}X{{/IF}}X
+X{{IF name=x}}X{{ELSIF   name  =  "var"  value   =  "testvalue"  /}}X{{/IF}}X
+X{{IF name=x}}X{{ELSIF
 
   name
 
@@ -2029,9 +2005,33 @@ X<TMPL_IF name=x>X<!--
 
   "testvalue"
 
-  -->X</TMPL_IF>X
-X<TMPL_IF name=x>X<!--TmPl_ElSif NaMe = "var" vAluE="testvalue"-->X</TMPL_IF>X
-X<TMPL_IF name=x>X<!--TMPL_ELSIF value="testvalue" name="var"-->X</TMPL_IF>X
+  /}}X{{/IF}}X
+X{{IF name=x}}X{{eLSif NaMe = "var" vAluE="testvalue"/}}X{{/IF}}X
+X{{IF name=x}}X{{ELSIF value="testvalue" name="var"/}}X{{/IF}}X
+
+X{{IF name=x}}X{{!--ELSIF name="var" value="testvalue"--}}X{{/IF}}X
+X{{IF name=x}}X{{!--ELSIF name="var" value='testvalue'--}}X{{/IF}}X
+X{{IF name=x}}X{{!--ELSIF name="var" value=testvalue --}}X{{/IF}}X
+X{{IF name=x}}X{{!--ELSIF name=var value=testvalue --}}X{{/IF}}X
+X{{IF name=x}}X{{!--ELSIF   name  =  "var"  value   =  "testvalue"   --}}X{{/IF}}X
+X{{IF name=x}}X{{!--
+  ELSIF
+
+  name
+
+  =
+
+  "var"
+
+  value
+
+  =
+
+  "testvalue"
+
+  --}}X{{/IF}}X
+X{{IF name=x}}X{{!--ElSif NaMe = "var" vAluE="testvalue"--}}X{{/IF}}X
+X{{IF name=x}}X{{!--ELSIF value="testvalue" name="var"--}}X{{/IF}}X
 
 EOF
 
@@ -2093,35 +2093,35 @@ check
 
 TEST=19  ########################################
 
-# Testing accepted <TMPL_ELSE> tag syntax
+# Testing accepted {{ELSE}} tag syntax
 
 cat << "EOF" > tmplfile
 
-X<TMPL_IF name=x>X<TMPL_ELSE>X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSE >X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSE   >X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSE
+X{{IF name=x}}X{{ELSE}}X{{/IF}}X
+X{{IF name=x}}X{{ELSE }}X{{/IF}}X
+X{{IF name=x}}X{{ELSE   }}X{{/IF}}X
+X{{IF name=x}}X{{ELSE
 
->X</TMPL_IF>X
-X<TMPL_IF name=x>X<tMpL_eLSe>X</TMPL_IF>X
+}}X{{/IF}}X
+X{{IF name=x}}X{{eLSe}}X{{/IF}}X
 
-X<TMPL_IF name=x>X<TMPL_ELSE/>X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSE />X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSE   />X</TMPL_IF>X
-X<TMPL_IF name=x>X<TMPL_ELSE
+X{{IF name=x}}X{{ELSE/}}X{{/IF}}X
+X{{IF name=x}}X{{ELSE /}}X{{/IF}}X
+X{{IF name=x}}X{{ELSE   /}}X{{/IF}}X
+X{{IF name=x}}X{{ELSE
 
-/>X</TMPL_IF>X
-X<TMPL_IF name=x>X<tMpL_eLSe/>X</TMPL_IF>X
+/}}X{{/IF}}X
+X{{IF name=x}}X{{eLSe/}}X{{/IF}}X
 
-X<TMPL_IF name=x>X<!--TMPL_ELSE-->X</TMPL_IF>X
-X<TMPL_IF name=x>X<!-- TMPL_ELSE -->X</TMPL_IF>X
-X<TMPL_IF name=x>X<!--   TMPL_ELSE   -->X</TMPL_IF>X
-X<TMPL_IF name=x>X<!--
+X{{IF name=x}}X{{!--ELSE--}}X{{/IF}}X
+X{{IF name=x}}X{{!-- ELSE --}}X{{/IF}}X
+X{{IF name=x}}X{{!--   ELSE   --}}X{{/IF}}X
+X{{IF name=x}}X{{!--
 
-TMPL_ELSE
+ELSE
 
--->X</TMPL_IF>X
-X<TMPL_IF name=x>X<!--tMpL_ElSe-->X</TMPL_IF>X
+--}}X{{/IF}}X
+X{{IF name=x}}X{{!--ElSe--}}X{{/IF}}X
 
 EOF
 
@@ -2153,27 +2153,27 @@ check
 
 TEST=20  ########################################
 
-# Testing accepted </TMPL_IF> tag syntax
+# Testing accepted {{/IF}} tag syntax
 
 cat << "EOF" > tmplfile
 
-X<TMPL_IF name=var>X</TMPL_IF>X
-X<TMPL_IF name=var>X</TMPL_IF >X
-X<TMPL_IF name=var>X</TMPL_IF   >X
-X<TMPL_IF name=var>X</TMPL_IF
+X{{IF name=var}}X{{/IF}}X
+X{{IF name=var}}X{{/IF }}X
+X{{IF name=var}}X{{/IF   }}X
+X{{IF name=var}}X{{/IF
 
->X
-X<TMPL_IF name=var>X</tMpL_iF>X
+}}X
+X{{IF name=var}}X{{/iF}}X
 
-X<TMPL_IF name=var>X<!--/TMPL_IF-->X
-X<TMPL_IF name=var>X<!-- /TMPL_IF -->X
-X<TMPL_IF name=var>X<!--   /TMPL_IF   -->X
-X<TMPL_IF name=var>X<!--
+X{{IF name=var}}X{{!--/IF--}}X
+X{{IF name=var}}X{{!-- /IF --}}X
+X{{IF name=var}}X{{!--   /IF   --}}X
+X{{IF name=var}}X{{!--
 
-/TMPL_IF
+/IF
 
--->X
-X<TMPL_IF name=var>X<!--/tMpL_If-->X
+--}}X
+X{{IF name=var}}X{{!--/If--}}X
 
 EOF
 
@@ -2202,8 +2202,8 @@ TEST=21  ########################################
 # Testing setting variable multiple times
 
 cat << "EOF" > tmplfile
-var1 = <tmpl_var name = "var1">
-var2 = <tmpl_var name = "var2">
+var1 = {{var name = "var1"}}
+var2 = {{var name = "var2"}}
 EOF
 
 cat << "EOF" > expected
@@ -2221,27 +2221,27 @@ TEST=22  ########################################
 # Testing comments
 
 cat << "EOF" > tmplfile
-<*
+{{*
  * Let's start
  * off with a
  * comment
- *>Before comment<*
+ *}}Before comment{{*
   Inside comment
-  <TMPL_VAR name = "var">
-  </tmpl_if>
-  </tmpl_loop>
-*>After comment<*
-another comment *>
-Before comment<*
+  {{VAR name = "var"}}
+  {{/if}}
+  {{/loop}}
+*}}After comment{{*
+another comment *}}
+Before comment{{*
   testing three comments in a row
-*><*
+*}}{{*
   second comment
-  here *><* and a
+  here *}}{{* and a
   third comment
-  here*>After comment<*
+  here*}}After comment{{*
 
   And let's finish with a comment
-*>
+*}}
 EOF
 
 cat << "EOF" > expected
@@ -2259,14 +2259,14 @@ TEST=23  ########################################
 
 cat << "EOF" > tmplfile
 Before outer comment
-<*
+{{*
   Begin outer comment
-  <TMPL_VAR name = "var">
+  {{VAR name = "var"}}
   Before inner comment
-  <* Inside inner comment *>
+  {{* Inside inner comment *}}
   After inner comment
   End outer comment
-*>
+*}}
 After outer comment
 EOF
 
@@ -2275,7 +2275,7 @@ Before outer comment
 
   After inner comment
   End outer comment
-*>
+*}}
 After outer comment
 EOF
 
@@ -2289,23 +2289,23 @@ TEST=24  ########################################
 
 cat << "EOF" > inclfile1
 Begin include file 1
-<tmpl_var name = "var">
+{{var name = "var"}}
 End include file 1
 EOF
 
 cat << "EOF" > inclfile2
 Begin include file 2
 Including file 1 from file 2
-<tmpl_include name = "./inclfile1">
+{{include name = "./inclfile1"}}
 End include file 2
 EOF
 
 cat << "EOF" > tmplfile
 Begin template
 Including file 1
-<TMPL_INCLUDE name="inclfile1">
+{{INCLUDE name="inclfile1"}}
 Including file 2
-<TMPL_INCLUDE name = "./inclfile2">
+{{INCLUDE name = "./inclfile2"}}
 End template
 EOF
 
@@ -2338,23 +2338,23 @@ TEST=25  ########################################
 
 cat << "EOF" > inclfile1
 Begin include file 1
-<tmpl_var name = "var">
+{{var name = "var"}}
 End include file 1
 EOF
 
 cat << "EOF" > inclfile2
 Begin include file 2
 Including file 1 from file 2
-<tmpl_include name = ".../inclfile1">
+{{include name = ".../inclfile1"}}
 End include file 2
 EOF
 
 cat << "EOF" > tmplfile
 Begin template
 Including file 1
-<TMPL_INCLUDE name=".../inclfile1">
+{{INCLUDE name=".../inclfile1"}}
 Including file 2
-<TMPL_INCLUDE name = ".../inclfile2">
+{{INCLUDE name = ".../inclfile2"}}
 End template
 EOF
 
@@ -2405,19 +2405,19 @@ TEST=26  ########################################
 cat << "EOF" > tmplfile
 Begin template
 Including file 1
-<TMPL_include name = "inclfile1" >
+{{include name = "inclfile1" }}
 End template
 EOF
 
 cat << "EOF" > inclfile1
 Begin include file 1
 Including file 1 from file 1
-<TMPL_INCLUDE name="inclfile1">
+{{INCLUDE name="inclfile1"}}
 End include file 1
 EOF
 
 cat << "EOF" > expected
-Ignoring bad TMPL_INCLUDE tag (check for include cycle) in file "inclfile1" line 3
+Ignoring bad INCLUDE tag (check for include cycle) in file "inclfile1" line 3
 EOF
 
 template tmplfile var testvalue > /dev/null 2> result
@@ -2431,26 +2431,26 @@ TEST=27  ########################################
 cat << "EOF" > inclfile1
 Begin include file 1
 Including file 2 from file 1
-<tmpl_include name = "inclfile2">
+{{include name = "inclfile2"}}
 End include file 1
 EOF
 
 cat << "EOF" > inclfile2
 Begin include file 2
 Including file 1 from file 2
-<tmpl_include name = "./inclfile1">
+{{include name = "./inclfile1"}}
 End include file 2
 EOF
 
 cat << "EOF" > tmplfile
 Begin template
 Including file 1
-<TMPL_INCLUDE name="inclfile1">
+{{INCLUDE name="inclfile1"}}
 End template
 EOF
 
 cat << "EOF" > expected
-Ignoring bad TMPL_INCLUDE tag (check for include cycle) in file "inclfile2" line 3
+Ignoring bad INCLUDE tag (check for include cycle) in file "inclfile2" line 3
 EOF
 
 template tmplfile var testvalue > /dev/null 2> result
@@ -2464,7 +2464,7 @@ TEST=28  ########################################
 cat << "EOF" > tmplfile
 Begin template
 Including nonexistent file
-<tmpl_include name = "non existent file">
+{{include name = "non existent file"}}
 End template
 EOF
 
@@ -2482,10 +2482,10 @@ TEST=29  ########################################
 
 cat << "EOF" > tmplfile
 Begin template
-<tmpl_if name = "bogus">
+{{if name = "bogus"}}
   Including nonexistent file
-  <tmpl_include name = "non existent file">
-</tmpl_if>
+  {{include name = "non existent file"}}
+{{/if}}
 End template
 EOF
 
@@ -2514,12 +2514,12 @@ Here is a continued \
 line.
 At end of line we should have a single \\
 At end of line we should have a double \\\
-<tmpl_var name = "var">\
-<tmpl_var name = "var">\
+{{var name = "var"}}\
+{{var name = "var"}}\
 \
 \
 \
-<tmpl_var name = "var">\
+{{var name = "var"}}\
 End template
 \
 \
@@ -2549,11 +2549,11 @@ cat << "EOF" > tmplfile
 \
 \
 \
-<tmpl_var name = "bogus"><*
+{{var name = "bogus"}}{{*
 
 Inside the comment
 
-*>\
+*}}\
 \
 \
 EOF
@@ -2568,9 +2568,9 @@ TEST=32  ########################################
 
 # Testing input that results in no output
 
-printf '<*
+printf '{{*
   Inside the comment
-  *><tmpl_var name = "bogus">' > tmplfile
+  *}}{{var name = "bogus"}}' > tmplfile
 
 cp /dev/null expected
 
@@ -2586,129 +2586,129 @@ cat << "EOF" > tmplfile
 
 Testing simple if statement
 
-X<TMPL_IF name = "var">TRUE</TMPL_IF>X
-X<TMPL_IF name = "bogus">TRUE</TMPL_IF>X
-X<TMPL_IF name = "null">TRUE</TMPL_IF>X
-X<tmpl_if name = "var" value = "">TRUE</tmpl_if>X
-X<tmpl_if name = "var" value = "wrong">TRUE</tmpl_if>X
-X<tmpl_if name = "var" value = "testvalue">TRUE</tmpl_if>X
-X<tmpl_if value = "testvalue" name = "var">TRUE</tmpl_if>X
-X<tmpl_if name = "null" value = "">TRUE</tmpl_if>X
-X<tmpl_if name = "null" value = "wrong">TRUE</tmpl_if>X
-X<tmpl_if name = "bogus" value = "">TRUE</tmpl_if>X
-X<tmpl_if name = "bogus" value = "wrong">TRUE</tmpl_if>X
-X<tmpl_if name = "var"></tmpl_if>X
-X<tmpl_if name = "bogus"></tmpl_if>X
+X{{IF name = "var"}}TRUE{{/IF}}X
+X{{IF name = "bogus"}}TRUE{{/IF}}X
+X{{IF name = "null"}}TRUE{{/IF}}X
+X{{if name = "var" value = ""}}TRUE{{/if}}X
+X{{if name = "var" value = "wrong"}}TRUE{{/if}}X
+X{{if name = "var" value = "testvalue"}}TRUE{{/if}}X
+X{{if value = "testvalue" name = "var"}}TRUE{{/if}}X
+X{{if name = "null" value = ""}}TRUE{{/if}}X
+X{{if name = "null" value = "wrong"}}TRUE{{/if}}X
+X{{if name = "bogus" value = ""}}TRUE{{/if}}X
+X{{if name = "bogus" value = "wrong"}}TRUE{{/if}}X
+X{{if name = "var"}}{{/if}}X
+X{{if name = "bogus"}}{{/if}}X
 
 Testing if with else clause
 
-X<TMPL_IF name = "var">TRUE<tmpl_else>FALSE</tmpl_if>X
-X<TMPL_IF name = "bogus">TRUE<tmpl_else>FALSE</tmpl_if>X
-X<TMPL_IF name = "null">TRUE<tmpl_else>FALSE</tmpl_if>X
-X<tmpl_if name = "var" value = "">TRUE<tmpl_else>FALSE</tmpl_if>X
-X<tmpl_if name = "var" value = "wrong">TRUE<tmpl_else>FALSE</tmpl_if>X
-X<tmpl_if name = "var" value = "testvalue">TRUE<tmpl_else>FALSE</tmpl_if>X
-X<tmpl_if value = "testvalue" name = "var">TRUE<tmpl_else>FALSE</tmpl_if>X
-X<tmpl_if name = "null" value = "">TRUE<tmpl_else>FALSE</tmpl_if>X
-X<tmpl_if name = "null" value = "wrong">TRUE<tmpl_else>FALSE</tmpl_if>X
-X<tmpl_if name = "bogus" value = "">TRUE<tmpl_else>FALSE</tmpl_if>X
-X<tmpl_if name = "bogus" value = "wrong">TRUE<tmpl_else>FALSE</tmpl_if>X
-X<tmpl_if name = "var"><tmpl_else></tmpl_if>X
-X<tmpl_if name = "bogus"><tmpl_else></tmpl_if>X
+X{{IF name = "var"}}TRUE{{else}}FALSE{{/if}}X
+X{{IF name = "bogus"}}TRUE{{else}}FALSE{{/if}}X
+X{{IF name = "null"}}TRUE{{else}}FALSE{{/if}}X
+X{{if name = "var" value = ""}}TRUE{{else}}FALSE{{/if}}X
+X{{if name = "var" value = "wrong"}}TRUE{{else}}FALSE{{/if}}X
+X{{if name = "var" value = "testvalue"}}TRUE{{else}}FALSE{{/if}}X
+X{{if value = "testvalue" name = "var"}}TRUE{{else}}FALSE{{/if}}X
+X{{if name = "null" value = ""}}TRUE{{else}}FALSE{{/if}}X
+X{{if name = "null" value = "wrong"}}TRUE{{else}}FALSE{{/if}}X
+X{{if name = "bogus" value = ""}}TRUE{{else}}FALSE{{/if}}X
+X{{if name = "bogus" value = "wrong"}}TRUE{{else}}FALSE{{/if}}X
+X{{if name = "var"}}{{else}}{{/if}}X
+X{{if name = "bogus"}}{{else}}{{/if}}X
 
 Testing if with elseif clauses
 
-X<TMPL_IF name = "var">
+X{{IF name = "var"}}
   IF BRANCH
-<TMPL_ELSIF name = "var" >
+{{ELSIF name = "var" }}
   ELSIF BRANCH 1
-<TMPL_ELSIF name = "var" value = "testvalue">
+{{ELSIF name = "var" value = "testvalue"}}
   ELSIF BRANCH 2
-<TMPL_ELSE>
+{{ELSE}}
   ELSE BRANCH
-</TMPL_IF>X
+{{/IF}}X
 
-X<TMPL_IF name = "bogus">
+X{{IF name = "bogus"}}
   IF BRANCH
-<TMPL_ELSIF name = "var" >
+{{ELSIF name = "var" }}
   ELSIF BRANCH 1
-<TMPL_ELSIF name = "var" value = "testvalue">
+{{ELSIF name = "var" value = "testvalue"}}
   ELSIF BRANCH 2
-<TMPL_ELSE>
+{{ELSE}}
   ELSE BRANCH
-</TMPL_IF>X
+{{/IF}}X
 
-X<TMPL_IF name = "bogus">
+X{{IF name = "bogus"}}
   IF BRANCH
-<TMPL_ELSIF name = "var" value = "wrong">
+{{ELSIF name = "var" value = "wrong"}}
   ELSIF BRANCH 1
-<TMPL_ELSIF value = "testvalue2" name = "var2">
+{{ELSIF value = "testvalue2" name = "var2"}}
   ELSIF BRANCH 2
-<TMPL_ELSE>
+{{ELSE}}
   ELSE BRANCH
-</TMPL_IF>X
+{{/IF}}X
 
-X<TMPL_IF name = "bogus">
+X{{IF name = "bogus"}}
   IF BRANCH
-<TMPL_ELSIF name = "var" value = "wrong">
+{{ELSIF name = "var" value = "wrong"}}
   ELSIF BRANCH 1
-<TMPL_ELSIF name = "var2" value = "">
+{{ELSIF name = "var2" value = ""}}
   ELSIF BRANCH 2
-<TMPL_ELSE>
+{{ELSE}}
   ELSE BRANCH
-</TMPL_IF>X
+{{/IF}}X
 
-X<tmpl_if name = "var"><tmpl_elsif name = "var2"><tmpl_else></tmpl_if>X
+X{{if name = "var"}}{{elsif name = "var2"}}{{else}}{{/if}}X
 
 Testing nested simple if statements
 
-X<TMPL_IF name = "var">
+X{{IF name = "var"}}
   Inside IF 1
-  X<TMPL_IF name = "var2" value = "testvalue2">
+  X{{IF name = "var2" value = "testvalue2"}}
     Inside IF 2
-  </tmpl_if>X
-</tmpl_if>X
+  {{/if}}X
+{{/if}}X
 
-X<TMPL_IF name = "bogus">
+X{{IF name = "bogus"}}
   Inside IF 1
-  X<TMPL_IF name = "var2" value = "testvalue2">
+  X{{IF name = "var2" value = "testvalue2"}}
     Inside IF 2
-  </tmpl_if>X
-</tmpl_if>X
+  {{/if}}X
+{{/if}}X
 
 Testing nested if with else clauses
 
-X<TMPL_IF name = "bogus">
+X{{IF name = "bogus"}}
   Inside IF BRANCH 1
-  X<TMPL_IF name = "var" value = "testvalue">
+  X{{IF name = "var" value = "testvalue"}}
     Inside IF BRANCH 2
-  </tmpl_else>
+  {{/else}}
     Inside ELSE BRANCH 2
-  </tmpl_if>X
-<tmpl_else>
+  {{/if}}X
+{{else}}
   Inside ELSE BRANCH 1
-  X<tmpl_if name = "bogus">
+  X{{if name = "bogus"}}
     Inside IF BRANCH 3
-  <tmpl_else>
+  {{else}}
     Inside ELSE BRANCH 3
-  </tmpl_if>X
-</tmpl_if>X
+  {{/if}}X
+{{/if}}X
 
-X<TMPL_IF name = "var">
+X{{IF name = "var"}}
   Inside IF BRANCH 1
-  X<TMPL_IF name = "var" value = "wrong">
+  X{{IF name = "var" value = "wrong"}}
     Inside IF BRANCH 2
-  <tmpl_else>
+  {{else}}
     Inside ELSE BRANCH 2
-  </tmpl_if>X
-<tmpl_else>
+  {{/if}}X
+{{else}}
   Inside ELSE BRANCH 1
-  X<tmpl_if name = "bogus">
+  X{{if name = "bogus"}}
     Inside IF BRANCH 3
-  <tmpl_else>
+  {{else}}
     Inside ELSE BRANCH 3
-  </tmpl_if>X
-</tmpl_if>X
+  {{/if}}X
+{{/if}}X
 EOF
 
 cat << "EOF" > expected
@@ -2803,38 +2803,38 @@ TEST=34  ########################################
 
 cat << "EOF" > tmplfile
 Begin template
-var1 = <tmpl_var name = "var1">
+var1 = {{var name = "var1"}}
 
-X<tmpl_loop name = "loop1"></tmpl_loop>X
-X<tmpl_loop name = "bogus"></tmpl_loop>X
+X{{loop name = "loop1"}}{{/loop}}X
+X{{loop name = "bogus"}}{{/loop}}X
 
-X<tmpl_loop name = "loop1">
-  var1 = <tmpl_var name = "var1">
-  var2 = <tmpl_var name = "var2">
-</tmpl_loop>X
+X{{loop name = "loop1"}}
+  var1 = {{var name = "var1"}}
+  var2 = {{var name = "var2"}}
+{{/loop}}X
 
-X<tmpl_loop name = "bogus">
-  var1 = <tmpl_var name = "var1">
-  var2 = <tmpl_var name = "var2">
-</tmpl_loop>X
+X{{loop name = "bogus"}}
+  var1 = {{var name = "var1"}}
+  var2 = {{var name = "var2"}}
+{{/loop}}X
 
-X<tmpl_loop name = "var1">
-  var1 = <tmpl_var name = "var1">
-  var2 = <tmpl_var name = "var2">
-</tmpl_loop>X
+X{{loop name = "var1"}}
+  var1 = {{var name = "var1"}}
+  var2 = {{var name = "var2"}}
+{{/loop}}X
 
-X<tmpl_loop name = "loop1">
+X{{loop name = "loop1"}}
   Begin outer loop
-  var1 = <tmpl_var name = "var1">
-  var2 = <tmpl_var name = "var2">
-  X<tmpl_loop name = "loop1">
+  var1 = {{var name = "var1"}}
+  var2 = {{var name = "var2"}}
+  X{{loop name = "loop1"}}
     Begin inner loop
-    var1 = <tmpl_var name = "var1">
-    var2 = <tmpl_var name = "var2">
+    var1 = {{var name = "var1"}}
+    var2 = {{var name = "var2"}}
     End inner loop
-  </tmpl_loop>X
+  {{/loop}}X
   End outer loop
-</tmpl_loop>X
+{{/loop}}X
 End template
 EOF
 
@@ -2983,21 +2983,21 @@ TEST=35  ########################################
 
 cat << "EOF" > tmplfile
 Begin template
-var1 = <tmpl_var name = "var1">
+var1 = {{var name = "var1"}}
 
-X<tmpl_loop name = "outer">
+X{{loop name = "outer"}}
   Begin outer loop
-  var1 = <tmpl_var name = "var1">
-  var2 = <tmpl_var name = "var2">
-  X<tmpl_loop name = "inner">
+  var1 = {{var name = "var1"}}
+  var2 = {{var name = "var2"}}
+  X{{loop name = "inner"}}
     Begin inner loop
-    var1 = <tmpl_var name = "var1">
-    var2 = <tmpl_var name = "var2">
-    var3 = <tmpl_var name = "var3">
+    var1 = {{var name = "var1"}}
+    var2 = {{var name = "var2"}}
+    var3 = {{var name = "var3"}}
     End inner loop
-  </tmpl_loop>X
+  {{/loop}}X
   End outer loop
-</tmpl_loop>X
+{{/loop}}X
 End template
 EOF
 
@@ -3101,19 +3101,19 @@ TEST=36  ########################################
 
 cat << "EOF" > inclfile1
 Begin include file
-var1 = <tmpl_var name = "var1">
-var2 = <tmpl_var name = "var2">
+var1 = {{var name = "var1"}}
+var2 = {{var name = "var2"}}
 End include file
 EOF
 
 cat << "EOF" > tmplfile
 Begin template
-<tmpl_loop name = "loop">
+{{loop name = "loop"}}
   Begin loop
   Including file 1
-  <tmpl_include name = "inclfile1">
+  {{include name = "inclfile1"}}
   End loop
-</tmpl_loop>
+{{/loop}}
 End template
 EOF
 
@@ -3162,35 +3162,35 @@ TEST=37  ########################################
 
 cat << "EOF" > tmplfile
 
-X<tmpl_if name = "var"><tmpl_loop name = "loop"></tmpl_loop></tmpl_if>X
-X<tmpl_if name = "bogus"><tmpl_loop name = "loop"></tmpl_loop></tmpl_if>X
-X<tmpl_loop name = "loop"><tmpl_if name = "var"></tmpl_if></tmpl_loop>X
-X<tmpl_loop name = "bogus"><tmpl_if name = "var"></tmpl_if></tmpl_loop>X
+X{{if name = "var"}}{{loop name = "loop"}}{{/loop}}{{/if}}X
+X{{if name = "bogus"}}{{loop name = "loop"}}{{/loop}}{{/if}}X
+X{{loop name = "loop"}}{{if name = "var"}}{{/if}}{{/loop}}X
+X{{loop name = "bogus"}}{{if name = "var"}}{{/if}}{{/loop}}X
 
-X<tmpl_if name = "loop">
+X{{if name = "loop"}}
   Inside if 1
-  <tmpl_loop name = "loop">
+  {{loop name = "loop"}}
     Inside loop 1
-    <tmpl_if name = "bogus">
-      Inside if 2: bogus = <tmpl_var name = "bogus">
-    </tmpl_if>
-    <tmpl_if name = "var2">
-      Inside if 3: var2 = <tmpl_var name = "var2">
-    </tmpl_if>
-  </tmpl_loop>
-</tmpl_if>X
-X<tmpl_if name = "bogus">
+    {{if name = "bogus"}}
+      Inside if 2: bogus = {{var name = "bogus"}}
+    {{/if}}
+    {{if name = "var2"}}
+      Inside if 3: var2 = {{var name = "var2"}}
+    {{/if}}
+  {{/loop}}
+{{/if}}X
+X{{if name = "bogus"}}
   Inside if 4
-  <tmpl_loop name = "loop">
+  {{loop name = "loop"}}
     Inside loop 2
-    <tmpl_if name = "bogus">
-      Inside if 5: bogus = <tmpl_var name = "bogus">
-    </tmpl_if>
-    <tmpl_if name = "var2">
-      Inside if 6: var2 = <tmpl_var name = "var2">
-    </tmpl_if>
-  </tmpl_loop>
-</tmpl_if>X
+    {{if name = "bogus"}}
+      Inside if 5: bogus = {{var name = "bogus"}}
+    {{/if}}
+    {{if name = "var2"}}
+      Inside if 6: var2 = {{var name = "var2"}}
+    {{/if}}
+  {{/loop}}
+{{/if}}X
 EOF
 
 cat << "EOF" > expected
@@ -3230,39 +3230,39 @@ TEST=38  ########################################
 
 cat << "EOF" > tmplfile
 BEGIN
-<tmpl_loop name=outer>\
+{{loop name=outer}}\
   BEGIN outer        (CONTINUE 3 comes here)
-  o = <tmpl_var name=o>
-<tmpl_loop name=middle>\
+  o = {{var name=o}}
+{{loop name=middle}}\
     BEGIN middle     (CONTINUE 2 comes here)
-    m = <tmpl_var name=m>
-<tmpl_loop name=inner>\
+    m = {{var name=m}}
+{{loop name=inner}}\
       BEGIN inner    (CONTINUE 1 comes here)
-      i = <tmpl_var name=i>
-<tmpl_if name=i value=b1>\
+      i = {{var name=i}}
+{{if name=i value=b1}}\
       BREAK 1
-<tmpl_break></tmpl_if>\
-<tmpl_if name=i value=b2>\
+{{break}}{{/if}}\
+{{if name=i value=b2}}\
       BREAK 2
-<tmpl_break level=2></tmpl_if>\
-<tmpl_if name=i value=b3>\
+{{break level=2}}{{/if}}\
+{{if name=i value=b3}}\
       BREAK 3
-<tmpl_break level=3></tmpl_if>\
-<tmpl_if name=i value=c1>\
+{{break level=3}}{{/if}}\
+{{if name=i value=c1}}\
       CONTINUE 1
-<tmpl_continue></tmpl_if>\
-<tmpl_if name=i value=c2>\
+{{continue}}{{/if}}\
+{{if name=i value=c2}}\
       CONTINUE 2
-<tmpl_continue level=2></tmpl_if>\
-<tmpl_if name=i value=c3>\
+{{continue level=2}}{{/if}}\
+{{if name=i value=c3}}\
       CONTINUE 3
-<tmpl_continue level=3></tmpl_if>\
+{{continue level=3}}{{/if}}\
       END inner
-</tmpl_loop>\
+{{/loop}}\
     END middle       (BREAK 1 comes here)
-</tmpl_loop>\
+{{/loop}}\
   END outer          (BREAK 2 comes here)
-</tmpl_loop>\
+{{/loop}}\
 END                  (BREAK 3 comes here)
 EOF
 
@@ -3368,23 +3368,23 @@ TEST=39  ########################################
 # Testing missing statement terminators
 
 cat << "EOF" > tmplfile
-<tmpl_if name = "var">
+{{if name = "var"}}
   Inside if 1
-<tmpl_elsif name = "var">
+{{elsif name = "var"}}
   Inside elsif 1
-<tmpl_else>
+{{else}}
   Inside else 1
-<tmpl_loop name = "loop">
+{{loop name = "loop"}}
   Inside the loop statement
-  <*
-</tmpl_loop> *><* this
+  {{*
+{{/loop}} *}}{{* this
 comment is not terminated
 EOF
 
 cat << "EOF" > expected
-"<*" in file "tmplfile" line 10 has no "*>"
-TMPL_LOOP tag in file "tmplfile" line 7 has no /TMPL_LOOP tag
-TMPL_IF tag in file "tmplfile" line 1 has no /TMPL_IF tag
+"{{*" in file "tmplfile" line 10 has no "*}}"
+LOOP tag in file "tmplfile" line 7 has no /LOOP tag
+IF tag in file "tmplfile" line 1 has no /IF tag
 EOF
 
 template tmplfile var testvalue > /dev/null 2> result
@@ -3396,21 +3396,21 @@ TEST=40  ########################################
 # Testing missing statement terminators
 
 cat << "EOF" > tmplfile
-<tmpl_if name = "var">
+{{if name = "var"}}
   Inside if 1
-  <tmpl_loop name = "loop">
+  {{loop name = "loop"}}
     Inside loop 1
-</tmpl_if>
-<tmpl_loop name = "loop">
+{{/if}}
+{{loop name = "loop"}}
   Inside loop 2
-  <tmpl_if name = "var">
+  {{if name = "var"}}
     Inside if 2
-</tmpl_loop>
+{{/loop}}
 EOF
 
 cat << "EOF" > expected
-TMPL_LOOP tag in file "tmplfile" line 3 has no /TMPL_LOOP tag
-TMPL_IF tag in file "tmplfile" line 8 has no /TMPL_IF tag
+LOOP tag in file "tmplfile" line 3 has no /LOOP tag
+IF tag in file "tmplfile" line 8 has no /IF tag
 EOF
 
 template tmplfile var testvalue > /dev/null 2> result
@@ -3422,76 +3422,76 @@ TEST=41  ########################################
 # Testing extraneous and misplaced tags
 
 cat << "EOF" > tmplfile
-<tmpl_if name = "var">
+{{if name = "var"}}
   Inside if 1
-<tmpl_else>
+{{else}}
   Inside else 1
-<tmpl_elsif name = "var">
-  Inside misplaced tmpl_elsif
-</tmpl_if>
+{{elsif name = "var"}}
+  Inside misplaced elsif
+{{/if}}
 
-<tmpl_if name = "var">
+{{if name = "var"}}
   Inside if 2
-<tmpl_elsif name = "var">
+{{elsif name = "var"}}
   Inside elsif 2
-<tmpl_else>
+{{else}}
   Inside else 2
-<tmpl_else>
+{{else}}
   Inside misplaced else
-</tmpl_if>
+{{/if}}
 
-<tmpl_elsif name = "var">
+{{elsif name = "var"}}
   Inside elsif 3
-<tmpl_else>
+{{else}}
   Inside else 3
-</tmpl_if>
+{{/if}}
 
-</tmpl_loop>
+{{/loop}}
 
-<tmpl_break>
-<tmpl_break level=2 />
-<tmpl_continue>
-<tmpl_continue level=2/>
+{{break}}
+{{break level=2 /}}
+{{continue}}
+{{continue level=2/}}
 
-<tmpl_loop name="outer">
-  <tmpl_break level = 0>
-  <tmpl_break level = 2>
-  <tmpl_break level = "non-numeric">
-  <tmpl_continue level = 0>
-  <tmpl_continue level = 2>
-  <tmpl_continue level = "non-numeric">
-  <tmpl_loop name="inner">
-    <tmpl_break level = 3>
-    <tmpl_continue level = 3>
-  </tmpl_loop>
-</tmpl_loop>
+{{loop name="outer"}}
+  {{break level = 0}}
+  {{break level = 2}}
+  {{break level = "non-numeric"}}
+  {{continue level = 0}}
+  {{continue level = 2}}
+  {{continue level = "non-numeric"}}
+  {{loop name="inner"}}
+    {{break level = 3}}
+    {{continue level = 3}}
+  {{/loop}}
+{{/loop}}
 
-<*
+{{*
   Inside comment
-*>
+*}}
 more stuff
-*>
+*}}
 EOF
 
 cat << "EOF" > expected
-Unexpected TMPL_ELSIF tag in file "tmplfile" line 5
-Unexpected TMPL_ELSE tag in file "tmplfile" line 15
-Unexpected TMPL_ELSIF tag in file "tmplfile" line 19
-Unexpected TMPL_ELSE tag in file "tmplfile" line 21
-Unexpected /TMPL_IF tag in file "tmplfile" line 23
-Unexpected /TMPL_LOOP tag in file "tmplfile" line 25
-Ignoring bad TMPL_BREAK tag (not inside a loop) in file "tmplfile" line 27
-Ignoring bad TMPL_BREAK tag (not inside a loop) in file "tmplfile" line 28
-Ignoring bad TMPL_CONTINUE tag (not inside a loop) in file "tmplfile" line 29
-Ignoring bad TMPL_CONTINUE tag (not inside a loop) in file "tmplfile" line 30
-Ignoring bad TMPL_BREAK tag (bad "level=" attribute) in file "tmplfile" line 33
-Ignoring bad TMPL_BREAK tag (bad "level=" attribute) in file "tmplfile" line 34
-Ignoring bad TMPL_BREAK tag (bad "level=" attribute) in file "tmplfile" line 35
-Ignoring bad TMPL_CONTINUE tag (bad "level=" attribute) in file "tmplfile" line 36
-Ignoring bad TMPL_CONTINUE tag (bad "level=" attribute) in file "tmplfile" line 37
-Ignoring bad TMPL_CONTINUE tag (bad "level=" attribute) in file "tmplfile" line 38
-Ignoring bad TMPL_BREAK tag (bad "level=" attribute) in file "tmplfile" line 40
-Ignoring bad TMPL_CONTINUE tag (bad "level=" attribute) in file "tmplfile" line 41
+Unexpected ELSIF tag in file "tmplfile" line 5
+Unexpected ELSE tag in file "tmplfile" line 15
+Unexpected ELSIF tag in file "tmplfile" line 19
+Unexpected ELSE tag in file "tmplfile" line 21
+Unexpected /IF tag in file "tmplfile" line 23
+Unexpected /LOOP tag in file "tmplfile" line 25
+Ignoring bad BREAK tag (not inside a loop) in file "tmplfile" line 27
+Ignoring bad BREAK tag (not inside a loop) in file "tmplfile" line 28
+Ignoring bad CONTINUE tag (not inside a loop) in file "tmplfile" line 29
+Ignoring bad CONTINUE tag (not inside a loop) in file "tmplfile" line 30
+Ignoring bad BREAK tag (bad "level=" attribute) in file "tmplfile" line 33
+Ignoring bad BREAK tag (bad "level=" attribute) in file "tmplfile" line 34
+Ignoring bad BREAK tag (bad "level=" attribute) in file "tmplfile" line 35
+Ignoring bad CONTINUE tag (bad "level=" attribute) in file "tmplfile" line 36
+Ignoring bad CONTINUE tag (bad "level=" attribute) in file "tmplfile" line 37
+Ignoring bad CONTINUE tag (bad "level=" attribute) in file "tmplfile" line 38
+Ignoring bad BREAK tag (bad "level=" attribute) in file "tmplfile" line 40
+Ignoring bad CONTINUE tag (bad "level=" attribute) in file "tmplfile" line 41
 EOF
 
 template tmplfile var testvalue > /dev/null 2> result
@@ -3503,44 +3503,71 @@ TEST=42  ########################################
 # Testing incorrect statement nesting
 
 cat << "EOF" > tmplfile
-<tmpl_if name = "var">
+{{if name = "var"}}
   Inside  if 1
-  <tmpl_loop name = "loop">
+  {{loop name = "loop"}}
     Inside loop 1
-  </tmpl_if>
-</tmpl_loop>
+  {{/if}}
+{{/loop}}
 
-<tmpl_loop name = "loop">
+{{loop name = "loop"}}
   Inside loop 2
-  <tmpl_if name = "var">
+  {{if name = "var"}}
     Inside if 2
-  </tmpl_loop>
-</tmpl_if>
+  {{/loop}}
+{{/if}}
 
-<tmpl_if name = "var">
+{{if name = "var"}}
   Inside if 3
-<tmpl_elsif name = "bogus">
+{{elsif name = "bogus"}}
   Inside elsif 1
-  <tmpl_if name = "var">
+  {{if name = "var"}}
     Inside if 4
-  <tmpl_else>
+  {{else}}
     Inside else 1
-  <tmpl_elsif name = "var">
+  {{elsif name = "var"}}
     Inside elsif 2
-  </tmpl_if>
-</tmpl_if>
+  {{/if}}
+{{/if}}
 EOF
 
 cat << "EOF" > expected
-TMPL_LOOP tag in file "tmplfile" line 3 has no /TMPL_LOOP tag
-Unexpected /TMPL_LOOP tag in file "tmplfile" line 6
-TMPL_IF tag in file "tmplfile" line 10 has no /TMPL_IF tag
-Unexpected /TMPL_IF tag in file "tmplfile" line 13
-TMPL_IF tag in file "tmplfile" line 19 has no /TMPL_IF tag
-Unexpected /TMPL_IF tag in file "tmplfile" line 26
+LOOP tag in file "tmplfile" line 3 has no /LOOP tag
+Unexpected /LOOP tag in file "tmplfile" line 6
+IF tag in file "tmplfile" line 10 has no /IF tag
+Unexpected /IF tag in file "tmplfile" line 13
+IF tag in file "tmplfile" line 19 has no /IF tag
+Unexpected /IF tag in file "tmplfile" line 26
 EOF
 
 template tmplfile var testvalue > /dev/null 2> result
+
+check
+
+
+
+TEST=43  ########################################
+
+# Testing incorrect statement nesting
+
+cat << "EOF" > tmplfile
+:{{=var1}}:
+:{{= var1}}:
+:{{= var1 }}:
+:{{= var1
+}}:
+:{{= var2 default="test"}}:
+EOF
+
+cat << "EOF" > expected
+:hello:
+:hello:
+:hello:
+:hello:
+:test:
+EOF
+
+template tmplfile var1 'hello' > result 2>&1
 
 check
 

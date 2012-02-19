@@ -8,6 +8,51 @@
 #ifndef _CTEMPLATE_H
 #define _CTEMPLATE_H
 
+typedef enum {
+    tag_text    = 0x001,   /* text sequence */
+    tag_var     = 0x002,   /* TMPL_VAR      */
+    tag_if      = 0x004,   /* TMPL_IF       */
+    tag_elsif   = 0x008,   /* TMPL_ELSIF    */
+    tag_else    = 0x010,   /* <TMPL_ELSE>   */
+    tag_endif   = 0x020,   /* </TMPL_IF>    */
+    tag_include = 0x040,   /* TMPL_INCLUDE  */
+    tag_loop    = 0x080,   /* TMPL_LOOP     */
+    tag_break   = 0x100,   /* TMPL_BREAK    */
+    tag_cont    = 0x200,   /* TMPL_CONTINUE */
+    tag_endloop = 0x400    /* </TMPL_LOOP>  */
+} tag_kind;
+
+
+typedef enum {
+	/*
+	 * The following numbers must be representable in binary
+	 * by a single one
+	 */
+	TMPL_Tag_ElseIf			= 0x01,
+	TMPL_Tag_Else			= 0x02,
+	TMPL_Tag_EndIf			= 0x04,
+	TMPL_Tag_EndLoop		= 0x08,
+
+	/*
+	 * One bit only not needed for these
+	 */
+	TMPL_Tag_Unknown		= 0x00,
+	TMPL_Tag_Loop			= 0x03,
+	TMPL_Tag_If				= 0x05,
+	TMPL_Tag_Text			= 0x06,
+	TMPL_Tag_Var			= 0x07,
+	TMPL_Tag_Include		= 0x09,
+	TMPL_Tag_Break			= 0x0a,
+	TMPL_Tag_Continue		= 0x0b,
+	TMPL_Tag_DelimStart		= 0x0c,
+	TMPL_Tag_DelimEnd		= 0x0d,
+	TMPL_Tag_CommentStart	= 0x0e,
+	TMPL_Tag_CommentEnd		= 0x0f,
+	TMPL_Tag_Comment2Start	= 0x10,
+	TMPL_Tag_Comment2End	= 0x11
+} TMPL_Tags;
+
+
 typedef struct TMPL_varlist TMPL_varlist;
 typedef struct TMPL_loop  TMPL_loop;
 typedef struct TMPL_fmtlist TMPL_fmtlist;
@@ -40,5 +85,9 @@ int TMPL_write(const char *filename, const char *tmplstr,
 void TMPL_encode_entity(const char *value, FILE *out);
 
 void TMPL_encode_url   (const char *value, FILE *out);
+
+void TMPL_tagname_set( TMPL_Tags tag, const char* label );
+
+const char* TMPL_tagname_get( TMPL_Tags tag );
 
 #endif

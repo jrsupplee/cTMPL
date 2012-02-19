@@ -13,16 +13,16 @@
  * Anything that is not a tag and not a comment is considered text.
  * The tags include:
  *
- * <TMPL_VAR name = "varname" default = "value" fmt = "fmtname">
- * <TMPL_INCLUDE name = "filename">
- * <TMPL_LOOP name = "loopname">
- * <TMPL_BREAK level = N>
- * <TMPL_CONTINUE level = N>
- * </TMPL_LOOP>
- * <TMPL_IF name = "varname" value = "testvalue">
- * <TMPL_ELSIF name = "varname" value = "testvalue">
- * <TMPL_ELSE>
- * </TMPL_IF>
+ * <TMPL_Tag_Var name = "varname" default = "value" fmt = "fmtname">
+ * <TMPL_Tag_Include name = "filename">
+ * <TMPL_Tag_Loop name = "loopname">
+ * <TMPL_Tag_Break level = N>
+ * <TMPL_Tag_Continue level = N>
+ * </TMPL_Tag_Loop>
+ * <TMPL_Tag_If name = "varname" value = "testvalue">
+ * <TMPL_Tag_ElseIf name = "varname" value = "testvalue">
+ * <TMPL_Tag_Else>
+ * </TMPL_Tag_If>
  *
  * The "name =" attribute is required, and the "value =", "fmt =",
  * "default =", and "level ="  attributes are optional.
@@ -49,25 +49,33 @@
 #include <stdarg.h>
 #include <ctemplate.h>
 
-/* To prevent infinite TMPL_INCLUDE cycles, we limit the depth */
+/* To prevent infinite TMPL_Tag_Include cycles, we limit the depth */
 
 #define MAX_INCLUDE_DEPTH 30
 
+
 /* template tag kinds (used in bitmaps) */
 
-typedef enum {
-    tag_text    = 0x001,   /* text sequence */
-    tag_var     = 0x002,   /* TMPL_VAR      */
-    tag_if      = 0x004,   /* TMPL_IF       */
-    tag_elsif   = 0x008,   /* TMPL_ELSIF    */
-    tag_else    = 0x010,   /* <TMPL_ELSE>   */
-    tag_endif   = 0x020,   /* </TMPL_IF>    */
-    tag_include = 0x040,   /* TMPL_INCLUDE  */
-    tag_loop    = 0x080,   /* TMPL_LOOP     */
-    tag_break   = 0x100,   /* TMPL_BREAK    */
-    tag_cont    = 0x200,   /* TMPL_CONTINUE */
-    tag_endloop = 0x400    /* </TMPL_LOOP>  */
-} tag_kind;
+static char* TMPL_Tag_Names[] = {
+	[TMPL_Tag_DelimStart] = "{{",
+	[TMPL_Tag_DelimEnd] = "}}",
+	[TMPL_Tag_CommentStart] = "{{!--",
+	[TMPL_Tag_CommentEnd] = "--}}",
+	[TMPL_Tag_Comment2Start] = "{{*",
+	[TMPL_Tag_Comment2End] = "*}}",
+	[TMPL_Tag_Var] = "VAR",
+	[TMPL_Tag_Include] = "INCLUDE",
+	[TMPL_Tag_If] = "IF",
+	[TMPL_Tag_ElseIf] = "ELSIF",
+	[TMPL_Tag_Else] = "ELSE",
+	[TMPL_Tag_EndIf] = "/IF",
+	[TMPL_Tag_Loop] = "LOOP",
+	[TMPL_Tag_EndLoop] = "/LOOP",
+	[TMPL_Tag_Break] = "BREAK",
+	[TMPL_Tag_Continue] = "CONTINUE",
+	[TMPL_Tag_Text] = "TEXT",
+	[TMPL_Tag_Unknown] = "unknown"
+};
 
 typedef struct tagnode tagnode;
 typedef struct template template;
@@ -75,7 +83,7 @@ typedef struct template template;
 /* The parse tree consists of tagnodes */
 
 struct tagnode {
-    tag_kind kind;
+    TMPL_Tags kind;
     tagnode *next;
     union {
 
@@ -87,7 +95,7 @@ struct tagnode {
         }
         text;
 
-        /* TMPL_VAR tag */
+        /* TMPL_Tag_Var tag */
 
         struct {
             const char *varname, *dfltval;
@@ -95,7 +103,7 @@ struct tagnode {
         }
         var;
 
-        /* TMPL_IF tag or TMPL_ELSIF tag */
+        /* TMPL_Tag_If tag or TMPL_Tag_ElseIf tag */
 
         struct {
             const char *varname, *testval;
@@ -103,7 +111,7 @@ struct tagnode {
         }
         ifelse;
 
-        /* TMPL_LOOP tag */
+        /* TMPL_Tag_Loop tag */
 
         struct {
             const char *loopname;
@@ -111,14 +119,14 @@ struct tagnode {
         }
         loop;
 
-        /* TMPL_BREAK tag or TMPL_CONTINUE tag */
+        /* TMPL_Tag_Break tag or TMPL_Tag_Continue tag */
 
         struct {
             int level;
         }
         breakcont;
 
-        /* TMPL_INCLUDE tag */
+        /* TMPL_Tag_Include tag */
 
         struct {
             const char *filename;
@@ -148,16 +156,16 @@ struct template {
     int linenum;          /* current template line number */
     int tagline;          /* line number of current tag's name */
     int error;            /* error indicator */
-    int include_depth;    /* avoids TMPL_INCLUDE cycles */
+    int include_depth;    /* avoids TMPL_Tag_Include cycles */
     int loop_depth;       /* current loop nesting depth */
-    int break_level;      /* for processing a TMPL_BREAK tag */
-    int cont_level;       /* for processing a TMPL_CONTINUE tag */
+    int break_level;      /* for processing a TMPL_Tag_Break tag */
+    int cont_level;       /* for processing a TMPL_Tag_Continue tag */
     tagnode reusable;     /* reusable storage for simple tags */
 };
 
 /*
  * TMPL_fmtlist is a list of format functions, which are passed to
- * a template.  A TMPL_VAR tag can specify a format function for
+ * a template.  A TMPL_Tag_Var tag can specify a format function for
  * outputting the variable with the fmt="fmtname" attribute.
  */
 
@@ -215,6 +223,19 @@ mymalloc(size_t size) {
     }
     return ret;
 }
+
+
+void TMPL_tagname_set( TMPL_Tags tag, const char* label ) {
+	// this code creates a memory leak.
+	TMPL_Tag_Names[tag] = mymalloc( strlen(label+1) );
+	strcpy(TMPL_Tag_Names[tag], label);
+}
+
+
+const char* TMPL_tagname_get( TMPL_Tags tag ) {
+	return TMPL_Tag_Names[tag];
+}
+
 
 /*
  * newtemplate() creates a new template struct and reads the template
@@ -281,7 +302,7 @@ newtemplate(const char *filename, const char *tmplstr,
 /* newtag() allocates a new tagnode */
 
 static tagnode *
-newtag(template *t, tag_kind kind) {
+newtag(template *t, TMPL_Tags kind) {
     tagnode *ret;
 
     switch(kind) {
@@ -291,9 +312,9 @@ newtag(template *t, tag_kind kind) {
      * never linked into the parse tree so they share storage.
      */
 
-    case tag_else:
-    case tag_endif:
-    case tag_endloop:
+    case TMPL_Tag_Else:
+    case TMPL_Tag_EndIf:
+    case TMPL_Tag_EndLoop:
         ret = &t->reusable;
         break;
 
@@ -308,7 +329,7 @@ newtag(template *t, tag_kind kind) {
 
 /*
  * freetag() recursively frees parse tree tagnodes.  We do not free
- * the text in a tag_text tagnode because it points to memory where
+ * the text in a TMPL_Tag_Text tagnode because it points to memory where
  * the input template is stored, which we free elsewhere.
  */
 
@@ -321,15 +342,15 @@ freetag(tagnode *tag) {
     }
     switch(tag->kind) {
 
-    case tag_var:
+    case TMPL_Tag_Var:
         free((void *) tag->tag.var.varname);
         if (tag->tag.var.dfltval != 0) {
             free((void *) tag->tag.var.dfltval);
         }
         break;
 
-    case tag_if:
-    case tag_elsif:
+    case TMPL_Tag_If:
+    case TMPL_Tag_ElseIf:
         free((void *) tag->tag.ifelse.varname);
         if (tag->tag.ifelse.testval != 0) {
             free((void *) tag->tag.ifelse.testval);
@@ -338,12 +359,12 @@ freetag(tagnode *tag) {
         freetag(tag->tag.ifelse.fbranch);
         break;
 
-    case tag_loop:
+    case TMPL_Tag_Loop:
         free((void *) tag->tag.loop.loopname);
         freetag(tag->tag.loop.body);
         break;
 
-    case tag_include:
+    case TMPL_Tag_Include:
         free((void *) tag->tag.include.filename);
         if ((t = tag->tag.include.tmpl) != 0) {
             free((void *) t->filename);
@@ -357,34 +378,13 @@ freetag(tagnode *tag) {
     free(tag);
 }
 
-/* map tag_kind to a human readable string */
+/* map TMPL_Tags to a human readable string */
 
 static const char *
-tagname(tag_kind kind) {
-    switch(kind) {
-    case tag_var:
-        return "TMPL_VAR";
-    case tag_if:
-        return "TMPL_IF";
-    case tag_elsif:
-        return "TMPL_ELSIF";
-    case tag_else:
-        return "TMPL_ELSE";
-    case tag_endif:
-        return "/TMPL_IF";
-    case tag_include:
-        return "TMPL_INCLUDE";
-    case tag_loop:
-        return "TMPL_LOOP";
-    case tag_break:
-        return "TMPL_BREAK";
-    case tag_cont:
-        return "TMPL_CONTINUE";
-    case tag_endloop:
-        return "/TMPL_LOOP";
-    }
-    return "unknown";
+tagname(TMPL_Tags kind) {
+	return TMPL_Tag_Names[kind];
 }
+
 
 /*
  * SCANNER FUNCTIONS
@@ -392,15 +392,42 @@ tagname(tag_kind kind) {
  * scanspaces() scans white space
  */
 
+
+int is_name_char( const char ch ) {
+	return (isalnum(ch) || (ch == '_'));
+}
+
+
+int tag_length( TMPL_Tags tag ) {
+	return strlen(tagname(tag));
+}
+
+
+int is_tag( TMPL_Tags tag, const char *p ) {
+	return (strncasecmp(p, tagname(tag), tag_length(tag)) == 0);
+}
+
+
+int is_delim_start( const char *p ) {
+	return is_tag( TMPL_Tag_DelimStart, p );
+}
+
+
+int is_delim_end( const char *p ) {
+	return is_tag( TMPL_Tag_DelimEnd, p );
+}
+
+
 static const char *
 scanspaces(template *t, const char *p) {
-    while (*p == ' ' || *p == '\n' || *p == '\r' || *p == '\t') {
+    while (isspace(p[0])) {
         if (*p++ == '\n') {
             t->linenum++;
         }
     }
     return p;
 }
+
 
 /*
  * scancomment() scans a comment delimited by <* and *>. If we find a
@@ -411,16 +438,18 @@ scanspaces(template *t, const char *p) {
 static int
 scancomment(template *t, const char *p) {
     int linenum = t->linenum;
+	int len;
 
-    if (p[0] != '<' || p[1] != '*') {
+    if (strncmp(p, tagname(TMPL_Tag_Comment2Start), len = strlen(tagname(TMPL_Tag_Comment2Start))) != 0) {
         return 0;
     }
-    for (p += 2; *p != 0; p++) {
+    p += len;
+    for (p; *p != 0; p++) {
         if (*p == '\n') {
             t->linenum++;
         }
-        if (p[0] == '*' && p[1] == '>') {
-            t->scanptr = p + 2;
+		if (strncmp(p, tagname(TMPL_Tag_Comment2End), len = strlen(tagname(TMPL_Tag_Comment2End))) == 0) {
+            t->scanptr = p + len;
             return 1;
         }
     }
@@ -428,12 +457,13 @@ scancomment(template *t, const char *p) {
     /* end of template, comment not terminated */
 
     if (t->errout != 0) {
-        fprintf(t->errout, "\"<*\" in file \"%s\" line %d "
-            "has no \"*>\"\n", t->filename, linenum);
+        fprintf(t->errout, "\"%s\" in file \"%s\" line %d "
+            "has no \"%s\"\n", tagname(TMPL_Tag_Comment2Start), t->filename, linenum, tagname(TMPL_Tag_Comment2End));
     }
     t->error = 1;
     return 0;
 }
+
 
 /*
  * scanattr() scans an attribute such as:  name="value".  If
@@ -489,6 +519,32 @@ scanattr(template *t, const char *attrname, const char *p) {
     return ret;
 }
 
+
+
+static char *
+scanname(template *t, const char *p) {
+    int quote = 0;
+    char *ret;
+
+    p = scanspaces(t, p);
+    
+    int i=0;
+	while(is_name_char(p[i])) {    
+        i++;
+    }
+    
+    if (i < 1) {
+    	return "\0";
+    }
+    	
+    t->scanptr = p + i;
+
+    ret = (char *) mymalloc(i + 1);
+    memcpy(ret, p, i);
+    ret[i] = 0;
+    return ret;
+}
+
 /*
  * findfmt() looks up a format function by name.  If successful
  * we return a pointer to the function, otherwise we return null.
@@ -512,7 +568,7 @@ findfmt(const TMPL_fmtlist *fmtlist, const char *name) {
 
 static tagnode *
 scantag(template *t, const char *p) {
-    tag_kind kind;
+    TMPL_Tags kind;
     int commentish = 0; /* true if tag enclosed by <!-- and --> */
     int hasname = 0;    /* true if tag has name= attribute */
     int container = 0;  /* true if tag may not end with /> */
@@ -523,53 +579,62 @@ scantag(template *t, const char *p) {
     TMPL_fmtfunc func;
     const char *err = "";
 
-    if (*p++ != '<') {
+    if (is_tag(TMPL_Tag_CommentStart, p)) {
+    	len = tag_length(TMPL_Tag_CommentStart);
+        commentish = 1;
+        p = scanspaces(t, p + len);
+    }
+	else if (strncmp(p, tagname(TMPL_Tag_DelimStart), len = strlen(tagname(TMPL_Tag_DelimStart))) == 0) {
+		p += len;
+	}
+	else {
         return 0;
     }
-    if (p[0] == '!' && p[1] == '-' && p[2] == '-') {
-        commentish = 1;
-        p = scanspaces(t, p + 3);
-    }
+
     t->tagline = t->linenum;   /* tag name is on this line */
 
-    if (strncasecmp(p, "TMPL_VAR", len = 8) == 0) {
-        kind = tag_var;
+    if (strncasecmp(p, tagname(TMPL_Tag_Var), len = strlen(tagname(TMPL_Tag_Var))) == 0) {
+        kind = TMPL_Tag_Var;
         hasname = 1;
     }
-    else if (strncasecmp(p, "TMPL_INCLUDE", len = 12) == 0) {
-        kind = tag_include;
+    else if (strncmp(p, "=", len = 1) == 0) {
+        kind = TMPL_Tag_Var;
+        //hasname = 1;
+    }
+    else if (strncasecmp(p, tagname(TMPL_Tag_Include), len = strlen(tagname(TMPL_Tag_Include))) == 0) {
+        kind = TMPL_Tag_Include;
         hasname = 1;
     }
-    else if (strncasecmp(p, "TMPL_IF", len = 7) == 0) {
-        kind = tag_if;
-        hasname = 1;
-        container = 1;
-    }
-    else if (strncasecmp(p, "TMPL_ELSIF", len = 10) == 0) {
-        kind = tag_elsif;
-        hasname = 1;
-    }
-    else if (strncasecmp(p, "TMPL_ELSE", len = 9) == 0) {
-        kind = tag_else;
-    }
-    else if (strncasecmp(p, "/TMPL_IF", len = 8) == 0) {
-        kind = tag_endif;
-        container = 1;
-    }
-    else if (strncasecmp(p, "TMPL_LOOP", len = 9) == 0) {
-        kind = tag_loop;
+    else if (strncasecmp(p, tagname(TMPL_Tag_If), len = strlen(tagname(TMPL_Tag_If))) == 0) {
+        kind = TMPL_Tag_If;
         hasname = 1;
         container = 1;
     }
-    else if (strncasecmp(p, "/TMPL_LOOP", len = 10) == 0) {
-        kind = tag_endloop;
+    else if (strncasecmp(p, tagname(TMPL_Tag_ElseIf), len = strlen(tagname(TMPL_Tag_ElseIf))) == 0) {
+        kind = TMPL_Tag_ElseIf;
+        hasname = 1;
+    }
+    else if (strncasecmp(p, tagname(TMPL_Tag_Else), len = strlen(tagname(TMPL_Tag_Else))) == 0) {
+        kind = TMPL_Tag_Else;
+    }
+    else if (strncasecmp(p, tagname(TMPL_Tag_EndIf), len = strlen(tagname(TMPL_Tag_EndIf))) == 0) {
+        kind = TMPL_Tag_EndIf;
         container = 1;
     }
-    else if (strncasecmp(p, "TMPL_BREAK", len = 10) == 0) {
-        kind = tag_break;
+    else if (strncasecmp(p, tagname(TMPL_Tag_Loop), len = strlen(tagname(TMPL_Tag_Loop))) == 0) {
+        kind = TMPL_Tag_Loop;
+        hasname = 1;
+        container = 1;
     }
-    else if (strncasecmp(p, "TMPL_CONTINUE", len = 13) == 0) {
-        kind = tag_cont;
+    else if (strncasecmp(p, tagname(TMPL_Tag_EndLoop), len = strlen(tagname(TMPL_Tag_EndLoop))) == 0) {
+        kind = TMPL_Tag_EndLoop;
+        container = 1;
+    }
+    else if (strncasecmp(p, tagname(TMPL_Tag_Break), len = strlen(tagname(TMPL_Tag_Break))) == 0) {
+        kind = TMPL_Tag_Break;
+    }
+    else if (strncasecmp(p, tagname(TMPL_Tag_Continue), len = strlen(tagname(TMPL_Tag_Continue))) == 0) {
+        kind = TMPL_Tag_Continue;
     }
     else {
         kind = 0;
@@ -581,36 +646,46 @@ scantag(template *t, const char *p) {
 
     p = scanspaces(t, t->scanptr);
     if (hasname != 0 && p == t->scanptr) {
+		fprintf(t->errout, "No spaces :-<\n");
         goto failure;
     }
 
     /*
-     * These tags require one "name =" attribute. The TMPL_VAR tag
+     * These tags require one "name =" attribute. The TMPL_Tag_Var tag
      * may have optional "fmt =" and "default =" attributes.  The
-     * TMPL_IF and TMPL_ELSIF tags may have an optional "value ="
+     * TMPL_Tag_If and TMPL_Tag_ElseIf tags may have an optional "value ="
      * attribute. Attributes can come in any order.
      */
 
     switch(kind) {
 
-    case tag_include:
-    case tag_loop:
+    case TMPL_Tag_Include:
+    case TMPL_Tag_Loop:
         if ((name = scanattr(t, "name", p)) != 0) {
             p = scanspaces(t, t->scanptr);
         }
         break;
 
-    case tag_var:
-        while ((name  == 0 && (name  = scanattr(t, "name",    p)) != 0) ||
-               (fmt   == 0 && (fmt   = scanattr(t, "fmt",     p)) != 0) ||
-               (value == 0 && (value = scanattr(t, "default", p)) != 0))
-        {
-            p = scanspaces(t, t->scanptr);
-        }
+    case TMPL_Tag_Var:
+    	if (!hasname) {
+    		if ((name = scanname(t, p)) == 0) {
+				err = "(missing variable name) ";
+				goto failure;
+			}
+			p = scanspaces(t, t->scanptr);
+		}
+		
+		while ((name  == 0 && (name  = scanattr(t, "name",    p)) != 0) ||
+			   (fmt   == 0 && (fmt   = scanattr(t, "format",  p)) != 0) ||
+			   (fmt   == 0 && (fmt   = scanattr(t, "fmt",     p)) != 0) ||
+			   (value == 0 && (value = scanattr(t, "default", p)) != 0))
+		{
+			p = scanspaces(t, t->scanptr);
+		}
         break;
 
-    case tag_if:
-    case tag_elsif:
+    case TMPL_Tag_If:
+    case TMPL_Tag_ElseIf:
         while ((name  == 0 && (name  = scanattr(t, "name",  p)) != 0) ||
                (value == 0 && (value = scanattr(t, "value", p)) != 0))
         {
@@ -623,8 +698,8 @@ scantag(template *t, const char *p) {
      * must be preceded by white space.
      */
 
-    case tag_break:
-    case tag_cont:
+    case TMPL_Tag_Break:
+    case TMPL_Tag_Continue:
         if (p != t->scanptr &&
             (value = scanattr(t, "level", p)) != 0)
         {
@@ -635,22 +710,22 @@ scantag(template *t, const char *p) {
 
     /* check for end of tag */
 
-    if (commentish == 0 && p[0] == '>') {
-        t->scanptr = p + 1;
+    p = scanspaces(t, p);
+    if (commentish == 0 && is_tag(TMPL_Tag_DelimEnd, p)) {
+    	len = tag_length(TMPL_Tag_DelimEnd);
     }
-    else if (commentish == 0 && container == 0 &&
-        p[0] == '/' && p[1] == '>')
-    {
-        t->scanptr = p + 2;
+    else if (commentish == 0 && container == 0 && p[0] == '/' && is_tag(TMPL_Tag_DelimEnd, p+1)) {
+		len = tag_length(TMPL_Tag_DelimEnd) + 1;
     }
-    else if (commentish != 0 && p[0] == '-' &&
-        p[1] == '-' && p[2] == '>')
-    {
-        t->scanptr = p + 3;
+    else if (commentish != 0 && is_tag( TMPL_Tag_CommentEnd, p)) {
+    	len = tag_length(TMPL_Tag_CommentEnd);
     }
     else {
+		fprintf(t->errout, "No DELIM_RIGHT found. line %d\n", t->tagline);
         goto failure;
     }
+
+    t->scanptr = p + len;
 
     /* check attributes and build tag node */
 
@@ -661,7 +736,7 @@ scantag(template *t, const char *p) {
 
     switch(kind) {
 
-    case tag_var:
+    case TMPL_Tag_Var:
         func = 0;
         if (fmt != 0) {
             if ((func = findfmt(t->fmtlist, fmt)) == 0) {
@@ -676,7 +751,7 @@ scantag(template *t, const char *p) {
         tag->tag.var.fmtfunc = func;
         break;
 
-    case tag_include:
+    case TMPL_Tag_Include:
         if (t->include_depth >= MAX_INCLUDE_DEPTH) {
             err = "(check for include cycle) ";
             goto failure;
@@ -686,14 +761,14 @@ scantag(template *t, const char *p) {
         tag->tag.include.tmpl = 0;
         break;
 
-    case tag_loop:
+    case TMPL_Tag_Loop:
         tag = newtag(t, kind);
         tag->tag.loop.loopname = name;
         tag->tag.loop.body = 0;
         break;
 
-    case tag_break:
-    case tag_cont:
+    case TMPL_Tag_Break:
+    case TMPL_Tag_Continue:
         if (t->loop_depth < 1) {
             err = "(not inside a loop) ";
             goto failure;
@@ -710,8 +785,8 @@ scantag(template *t, const char *p) {
         tag->tag.breakcont.level = level;
         break;
 
-    case tag_if:
-    case tag_elsif:
+    case TMPL_Tag_If:
+    case TMPL_Tag_ElseIf:
         tag = newtag(t, kind);
         tag->tag.ifelse.varname = name;
         tag->tag.ifelse.testval = value;
@@ -778,22 +853,23 @@ scan(template *t) {
         if (p[i] == '\n') {
             t->linenum++;
         }
-        if (p[i] != '<') {
-            continue;
-        }
 
-        /* we found a '<' so we look for a comment or tag */
-
-        if (scancomment(t, p + i) != 0) {
-            if (i == 0) {
-                scan(t);  /* no text so try again */
-                return;
-            }
-            break;
-        }
-        if ((tag = scantag(t, p + i)) != 0) {
-            break;
-        }
+		if (strncmp(p+i, tagname(TMPL_Tag_Comment2Start), strlen(tagname(TMPL_Tag_Comment2Start))) == 0) {
+			if (scancomment(t, p + i) != 0) {
+				if (i == 0) {
+					scan(t);  /* no text so try again */
+					return;
+				}
+				break;
+			}
+		}
+		else if (strncmp(p+i, tagname(TMPL_Tag_DelimStart), strlen(tagname(TMPL_Tag_DelimStart))) == 0 ||
+			strncmp(p+i, tagname(TMPL_Tag_CommentStart), strlen(tagname(TMPL_Tag_CommentStart))) == 0
+		) {
+			if ((tag = scantag(t, p + i)) != 0) {
+				break;
+			}
+		}
     }
 
     /*
@@ -807,7 +883,7 @@ scan(template *t) {
     }
     if (i > 0) {
         t->nexttag = tag;            /* save the tag (if any)    */
-        tag = newtag(t, tag_text);   /* return the text sequence */
+        tag = newtag(t, TMPL_Tag_Text);   /* return the text sequence */
         tag->tag.text.start = p;
         tag->tag.text.len   = i;
     }
@@ -823,65 +899,65 @@ scan(template *t) {
 static tagnode *parselist(template *t, int stop);
 
 /*
- * parseif() parses a TMPL_IF statement, which looks like this:
+ * parseif() parses a TMPL_Tag_If statement, which looks like this:
  *
- * <TMPL_IF name = "varname" value = "testvalue" >
+ * <TMPL_Tag_If name = "varname" value = "testvalue" >
  *    template-list
- * <TMPL_ELSIF name = "varname" value = "testvalue" >
+ * <TMPL_Tag_ElseIf name = "varname" value = "testvalue" >
  *    template-list
- * <TMPL_ELSE>
+ * <TMPL_Tag_Else>
  *    template-list
- * </TMPL_IF>
+ * </TMPL_Tag_If>
  *
  * A template-list is any sequence (including an empty sequence)
  * of text, template tags, if statements or loop statements.  There
- * can be zero or more TMPL_ELSIF tags followed by zero or one
- * TMPL_ELSE tag.  There must be a final /TMPL_IF tag.
+ * can be zero or more TMPL_Tag_ElseIf tags followed by zero or one
+ * TMPL_Tag_Else tag.  There must be a final /TMPL_Tag_If tag.
  *
- * "iftag" is a TMPL_IF tagnode, which has pointers for a true branch
+ * "iftag" is a TMPL_Tag_If tagnode, which has pointers for a true branch
  * and a false branch.  We construct a parse tree for the if statement
  * with "iftag" at the root.  When we are done t->curtag points to
- * the tag that follows the /TMPL_IF tag for this statement.
+ * the tag that follows the /TMPL_Tag_If tag for this statement.
  */
 
 static void
 parseif(template *t, int stop) {
     tagnode *iftag = t->curtag;
     int linenum = t->tagline;
-    int mystop = stop | tag_else | tag_elsif | tag_endif;
+    int mystop = stop | TMPL_Tag_Else | TMPL_Tag_ElseIf | TMPL_Tag_EndIf;
 
     iftag->tag.ifelse.tbranch = parselist(t, mystop);
-    while (t->curtag != 0 && t->curtag->kind == tag_elsif) {
+    while (t->curtag != 0 && t->curtag->kind == TMPL_Tag_ElseIf) {
         iftag->tag.ifelse.fbranch = t->curtag;
         iftag = t->curtag;
         iftag->tag.ifelse.tbranch = parselist(t, mystop);
     }
-    if (t->curtag != 0 && t->curtag->kind == tag_else) {
-        iftag->tag.ifelse.fbranch = parselist(t, stop | tag_endif);
+    if (t->curtag != 0 && t->curtag->kind == TMPL_Tag_Else) {
+        iftag->tag.ifelse.fbranch = parselist(t, stop | TMPL_Tag_EndIf);
     }
-    if (t->curtag != 0 && t->curtag->kind == tag_endif) {
+    if (t->curtag != 0 && t->curtag->kind == TMPL_Tag_EndIf) {
         scan(t);  /* success, scan next tag */
     }
     else {
         if (t->errout != 0) {
-            fprintf(t->errout, "TMPL_IF tag in file \"%s\" line %d "
-                "has no /TMPL_IF tag\n", t->filename, linenum);
+            fprintf(t->errout, "%s tag in file \"%s\" line %d "
+                "has no %s tag\n", tagname(TMPL_Tag_If), t->filename, linenum, tagname(TMPL_Tag_EndIf));
         }
         t->error = 1;
     }
 }
 
 /*
- * parseloop() parses a TMPL_LOOP statement which looks like this:
+ * parseloop() parses a TMPL_Tag_Loop statement which looks like this:
  *
- * <TMPL_LOOP name = "loopname">
+ * <TMPL_Tag_Loop name = "loopname">
  *   template-list
- * </TMPL_LOOP>
+ * </TMPL_Tag_Loop>
  *
- * "looptag" is a TMPL_LOOP tagnode, which has a pointer for the
+ * "looptag" is a TMPL_Tag_Loop tagnode, which has a pointer for the
  * loop body.  We construct a parse tree for the loop statement
  * with "looptag" at the root.  When we are done, t->curtag points
- * to the tag that follows the /TMPL_LOOP tag for this statement.
+ * to the tag that follows the /TMPL_Tag_Loop tag for this statement.
  */
 
 static void
@@ -890,16 +966,16 @@ parseloop(template *t, int stop) {
     int linenum = t->tagline;
 
     t->loop_depth++;
-    looptag->tag.loop.body = parselist(t, stop | tag_endloop);
+    looptag->tag.loop.body = parselist(t, stop | TMPL_Tag_EndLoop);
     t->loop_depth--;
 
-    if (t->curtag != 0 && t->curtag->kind == tag_endloop) {
+    if (t->curtag != 0 && t->curtag->kind == TMPL_Tag_EndLoop) {
         scan(t);  /* success, scan next tag */
     }
     else {
         if (t->errout != 0) {
-            fprintf(t->errout, "TMPL_LOOP tag in file \"%s\" line %d "
-                "has no /TMPL_LOOP tag\n", t->filename, linenum);
+            fprintf(t->errout, "%s tag in file \"%s\" line %d "
+                "has no %s tag\n", tagname(TMPL_Tag_Loop), t->filename, linenum, tagname(TMPL_Tag_EndLoop));
         }
         t->error = 1;
     }
@@ -907,13 +983,13 @@ parseloop(template *t, int stop) {
 
 /*
  * parselist() is the top level parser function.  It parses a
- * template-list which is any sequence of text, TMPL_VAR tags,
- * TMPL_INCLUDE tags, if statements or loop statements.
+ * template-list which is any sequence of text, TMPL_Tag_Var tags,
+ * TMPL_Tag_Include tags, if statements or loop statements.
  * We return a parse tree which is a linked list of tagnodes.  The
  * "stop" parameter is a bitmap of tag kinds that we expect to end
  * this list.  For example, if we are parsing the template-list
- * following a TMPL_IF tag, then we expect the list to end with a
- * TMPL_ELSIF tag or TMPL_ELSE tag or /TMPL_IF tag.  If we are parsing the
+ * following a TMPL_Tag_If tag, then we expect the list to end with a
+ * TMPL_Tag_ElseIf tag or TMPL_Tag_Else tag or /TMPL_Tag_If tag.  If we are parsing the
  * template-list that comprises the entire template, then "stop" is zero
  * so that we keep going to the end of the template.  When we are done,
  * t->curtag is the tag that caused us to stop, or null at the end of
@@ -928,10 +1004,10 @@ parselist(template *t, int stop) {
     while ((tag = t->curtag) != 0) {
         switch(tag->kind) {
 
-        case tag_elsif:    /* check for terminator tag */
-        case tag_else:
-        case tag_endif:
-        case tag_endloop:
+        case TMPL_Tag_ElseIf:    /* check for terminator tag */
+        case TMPL_Tag_Else:
+        case TMPL_Tag_EndIf:
+        case TMPL_Tag_EndLoop:
             if ((tag->kind & stop) != 0) {
                 return list;
             }
@@ -945,16 +1021,16 @@ parselist(template *t, int stop) {
             }
             t->error = 1;
             scan(t);
-            if (tag->kind == tag_elsif) {
+            if (tag->kind == TMPL_Tag_ElseIf) {
                 break;  /* tag linked to list to be freed later */
             }
             continue;   /* tag not linked to list */
 
-        case tag_if:
+        case TMPL_Tag_If:
             parseif(t, stop);
             break;
 
-        case tag_loop:
+        case TMPL_Tag_Loop:
             parseloop(t, stop);
             break;
 
@@ -1024,16 +1100,16 @@ findloop(const char *loopname, const TMPL_varlist *varlist) {
 }
 
 /*
- * istrue() evaluates a TMPL_IF (or TMPL_ELSIF) tag for true or false.
+ * istrue() evaluates a TMPL_Tag_If (or TMPL_Tag_ElseIf) tag for true or false.
  *
- * <TMPL_IF name="varname"> is true if 1) simple variable "varname"
+ * <TMPL_Tag_If name="varname"> is true if 1) simple variable "varname"
  * exists and is not the null string or 2) the loop variable "varname"
  * exists.  Otherwise false.
  *
- * <TMPL_IF name="varname" value=""> is true if "varname" does not exist
+ * <TMPL_Tag_If name="varname" value=""> is true if "varname" does not exist
  * or if "varname" has a null value.
  *
- * <TMPL_IF name="varname" value="testvalue"> is true if simple variable
+ * <TMPL_Tag_If name="varname" value="testvalue"> is true if simple variable
  * "varname" has value "testvalue". Otherwise false.
  */
 
@@ -1137,8 +1213,8 @@ walk(template *t, tagnode *tag, const TMPL_varlist *varlist) {
 
     /*
      * if t->break_level is non zero then we are unwinding the
-     * recursion after encountering a TMPL_BREAK tag.  The same
-     * is true for t->cont_level and TMPL_CONTINUE.
+     * recursion after encountering a TMPL_Tag_Break tag.  The same
+     * is true for t->cont_level and TMPL_Tag_Continue.
      */
 
     if (tag == 0 || t->break_level > 0 || t->cont_level > 0 ||
@@ -1148,11 +1224,11 @@ walk(template *t, tagnode *tag, const TMPL_varlist *varlist) {
     }
     switch(tag->kind) {
 
-    case tag_text:
+    case TMPL_Tag_Text:
         write_text(tag->tag.text.start, tag->tag.text.len, t->out);
         break;
 
-    case tag_var:
+    case TMPL_Tag_Var:
         if ((value = valueof(tag->tag.var.varname, varlist)) == 0 &&
             (value = tag->tag.var.dfltval) == 0)
         {
@@ -1169,8 +1245,8 @@ walk(template *t, tagnode *tag, const TMPL_varlist *varlist) {
         }
         break;
 
-    case tag_if:
-    case tag_elsif:
+    case TMPL_Tag_If:
+    case TMPL_Tag_ElseIf:
         if (is_true(tag, varlist)) {
             walk(t, tag->tag.ifelse.tbranch, varlist);
         }
@@ -1179,7 +1255,7 @@ walk(template *t, tagnode *tag, const TMPL_varlist *varlist) {
         }
         break;
 
-    case tag_loop:
+    case TMPL_Tag_Loop:
         if ((loop = findloop(tag->tag.loop.loopname, varlist)) == 0) {
             break;
         }
@@ -1189,7 +1265,7 @@ walk(template *t, tagnode *tag, const TMPL_varlist *varlist) {
 
             /*
              * if t->break_level is nonzero then we encountered a
-             * TMPL_BREAK tag inside this TMPL_LOOP so we need to
+             * TMPL_Tag_Break tag inside this TMPL_Tag_Loop so we need to
              * break here.
              */
 
@@ -1200,7 +1276,7 @@ walk(template *t, tagnode *tag, const TMPL_varlist *varlist) {
 
             /*
              * if t->cont_level is nonzero then we encountered a
-             * TMPL_CONTINUE inside this TMPL_LOOP.  Depending
+             * TMPL_Tag_Continue inside this TMPL_Tag_Loop.  Depending
              * on the level we either break here or continue
              */
 
@@ -1211,20 +1287,20 @@ walk(template *t, tagnode *tag, const TMPL_varlist *varlist) {
         break;
 
     /*
-     * For a TMPL_BREAK or TMPL_CONTINUE tag we terminate the walk
-     * of this TMPL_LOOP body and set t->break_level or t->cont_level
+     * For a TMPL_Tag_Break or TMPL_Tag_Continue tag we terminate the walk
+     * of this TMPL_Tag_Loop body and set t->break_level or t->cont_level
      * to unwind the recursion.
      */
 
-    case tag_break:
+    case TMPL_Tag_Break:
         t->break_level = tag->tag.breakcont.level;
         return;
 
-    case tag_cont:
+    case TMPL_Tag_Continue:
         t->cont_level = tag->tag.breakcont.level;
         return;
 
-    case tag_include:
+    case TMPL_Tag_Include:
 
         /* if first visit, open and parse the included file */
 
@@ -1403,7 +1479,7 @@ TMPL_free_varlist(TMPL_varlist *varlist) {
  * TMPL_add_fmt() adds a name and function pointer to format function
  * list "fmtlist" and returns the result.  If "fmtlist" is null, then
  * we create it, otherwise we return "fmtlist".  Parameter "name" is
- * the name used in the in the fmt="fmtname" attribute of a TMPL_VAR
+ * the name used in the in the fmt="fmtname" attribute of a TMPL_Tag_Var
  * tag.  Parameter "fmtfunc" is a pointer to a user supplied function
  * with a prototype like this:
  *
@@ -1451,7 +1527,7 @@ TMPL_free_fmtlist(TMPL_fmtlist *fmtlist) {
  * variable list "varlist".  If "tmplstr" is null, then we read the
  * template from "filename", otherwise "tmplstr" is the template.
  * Parameter "fmtlist" is a format function list that contains
- * functions that TMPL_VAR tags can specify to output variables.
+ * functions that TMPL_Tag_Var tags can specify to output variables.
  * We return 0 on success otherwise -1.  We write errors to open
  * file pointer "errout".
  */
