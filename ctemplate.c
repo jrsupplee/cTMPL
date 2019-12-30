@@ -68,14 +68,35 @@ static char* TMPL_Tag_Names[] = {
 	[TMPL_Tag_If] = "IF",
 	[TMPL_Tag_ElseIf] = "ELSIF",
 	[TMPL_Tag_Else] = "ELSE",
-	[TMPL_Tag_EndIf] = "/IF",
+	[TMPL_Tag_EndIf] = "ENDIF",
 	[TMPL_Tag_Loop] = "LOOP",
-	[TMPL_Tag_EndLoop] = "/LOOP",
+	[TMPL_Tag_EndLoop] = "ENDLOOP",
 	[TMPL_Tag_Break] = "BREAK",
 	[TMPL_Tag_Continue] = "CONTINUE",
 	[TMPL_Tag_Text] = "TEXT",
 	[TMPL_Tag_Unknown] = "unknown"
 };
+
+typedef enum {
+	TMPL_Oper_Equal = 1,
+	TMPL_Oper_NotEqual = 2,
+	TMPL_Oper_LessThan = 3,
+	TMPL_Oper_GreaterThan = 4,
+	TMPL_Oper_GreaterThanOrEqual = 5,
+	TMPL_Oper_LessThanOrEqual =6,
+	TMPL_Oper_IsNull = 7
+} TMPL_Operators;
+
+static char* TMPL_Operator_Names[] = {
+	[TMPL_Oper_Equal] = "==",
+	[TMPL_Oper_NotEqual] = "!=",
+	[TMPL_Oper_LessThan] = "<",
+	[TMPL_Oper_GreaterThan] = ">",
+	[TMPL_Oper_GreaterThanOrEqual] = ">=",
+	[TMPL_Oper_LessThanOrEqual] = "<=",
+	[TMPL_Oper_IsNull] = "ISNULL"
+};
+
 
 typedef struct tagnode tagnode;
 typedef struct template template;
@@ -106,7 +127,7 @@ struct tagnode {
         /* TMPL_Tag_If tag or TMPL_Tag_ElseIf tag */
 
         struct {
-            const char *varname, *testval;
+            const char *varname, *operator, *testval;
             tagnode *tbranch, *fbranch;
         }
         ifelse;
@@ -438,18 +459,20 @@ scanspaces(template *t, const char *p) {
 static int
 scancomment(template *t, const char *p) {
     int linenum = t->linenum;
-	int len;
 
-    if (strncmp(p, tagname(TMPL_Tag_Comment2Start), len = strlen(tagname(TMPL_Tag_Comment2Start))) != 0) {
+    if (!is_tag(TMPL_Tag_Comment2Start,p))
+    {
         return 0;
     }
-    p += len;
+
+    p += tag_length(TMPL_Tag_Comment2Start);
+    
     for (p; *p != 0; p++) {
         if (*p == '\n') {
             t->linenum++;
         }
-		if (strncmp(p, tagname(TMPL_Tag_Comment2End), len = strlen(tagname(TMPL_Tag_Comment2End))) == 0) {
-            t->scanptr = p + len;
+		if (is_tag(TMPL_Tag_Comment2End, p)) {
+            t->scanptr = p + tag_length(TMPL_Tag_Comment2End);
             return 1;
         }
     }
@@ -476,14 +499,15 @@ scancomment(template *t, const char *p) {
 
 static char *
 scanattr(template *t, const char *attrname, const char *p) {
-    int i = strlen(attrname);
+    int len = strlen(attrname);
+    int i;
     int quote = 0;
     char *ret;
 
-    if (strncasecmp(p, attrname, i) != 0) {
+    if (strncasecmp(p, attrname, len) != 0) {
         return 0;
     }
-    p = scanspaces(t, p + i);
+    p = scanspaces(t, p + len);
     if (*p++ != '=') {
         return 0;
     }
@@ -523,7 +547,6 @@ scanattr(template *t, const char *attrname, const char *p) {
 
 static char *
 scanname(template *t, const char *p) {
-    int quote = 0;
     char *ret;
 
     p = scanspaces(t, p);
@@ -534,7 +557,7 @@ scanname(template *t, const char *p) {
     }
     
     if (i < 1) {
-    	return "\0";
+    	return 0;
     }
     	
     t->scanptr = p + i;
@@ -544,6 +567,70 @@ scanname(template *t, const char *p) {
     ret[i] = 0;
     return ret;
 }
+
+
+static char *
+scanoperator(template *t, const char *p) {
+    char *ret;
+
+    p = scanspaces(t, p);
+    
+    int i=0;
+	while(p[i] == '!' || p[i] == '=' || p[i] == '<' || p[i] == '>') {    
+        i++;
+    }
+    
+    if (i < 1) {
+    	return 0;
+    }
+    	
+    t->scanptr = p + i;
+
+    ret = (char *) mymalloc(i + 1);
+    memcpy(ret, p, i);
+    ret[i] = 0;
+    return ret;
+}
+
+
+static char *
+scanvalue(template *t, const char *p) {
+	int i = 0;
+    int quote = 0;
+    char *ret;
+
+    p = scanspaces(t, p);
+    if (*p == '"' || *p == '\'') {
+        quote = *p++;
+    }
+
+    /* p now points to the start of the value */
+
+    if (quote != 0) {
+        for (i = 0; p[i] != quote && p[i] != '\n' && p[i] != 0; i++)
+            ;
+        if (p[i] != quote) {
+            return 0;
+        }
+        t->scanptr = p + i + 1;
+    }
+    else {
+        for (i = 0; isalnum(p[i]) || p[i] == '.'; i++)
+            ;
+        if (i == 0) {
+            return 0;
+        }
+        t->scanptr = p + i;
+    }
+
+    /* i is now the length of the value */
+
+    ret = (char *) mymalloc(i + 1);
+    memcpy(ret, p, i);
+    ret[i] = 0;
+    return ret;
+}
+
 
 /*
  * findfmt() looks up a format function by name.  If successful
@@ -575,9 +662,9 @@ scantag(template *t, const char *p) {
     tagnode *tag;
     int linenum = t->linenum;
     int len, level;
-    char *name = 0, *value = 0, *fmt = 0;
+    char *name = 0, *value = 0, *fmt = 0, *operator = 0;
     TMPL_fmtfunc func;
-    const char *err = "";
+    char *err = "";
 
     if (is_tag(TMPL_Tag_CommentStart, p)) {
     	len = tag_length(TMPL_Tag_CommentStart);
@@ -661,17 +748,14 @@ scantag(template *t, const char *p) {
 
     case TMPL_Tag_Include:
     case TMPL_Tag_Loop:
-        if ((name = scanattr(t, "name", p)) != 0) {
-            p = scanspaces(t, t->scanptr);
-        }
+    	if ((name = scanattr(t, "name", p)) != 0 || (name = scanvalue(t, p)) != 0) {
+			p = scanspaces(t, t->scanptr);
+		}
         break;
 
     case TMPL_Tag_Var:
-    	if (!hasname) {
-    		if ((name = scanname(t, p)) == 0) {
-				err = "(missing variable name) ";
-				goto failure;
-			}
+		if ((name = scanattr(t, "name", p)) != 0 || (name = scanname(t, p)) != 0)
+		{
 			p = scanspaces(t, t->scanptr);
 		}
 		
@@ -686,11 +770,49 @@ scantag(template *t, const char *p) {
 
     case TMPL_Tag_If:
     case TMPL_Tag_ElseIf:
-        while ((name  == 0 && (name  = scanattr(t, "name",  p)) != 0) ||
-               (value == 0 && (value = scanattr(t, "value", p)) != 0))
-        {
-            p = scanspaces(t, t->scanptr);
-        }
+    	if ((name = scanname(t, p)) == 0) {
+			err = "(missing variable name) ";
+			goto failure;
+		}
+		p = scanspaces(t, t->scanptr);
+		
+		if (operator = scanoperator(t, p)) {
+			if (
+					!strcmp(operator, "==") &&
+					!strcmp(operator, "!=") &&
+					!strcmp(operator, "<") &&
+					!strcmp(operator, ">") &&
+					!strcmp(operator, "<=") &&
+					!strcmp(operator, ">=")
+				)
+			{
+				if (strlen(operator) > 10 || strlen(operator) == 0) {
+					err = "(unknown operator) ";
+				} else {
+					err = mymalloc( 30 );
+					sprintf(err, "(unkown operator %s)", operator);
+				}
+				goto failure;
+			}
+
+			p = scanspaces(t, t->scanptr);
+			
+			if ((value = scanvalue(t,p)) == 0) {
+				err = "(operator without value) ";
+				goto failure;
+			}
+		}
+		
+        p = scanspaces(t, t->scanptr);
+        
+        /*
+     	while ((name  == 0 && (name  = scanattr(t, "name",    p)) != 0) ||
+			   (value == 0 && (value = scanattr(t, "value",   p)) != 0))
+		{
+			p = scanspaces(t, t->scanptr);
+		}
+		*/
+		
         break;
 
     /*
@@ -789,6 +911,7 @@ scantag(template *t, const char *p) {
     case TMPL_Tag_ElseIf:
         tag = newtag(t, kind);
         tag->tag.ifelse.varname = name;
+        tag->tag.ifelse.operator = operator;
         tag->tag.ifelse.testval = value;
         tag->tag.ifelse.tbranch = 0;
         tag->tag.ifelse.fbranch = 0;
@@ -854,7 +977,8 @@ scan(template *t) {
             t->linenum++;
         }
 
-		if (strncmp(p+i, tagname(TMPL_Tag_Comment2Start), strlen(tagname(TMPL_Tag_Comment2Start))) == 0) {
+		if (is_tag(TMPL_Tag_Comment2Start, p+i))
+		{
 			if (scancomment(t, p + i) != 0) {
 				if (i == 0) {
 					scan(t);  /* no text so try again */
@@ -863,9 +987,8 @@ scan(template *t) {
 				break;
 			}
 		}
-		else if (strncmp(p+i, tagname(TMPL_Tag_DelimStart), strlen(tagname(TMPL_Tag_DelimStart))) == 0 ||
-			strncmp(p+i, tagname(TMPL_Tag_CommentStart), strlen(tagname(TMPL_Tag_CommentStart))) == 0
-		) {
+		else if (is_tag(TMPL_Tag_DelimStart, p+i) || is_tag(TMPL_Tag_CommentStart, p+i))
+		{
 			if ((tag = scantag(t, p + i)) != 0) {
 				break;
 			}
@@ -1116,22 +1239,31 @@ findloop(const char *loopname, const TMPL_varlist *varlist) {
 static int
 is_true(const tagnode *iftag, const TMPL_varlist *varlist) {
     const char *testval = iftag->tag.ifelse.testval;
-    const char *value;
-    TMPL_loop *loop = 0;
+    const char *operator = iftag->tag.ifelse.operator;
+    const char *value = valueof(iftag->tag.ifelse.varname, varlist);
+    //TMPL_loop *loop = 0;
 
-    if ((value = valueof(iftag->tag.ifelse.varname, varlist)) == 0) {
-        loop = findloop(iftag->tag.ifelse.varname, varlist);
-    }
-
-    return
-        (testval == 0 && value != 0 && *value != 0) ||
-
-        (testval == 0 && loop != 0) ||
-
-        (testval != 0 && *testval == 0 && loop == 0 &&
-        (value == 0 || *value == 0)) ||
-
-        (testval != 0 && value != 0 && strcmp(value, testval) == 0);
+    if (operator == 0) {
+    	if (value) {
+    		return (strlen(value) > 1);
+    	}
+    	
+    	return (findloop(iftag->tag.ifelse.varname, varlist) > 0);
+    	
+    } else if (value == 0 || testval == 0) {
+    	return 0;
+    	
+    } else {
+    	return
+    		(strcmp(operator, "==") == 0 && strcmp(value, testval) == 0) ||
+			(strcmp(operator, "!=") == 0 && strcmp(value, testval) != 0) ||
+			(strcmp(operator, "<") == 0 && strcmp(value, testval) < 0) ||
+			(strcmp(operator, ">") == 0 && strcmp(value, testval) > 0) ||
+			(strcmp(operator, ">=") == 0 && strcmp(value, testval) >= 0) ||
+			(strcmp(operator, "<=") == 0 && strcmp(value, testval) <= 0);
+	}
+	
+	return 0;
 }
 
 /*

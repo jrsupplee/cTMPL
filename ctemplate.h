@@ -9,21 +9,6 @@
 #define _CTEMPLATE_H
 
 typedef enum {
-    tag_text    = 0x001,   /* text sequence */
-    tag_var     = 0x002,   /* TMPL_VAR      */
-    tag_if      = 0x004,   /* TMPL_IF       */
-    tag_elsif   = 0x008,   /* TMPL_ELSIF    */
-    tag_else    = 0x010,   /* <TMPL_ELSE>   */
-    tag_endif   = 0x020,   /* </TMPL_IF>    */
-    tag_include = 0x040,   /* TMPL_INCLUDE  */
-    tag_loop    = 0x080,   /* TMPL_LOOP     */
-    tag_break   = 0x100,   /* TMPL_BREAK    */
-    tag_cont    = 0x200,   /* TMPL_CONTINUE */
-    tag_endloop = 0x400    /* </TMPL_LOOP>  */
-} tag_kind;
-
-
-typedef enum {
 	/*
 	 * The following numbers must be representable in binary
 	 * by a single one
@@ -84,7 +69,7 @@ int TMPL_write(const char *filename, const char *tmplstr,
 
 void TMPL_encode_entity(const char *value, FILE *out);
 
-void TMPL_encode_url   (const char *value, FILE *out);
+void TMPL_encode_url(const char *value, FILE *out);
 
 void TMPL_tagname_set( TMPL_Tags tag, const char* label );
 

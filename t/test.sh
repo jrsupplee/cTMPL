@@ -9,18 +9,8 @@ PATH=..:/bin:/usr/bin
 
 # renumber the tests in this script
 
-renumber() {
-    cp $0 $0.old &&
-    awk '/^TEST=[0-9].* ######/ {
-        printf("TEST=%d  ########################################\n", ++i);
-        next }
-        { print }' $0.old > $0 &&
-    /bin/rm $0.old
-    exit
-}
-
 check () {
-    if diff -c expected result; then
+    if diff -c expected$1.txt result$1.txt; then
         echo "Test $TEST success"
     else
         echo "Test $TEST failure"
@@ -29,15 +19,11 @@ check () {
 
 test "X$1" = X-r && renumber
 
-TEST=1  ########################################
+TEST=NoTags  ########################################
 
 # Testing null input
 
-cp /dev/null tmplfile
-
-cp tmplfile expected
-
-template tmplfile > result 2>&1
+template NoTags.tmpl > NoTags.rslt 2>&1
 
 check
 
@@ -88,23 +74,23 @@ Testing a single bad attribute
 {{LOOP name = }}
 {{LOOP ="var"}}
 {{LOOP = "var" }}
-{{LOOP name=*}}      * needs quotes
+{{LOOP *}}      * needs quotes
 {{LOOP name = * }}   * needs quotes
-{{LOOP name="var}}
-{{LOOP name = "var }}
-{{LOOP name='var}}
-{{LOOP name = 'var }}
-{{LOOP name=var"}}
+{{LOOP var}}
+{{LOOP name = var }}
+{{LOOP var}}
+{{LOOP name = var }}
+{{LOOP var"}}
 {{LOOP name = var" }}
-{{LOOP name=var'}}
+{{LOOP var'}}
 {{LOOP name = var' }}
 {{LOOP name="var'}}
 {{LOOP name = "var' }}
 {{LOOP name='var"}}
 {{LOOP name = 'var" }}
 
-{{!--LOOP name--}}
-{{!-- LOOP name --}}
+{{!--LOOP --}}
+{{!-- LOOP --}}
 {{!--LOOP =--}}
 {{!-- LOOP = --}}
 {{!--LOOP "var"--}}
@@ -115,11 +101,11 @@ Testing a single bad attribute
 {{!-- LOOP = "var" --}}
 {{!--LOOP name=*--}}      * needs quotes
 {{!-- LOOP name = * --}}   * needs quotes
-{{!--LOOP name="var--}}
-{{!-- LOOP name = "var --}}
-{{!--LOOP name='var--}}
-{{!-- LOOP name = 'var --}}
-{{!--LOOP name=var"--}}
+{{!--LOOP var--}}
+{{!-- LOOP name = var --}}
+{{!--LOOP var--}}
+{{!-- LOOP name = var --}}
+{{!--LOOP var"--}}
 {{!-- LOOP name = var" --}}
 {{!--LOOP name=var'--}}
 {{!-- LOOP name = var' --}}
@@ -142,9 +128,9 @@ Testing good attribute followed by bad
 {{VAR default = "value" = "var" }}
 {{VAR default="value"name=*}}         * needs quotes
 {{VAR default = "value" name = * }}   * needs quotes
-{{VAR default="value"name="var}}
-{{VAR default = "value" name = "var }}
-{{VAR default="value"name='var}}
+{{VAR default="value"var}}
+{{VAR default = value" var }}
+{{VAR default=value"name='var}}
 {{VAR default = "value" name = 'var }}
 {{VAR default="value"name=var"}}
 {{VAR default = "value" name = var" }}
@@ -167,9 +153,9 @@ Testing good attribute followed by bad
 {{VAR default = "value" = "var" /}}
 {{VAR default="value"name=*/}}         * needs quotes
 {{VAR default = "value" name = * /}}   * needs quotes
-{{VAR default="value"name="var/}}
-{{VAR default = "value" name = "var /}}
-{{VAR default="value"name='var/}}
+{{VAR default="value"var/}}
+{{VAR default = value" var /}}
+{{VAR default=value"name='var/}}
 {{VAR default = "value" name = 'var /}}
 {{VAR default="value"name=var"/}}
 {{VAR default = "value" name = var" /}}
@@ -192,9 +178,9 @@ Testing good attribute followed by bad
 {{!-- VAR default = "value" = "var" --}}
 {{!--VAR default="value"name=*--}}         * needs quotes
 {{!-- VAR default = "value" name = * --}}   * needs quotes
-{{!--VAR default="value"name="var--}}
-{{!-- VAR default = "value" name = "var --}}
-{{!--VAR default="value"name='var--}}
+{{!--VAR default="value"var--}}
+{{!-- VAR default = value" var --}}
+{{!--VAR default=value"name='var--}}
 {{!-- VAR default = "value" name = 'var --}}
 {{!--VAR default="value"name=var"--}}
 {{!-- VAR default = "value" name = var" --}}
@@ -219,8 +205,8 @@ Testing bad attribute followed by good
 {{VAR = "var" default = "value" }}
 {{VAR name=*default="value"}}         * needs quotes
 {{VAR name = * default = "value" }}   * needs quotes
-{{VAR name="vardefault="value"}}
-{{VAR name = "var default = "value" }}
+{{VAR vardefault=value"}}
+{{VAR var default = value" }}
 {{VAR name='vardefault="value"}}
 {{VAR name = 'var default = "value" }}
 {{VAR name=var"default="value"}}
@@ -244,8 +230,8 @@ Testing bad attribute followed by good
 {{VAR = "var" default = "value" /}}
 {{VAR name=*default="value"/}}         * needs quotes
 {{VAR name = * default = "value" /}}   * needs quotes
-{{VAR name="vardefault="value"/}}
-{{VAR name = "var default = "value" /}}
+{{VAR vardefault=value"/}}
+{{VAR var default = value" /}}
 {{VAR name='vardefault="value"/}}
 {{VAR name = 'var default = "value" /}}
 {{VAR name=var"default="value"/}}
@@ -269,8 +255,8 @@ Testing bad attribute followed by good
 {{!-- VAR = "var" default = "value" --}}
 {{!--VAR name=*default="value"--}}         * needs quotes
 {{!-- VAR name = * default = "value" --}}   * needs quotes
-{{!--VAR name="vardefault="value"--}}
-{{!-- VAR name = "var default = "value" --}}
+{{!--VAR vardefault=value"--}}
+{{!-- VAR var default = value" --}}
 {{!--VAR name='vardefault="value"--}}
 {{!-- VAR name = 'var default = "value" --}}
 {{!--VAR name=var"default="value"--}}
@@ -300,55 +286,55 @@ cat << "EOF" > tmplfile
 {{LOOP nam = "var"}}
 {{LOOP namex = "var"}}
 {{LOOP color = "red"}}
-{{LOOP name = "var" name = "var"}}
-{{LOOP name = "var" name = "var2"}}
-{{LOOP name = "var" default = "value"}}
-{{LOOP name = "var" fmt = "fmtname"}}
-{{LOOP name = "var" value = "testvalue"}}
+{{LOOP var var}}
+{{LOOP var var2}}
+{{LOOP var default = "value"}}
+{{LOOP var fmt = "fmtname"}}
+{{LOOP var value = "testvalue"}}
 
 {{!--LOOP--}}
 {{!-- LOOP --}}
 {{!--LOOP nam = "var"--}}
 {{!--LOOP namex = "var"--}}
 {{!--LOOP color = "red"--}}
-{{!--LOOP name = "var" name = "var"--}}
-{{!--LOOP name = "var" name = "var2"--}}
-{{!--LOOP name = "var" default = "value"--}}
-{{!--LOOP name = "var" fmt = "fmtname"--}}
-{{!--LOOP name = "var" value = "testvalue"--}}
+{{!--LOOP var var--}}
+{{!--LOOP var var2--}}
+{{!--LOOP var default = "value"--}}
+{{!--LOOP var fmt = "fmtname"--}}
+{{!--LOOP var value = "testvalue"--}}
 
 {{INCLUDE}}
 {{INCLUDE }}
 {{INCLUDE nam = "var"}}
 {{INCLUDE namex = "var"}}
 {{INCLUDE color = "red"}}
-{{INCLUDE name = "var" name = "var"}}
-{{INCLUDE name = "var" name = "var2"}}
-{{INCLUDE name = "var" default = "value"}}
-{{INCLUDE name = "var" fmt = "fmtname"}}
-{{INCLUDE name = "var" value = "testvalue"}}
+{{INCLUDE var var}}
+{{INCLUDE var var2}}
+{{INCLUDE var default = "value"}}
+{{INCLUDE var fmt = "fmtname"}}
+{{INCLUDE var value = "testvalue"}}
 
 {{INCLUDE/}}
 {{INCLUDE /}}
-{{INCLUDE nam = "var" /}}
-{{INCLUDE namex = "var" /}}
+{{INCLUDE var /}}
+{{INCLUDE var /}}
 {{INCLUDE color = "red" /}}
-{{INCLUDE name = "var" name = "var"/}}
-{{INCLUDE name = "var" name = "var2" /}}
-{{INCLUDE name = "var" default = "value"/}}
-{{INCLUDE name = "var" fmt = "fmtname" /}}
-{{INCLUDE name = "var" value = "testvalue" /}}
+{{INCLUDE var /}}
+{{INCLUDE var var2 /}}
+{{INCLUDE var default = "value"/}}
+{{INCLUDE var fmt = "fmtname" /}}
+{{INCLUDE var value = "testvalue" /}}
 
 {{!--INCLUDE--}}
 {{!-- INCLUDE --}}
 {{!--INCLUDE nam = "var"--}}
 {{!--INCLUDE namex = "var"--}}
 {{!--INCLUDE color = "red"--}}
-{{!--INCLUDE name = "var" name = "var"--}}
-{{!--INCLUDE name = "var" name = "var2"--}}
-{{!--INCLUDE name = "var" default = "value"--}}
-{{!--INCLUDE name = "var" fmt = "fmtname"--}}
-{{!--INCLUDE name = "var" value = "testvalue"--}}
+{{!--INCLUDE var var--}}
+{{!--INCLUDE var var2--}}
+{{!--INCLUDE var default = "value"--}}
+{{!--INCLUDE var fmt = "fmtname"--}}
+{{!--INCLUDE var value = "testvalue"--}}
 
 {{VAR}}
 {{VAR }}
@@ -358,12 +344,12 @@ cat << "EOF" > tmplfile
 {{VAR default = "value"}}
 {{VAR fmt = "fmtname"}}
 {{VAR default = "value" fmt = "fmtname"}}
-{{VAR name = "var" value = "testvalue"}}
-{{VAR name = "var" color = "red"}}
-{{VAR name = "var" default = "value" fmt = "fmtname" name = "var"}}
-{{VAR name = "var" default = "value" fmt = "fmtname" name = "xxx"}}
-{{VAR default = "xxx" name = "var" default = "value" fmt = "fmtname"}}
-{{VAR fmt = "xxx" name = "var" default = "value" fmt = "fmtname"}}
+{{VAR var value = "testvalue"}}
+{{VAR var color = "red"}}
+{{VAR var default = "value" fmt = "fmtname" var}}
+{{VAR var default = "value" fmt = "fmtname" xxx}}
+{{VAR default = "xxx" var default = "value" fmt = "fmtname"}}
+{{VAR fmt = "xxx" var default = "value" fmt = "fmtname"}}
 
 {{VAR/}}
 {{VAR /}}
@@ -373,12 +359,12 @@ cat << "EOF" > tmplfile
 {{VAR default = "value" /}}
 {{VAR fmt = "fmtname" /}}
 {{VAR default = "value" fmt = "fmtname" /}}
-{{VAR name = "var" value = "testvalue"/}}
-{{VAR name = "var" color = "red" /}}
-{{VAR name = "var" default = "value" fmt = "fmtname" name = "var" /}}
-{{VAR name = "var" default = "value" fmt = "fmtname" name = "xxx"/}}
-{{VAR default = "xxx" name = "var" default = "value" fmt = "fmtname" /}}
-{{VAR fmt = "xxx" name = "var" default = "value" fmt = "fmtname"/}}
+{{VAR var value = "testvalue"/}}
+{{VAR var color = "red" /}}
+{{VAR var default = "value" fmt = "fmtname" var /}}
+{{VAR var default = "value" fmt = "fmtname" xxx/}}
+{{VAR default = "xxx" var default = "value" fmt = "fmtname" /}}
+{{VAR fmt = "xxx" var default = "value" fmt = "fmtname"/}}
 
 {{!--VAR--}}
 {{!-- VAR --}}
@@ -388,119 +374,119 @@ cat << "EOF" > tmplfile
 {{!--VAR default = "value"--}}
 {{!--VAR fmt = "fmtname"--}}
 {{!--VAR default = "value" fmt = "fmtname"--}}
-{{!--VAR name = "var" value = "testvalue"--}}
-{{!--VAR name = "var" color = "red"--}}
-{{!--VAR name = "var" default = "value" fmt = "fmtname" name = "var"--}}
-{{!--VAR name = "var" default = "value" fmt = "fmtname" name = "xxx"--}}
-{{!--VAR default = "xxx" name = "var" default = "value" fmt = "fmtname"--}}
-{{!--VAR fmt = "xxx" name = "var" default = "value" fmt = "fmtname"--}}
+{{!--VAR var value = "testvalue"--}}
+{{!--VAR var color = "red"--}}
+{{!--VAR var default = "value" fmt = "fmtname" var--}}
+{{!--VAR var default = "value" fmt = "fmtname" xxx--}}
+{{!--VAR default = "xxx" var default = "value" fmt = "fmtname"--}}
+{{!--VAR fmt = "xxx" var default = "value" fmt = "fmtname"--}}
 
 {{IF}}
 {{IF }}
 {{IF nam = "var"}}
 {{IF namex = "var"}}
 {{IF color = "red"}}
-{{IF value = "testvalue"}}
-{{IF name = "var" default = "value"}}
-{{IF name = "var" fmt = "fmtname"}}
-{{IF name = "var" color = "red"}}
-{{IF name = "var" value = "testvalue" name = "var"}}
-{{IF name = "var" value = "testvalue" name = "xxx"}}
-{{IF value = "xxx" name = "var" value = "testvalue"}}
+{{IF == "testvalue"}}
+{{IF var default = "value"}}
+{{IF var fmt = "fmtname"}}
+{{IF var color = "red"}}
+{{IF var == "testvalue" var}}
+{{IF var == "testvalue" xxx}}
+{{IF == "xxx" var == "testvalue"}}
 
 {{!--IF--}}
 {{!-- IF --}}
 {{!--IF nam = "var"--}}
 {{!--IF namex = "var"--}}
 {{!--IF color = "red"--}}
-{{!--IF value = "testvalue"--}}
-{{!--IF name = "var" default = "value"--}}
-{{!--IF name = "var" fmt = "fmtname"--}}
-{{!--IF name = "var" color = "red"--}}
-{{!--IF name = "var" value = "testvalue" name = "var"--}}
-{{!--IF name = "var" value = "testvalue" name = "xxx"--}}
-{{!--IF value = "xxx" name = "var" value = "testvalue"--}}
+{{!--IF == "testvalue"--}}
+{{!--IF var default = "value"--}}
+{{!--IF var fmt = "fmtname"--}}
+{{!--IF var color = "red"--}}
+{{!--IF var == "testvalue" var--}}
+{{!--IF var == "testvalue" xxx--}}
+{{!--IF == "xxx" var == "testvalue"--}}
 
 {{ELSIF}}
 {{ELSIF }}
 {{ELSIF nam = "var"}}
 {{ELSIF namex = "var"}}
 {{ELSIF color = "red"}}
-{{ELSIF value = "testvalue"}}
-{{ELSIF name = "var" default = "value"}}
-{{ELSIF name = "var" fmt = "fmtname"}}
-{{ELSIF name = "var" color = "red"}}
-{{ELSIF name = "var" value = "testvalue" name = "var"}}
-{{ELSIF name = "var" value = "testvalue" name = "xxx"}}
-{{ELSIF value = "xxx" name = "var" value = "testvalue"}}
+{{ELSIF == "testvalue"}}
+{{ELSIF var default = "value"}}
+{{ELSIF var fmt = "fmtname"}}
+{{ELSIF var color = "red"}}
+{{ELSIF var == "testvalue" var}}
+{{ELSIF var == "testvalue" xxx}}
+{{ELSIF == "xxx" var == "testvalue"}}
 
 {{ELSIF/}}
 {{ELSIF /}}
 {{ELSIF nam = "var" /}}
 {{ELSIF namex = "var" /}}
 {{ELSIF color = "red" /}}
-{{ELSIF value = "testvalue"/}}
-{{ELSIF name = "var" default = "value"/}}
-{{ELSIF name = "var" fmt = "fmtname" /}}
-{{ELSIF name = "var" color = "red"/}}
-{{ELSIF name = "var" value = "testvalue" name = "var" /}}
-{{ELSIF name = "var" value = "testvalue" name = "xxx"/}}
-{{ELSIF value = "xxx" name = "var" value = "testvalue" /}}
+{{ELSIF == "testvalue"/}}
+{{ELSIF var default = "value"/}}
+{{ELSIF var fmt = "fmtname" /}}
+{{ELSIF var color = "red"/}}
+{{ELSIF var == "testvalue" var /}}
+{{ELSIF var == "testvalue" xxx/}}
+{{ELSIF == "xxx" var == "testvalue" /}}
 
 {{!--ELSIF--}}
 {{!-- ELSIF --}}
 {{!--ELSIF nam = "var"--}}
 {{!--ELSIF namex = "var"--}}
 {{!--ELSIF color = "red"--}}
-{{!--ELSIF value = "testvalue"--}}
-{{!--ELSIF name = "var" default = "value"--}}
-{{!--ELSIF name = "var" fmt = "fmtname"--}}
-{{!--ELSIF name = "var" color = "red"--}}
-{{!--ELSIF name = "var" value = "testvalue" name = "var"--}}
-{{!--ELSIF name = "var" value = "testvalue" name = "xxx"--}}
-{{!--ELSIF value = "xxx" name = "var" value = "testvalue"--}}
+{{!--ELSIF == "testvalue"--}}
+{{!--ELSIF var default = "value"--}}
+{{!--ELSIF var fmt = "fmtname"--}}
+{{!--ELSIF var color = "red"--}}
+{{!--ELSIF var == "testvalue" var--}}
+{{!--ELSIF var == "testvalue" xxx--}}
+{{!--ELSIF == "xxx" var == "testvalue"--}}
 
-{{ELSE name = "var"}}
+{{ELSE var}}
 {{ELSE color = "red"}}
-{{ELSE name = "var" value = "testvalue"}}
-{{ELSE name = "var" fmt = "fmtname"}}
-{{ELSE name = "var" default = "value"}}
+{{ELSE var == "testvalue"}}
+{{ELSE var fmt = "fmtname"}}
+{{ELSE var default = "value"}}
 
-{{ELSE name = "var" /}}
+{{ELSE var /}}
 {{ELSE color = "red"/}}
-{{ELSE name = "var" value = "testvalue" /}}
-{{ELSE name = "var" fmt = "fmtname"/}}
-{{ELSE name = "var" default = "value" /}}
+{{ELSE var == "testvalue" /}}
+{{ELSE var fmt = "fmtname"/}}
+{{ELSE var default = "value" /}}
 
-{{!--ELSE name = "var"--}}
+{{!--ELSE var--}}
 {{!--ELSE color = "red"--}}
-{{!--ELSE name = "var" value = "testvalue"--}}
-{{!--ELSE name = "var" fmt = "fmtname"--}}
-{{!--ELSE name = "var" default = "value"--}}
+{{!--ELSE var == "testvalue"--}}
+{{!--ELSE var fmt = "fmtname"--}}
+{{!--ELSE var default = "value"--}}
 
-{{/IF name = "var"}}
-{{/IF color = "red"}}
-{{/IF name = "var" value = "testvalue"}}
-{{/IF name = "var" fmt = "fmtname"}}
-{{/IF name = "var" default = "value"}}
+{{ENDIF var}}
+{{ENDIF color = "red"}}
+{{ENDIF var == "testvalue"}}
+{{ENDIF var fmt = "fmtname"}}
+{{ENDIF var default = "value"}}
 
-{{!--/IF name = "var"--}}
-{{!--/IF color = "red"--}}
-{{!--/IF name = "var" value = "testvalue"--}}
-{{!--/IF name = "var" fmt = "fmtname"--}}
-{{!--/IF name = "var" default = "value"--}}
+{{!--ENDIF var--}}
+{{!--ENDIF color = "red"--}}
+{{!--ENDIF var == "testvalue"--}}
+{{!--ENDIF var fmt = "fmtname"--}}
+{{!--ENDIF var default = "value"--}}
 
-{{/LOOP name = "var"}}
-{{/LOOP color = "red"}}
-{{/LOOP name = "var" value = "testvalue"}}
-{{/LOOP name = "var" fmt = "fmtname"}}
-{{/LOOP name = "var" default = "value"}}
+{{ENDLOOP var}}
+{{ENDLOOP color = "red"}}
+{{ENDLOOP var value = "testvalue"}}
+{{ENDLOOP var fmt = "fmtname"}}
+{{ENDLOOP var default = "value"}}
 
-{{!--/LOOP name = "var"--}}
-{{!--/LOOP color = "red"--}}
-{{!--/LOOP name = "var" value = "testvalue"--}}
-{{!--/LOOP name = "var" fmt = "fmtname"--}}
-{{!--/LOOP name = "var" default = "value"--}}
+{{!--ENDLOOP var--}}
+{{!--ENDLOOP color = "red"--}}
+{{!--ENDLOOP var value = "testvalue"--}}
+{{!--ENDLOOP var fmt = "fmtname"--}}
+{{!--ENDLOOP var default = "value"--}}
 
 {{BREAK lev = 1}}
 {{BREAK levelx = 1}}
@@ -508,10 +494,10 @@ cat << "EOF" > tmplfile
 {{BREAK value = "testvalue"}}
 {{BREAK level = "1" default = "value"}}
 {{BREAK level = "2" fmt = "fmtname"}}
-{{BREAK level = 1 name = "var"}}
+{{BREAK level = 1 var}}
 {{BREAK level = 1 color = "red"}}
 {{BREAK level = 1 level = 1}}
-{{BREAK name = "var" level = "1" }}
+{{BREAK var level = "1" }}
 
 {{BREAK lev = 1/}}
 {{BREAK levelx = 1/}}
@@ -519,10 +505,10 @@ cat << "EOF" > tmplfile
 {{BREAK value = "testvalue"/}}
 {{BREAK level = "1" default = "value"/}}
 {{BREAK level = "2" fmt = "fmtname"/}}
-{{BREAK level = 1 name = "var"/}}
+{{BREAK level = 1 var/}}
 {{BREAK level = 1 color = "red"/}}
 {{BREAK level = 1 level = 1/}}
-{{BREAK name = "var" level = "1" /}}
+{{BREAK var level = "1" /}}
 
 {{!-- BREAK lev = 1 --}}
 {{!-- BREAK levelx = 1 --}}
@@ -530,10 +516,10 @@ cat << "EOF" > tmplfile
 {{!-- BREAK value = "testvalue" --}}
 {{!-- BREAK level = "1" default = "value" --}}
 {{!-- BREAK level = "2" fmt = "fmtname" --}}
-{{!-- BREAK level = 1 name = "var" --}}
+{{!-- BREAK level = 1 var --}}
 {{!-- BREAK level = 1 color = "red" --}}
 {{!-- BREAK level = 1 level = 1 --}}
-{{!-- BREAK name = "var" level = "1"  --}}
+{{!-- BREAK var level = "1"  --}}
 
 {{CONTINUE lev = 1}}
 {{CONTINUE levelx = 1}}
@@ -541,10 +527,10 @@ cat << "EOF" > tmplfile
 {{CONTINUE value = "testvalue"}}
 {{CONTINUE level = "1" default = "value"}}
 {{CONTINUE level = "2" fmt = "fmtname"}}
-{{CONTINUE level = 1 name = "var"}}
+{{CONTINUE level = 1 var}}
 {{CONTINUE level = 1 color = "red"}}
 {{CONTINUE level = 1 level = 1}}
-{{CONTINUE name = "var" level = "1" }}
+{{CONTINUE var level = "1" }}
 
 {{CONTINUE lev = 1/}}
 {{CONTINUE levelx = 1/}}
@@ -552,10 +538,10 @@ cat << "EOF" > tmplfile
 {{CONTINUE value = "testvalue"/}}
 {{CONTINUE level = "1" default = "value"/}}
 {{CONTINUE level = "2" fmt = "fmtname"/}}
-{{CONTINUE level = 1 name = "var"/}}
+{{CONTINUE level = 1 var/}}
 {{CONTINUE level = 1 color = "red"/}}
 {{CONTINUE level = 1 level = 1/}}
-{{CONTINUE name = "var" level = "1" /}}
+{{CONTINUE var level = "1" /}}
 
 {{!-- CONTINUE lev = 1 --}}
 {{!-- CONTINUE levelx = 1 --}}
@@ -563,10 +549,10 @@ cat << "EOF" > tmplfile
 {{!-- CONTINUE value = "testvalue" --}}
 {{!-- CONTINUE level = "1" default = "value" --}}
 {{!-- CONTINUE level = "2" fmt = "fmtname" --}}
-{{!-- CONTINUE level = 1 name = "var" --}}
+{{!-- CONTINUE level = 1 var --}}
 {{!-- CONTINUE level = 1 color = "red" --}}
 {{!-- CONTINUE level = 1 level = 1 --}}
-{{!-- CONTINUE name = "var" level = "1"  --}}
+{{!-- CONTINUE var level = "1"  --}}
 
 EOF
 
@@ -582,71 +568,71 @@ TEST=6  ########################################
 
 cat << "EOF" > tmplfile
 
-{{ VAR name = "var"}}
-{{VARname = "var"}}
-{{ VAR name = "var" /}}
-{{VARname = "var"/}}
-{{ VARname = "var"}}
-{{ !--VAR name = "var"--}}
-{{! --VAR name = "var"--}}
-{{!- -VAR name = "var"--}}
+{{ VAR var}}
+{{VARvar}}
+{{ VAR var /}}
+{{VARvar/}}
+{{ VARvar}}
+{{ !--VAR var--}}
+{{! --VAR var--}}
+{{!- -VAR var--}}
 {{!--VAR name = var--}}
-{{!--VAR name = "var"- -}}
-{{!--VAR name = "var"-- }}
-{{!--VARname = "var"--}}
-{{!-- VARname = "var"--}}
+{{!--VAR var- -}}
+{{!--VAR var-- }}
+{{!--VARvar--}}
+{{!-- VARvar--}}
 
-{{ INCLUDE name = "var"}}
-{{INCLUDEname = "var"}}
-{{ INCLUDE name = "var" /}}
-{{INCLUDEname = "var"/}}
-{{ !--INCLUDE name = "var"--}}
-{{! --INCLUDE name = "var"--}}
-{{!- -INCLUDE name = "var"--}}
-{{!--INCLUDE name = "var"- -}}
-{{!--INCLUDE name = "var"-- }}
-{{ INCLUDEname = "var"}}
-{{!--INCLUDEname = "var"--}}
-{{!-- INCLUDEname = "var"--}}
+{{ INCLUDE var}}
+{{INCLUDEvar}}
+{{ INCLUDE var /}}
+{{INCLUDEvar/}}
+{{ !--INCLUDE var--}}
+{{! --INCLUDE var--}}
+{{!- -INCLUDE var--}}
+{{!--INCLUDE var- -}}
+{{!--INCLUDE var-- }}
+{{ INCLUDEvar}}
+{{!--INCLUDEvar--}}
+{{!-- INCLUDEvar--}}
 
-{{ LOOP name = "var"}}
-{{LOOPname = "var"}}
-{{ LOOPname = "var"}}
-{{ !--LOOP name = "var"--}}
-{{! --LOOP name = "var"--}}
-{{!- -LOOP name = "var"--}}
+{{ LOOP var}}
+{{LOOPvar}}
+{{ LOOPvar}}
+{{ !--LOOP var--}}
+{{! --LOOP var--}}
+{{!- -LOOP var--}}
 {{!--LOOP name = var--}}
-{{!--LOOP name = "var"- -}}
-{{!--LOOP name = "var"-- }}
-{{!--LOOPname = "var"--}}
-{{!-- LOOPname = "var"--}}
+{{!--LOOP var- -}}
+{{!--LOOP var-- }}
+{{!--LOOPvar--}}
+{{!-- LOOPvar--}}
 
-{{ IF name = "var"}}
-{{IFname = "var"}}
-{{ IFname = "var"}}
-{{ !--IF name = "var"--}}
-{{! --IF name = "var"--}}
-{{!- -IF name = "var"--}}
+{{ IF var}}
+{{IFvar}}
+{{ IFvar}}
+{{ !--IF var--}}
+{{! --IF var--}}
+{{!- -IF var--}}
 {{!--IF name = var--}}
-{{!--IF name = "var"- -}}
-{{!--IF name = "var"-- }}
-{{!--IFname = "var"--}}
-{{!-- IFname = "var"--}}
+{{!--IF var- -}}
+{{!--IF var-- }}
+{{!--IFvar--}}
+{{!-- IFvar--}}
 
-{{ ELSIF name = "var"}}
-{{ELSIFname = "var"}}
-{{ ELSIFname = "var"}}
-{{ ELSIF name = "var" /}}
-{{ELSIFname = "var"/}}
-{{ ELSIFname = "var" /}}
-{{ !--ELSIF name = "var"--}}
-{{! --ELSIF name = "var"--}}
-{{!- -ELSIF name = "var"--}}
+{{ ELSIF var}}
+{{ELSIFvar}}
+{{ ELSIFvar}}
+{{ ELSIF var /}}
+{{ELSIFvar/}}
+{{ ELSIFvar /}}
+{{ !--ELSIF var--}}
+{{! --ELSIF var--}}
+{{!- -ELSIF var--}}
 {{!--ELSIF name = var--}}
-{{!--ELSIF name = "var"- -}}
-{{!--ELSIF name = "var"-- }}
-{{!--ELSIFname = "var"--}}
-{{!-- ELSIFname = "var"--}}
+{{!--ELSIF var- -}}
+{{!--ELSIF var-- }}
+{{!--ELSIFvar--}}
+{{!-- ELSIFvar--}}
 
 {{ ELSE}}
 {{ ELSE }}
@@ -658,27 +644,27 @@ cat << "EOF" > tmplfile
 {{!--ELSE- -}}
 {{!--ELSE-- }}
 
-{{ /IF}}
-{{ /IF }}
+{{ ENDIF}}
+{{ ENDIF }}
 {{/ IF}}
 {{/ IF }}
-{{ !--/IF--}}
-{{! --/IF--}}
-{{!- -/IF--}}
-{{!--/IF- -}}
-{{!--/IF-- }}
+{{ !--ENDIF--}}
+{{! --ENDIF--}}
+{{!- -ENDIF--}}
+{{!--ENDIF- -}}
+{{!--ENDIF-- }}
 {{!--/ IF--}}
 {{!-- / IF --}}
 
-{{ /LOOP}}
-{{ /LOOP }}
+{{ ENDLOOP}}
+{{ ENDLOOP }}
 {{/ LOOP}}
 {{/ LOOP }}
-{{ !--/LOOP--}}
-{{! --/LOOP--}}
-{{!- -/LOOP--}}
-{{!--/LOOP- -}}
-{{!--/LOOP-- }}
+{{ !--ENDLOOP--}}
+{{! --ENDLOOP--}}
+{{!- -ENDLOOP--}}
+{{!--ENDLOOP- -}}
+{{!--ENDLOOP-- }}
 {{!--/ LOOP--}}
 {{!-- / LOOP --}}
 
@@ -736,40 +722,40 @@ TEST=7  ########################################
 
 cat << "EOF" > tmplfile
 
-{{VAR name = "var"--}}
-{{VAR name = "var" --}}
-{{!--VAR name = "var"}}
-{{!-- VAR name = "var" }}
-{{!--VAR name = "var"/}}
-{{!-- VAR name = "var" /}}
+{{VAR var--}}
+{{VAR var --}}
+{{!--VAR var}}
+{{!-- VAR var }}
+{{!--VAR var/}}
+{{!-- VAR var /}}
 
-{{INCLUDE name = "var"--}}
-{{INCLUDE name = "var" --}}
-{{!--INCLUDE name = "var"}}
-{{!-- INCLUDE name = "var" }}
-{{!--INCLUDE name = "var"/}}
-{{!-- INCLUDE name = "var" /}}
+{{INCLUDE var--}}
+{{INCLUDE var --}}
+{{!--INCLUDE var}}
+{{!-- INCLUDE var }}
+{{!--INCLUDE var/}}
+{{!-- INCLUDE var /}}
 
-{{LOOP name = "var"/}}
-{{LOOP name = "var" /}}
-{{LOOP name = "var"--}}
-{{LOOP name = "var" --}}
-{{!--LOOP name = "var"}}
-{{!-- LOOP name = "var" }}
+{{LOOP var/}}
+{{LOOP var /}}
+{{LOOP var--}}
+{{LOOP var --}}
+{{!--LOOP var}}
+{{!-- LOOP var }}
 
-{{IF name = "var"/}}
-{{IF name = "var" /}}
-{{IF name = "var"--}}
-{{IF name = "var" --}}
-{{!--IF name = "var"}}
-{{!-- IF name = "var" }}
+{{IF var/}}
+{{IF var /}}
+{{IF var--}}
+{{IF var --}}
+{{!--IF var}}
+{{!-- IF var }}
 
-{{ELSIF name = "var"--}}
-{{ELSIF name = "var" --}}
-{{!--ELSIF name = "var"}}
-{{!-- ELSIF name = "var" }}
-{{!--ELSIF name = "var"/}}
-{{!-- ELSIF name = "var" /}}
+{{ELSIF var--}}
+{{ELSIF var --}}
+{{!--ELSIF var}}
+{{!-- ELSIF var }}
+{{!--ELSIF var/}}
+{{!-- ELSIF var /}}
 
 {{ELSE--}}
 {{ELSE --}}
@@ -778,19 +764,19 @@ cat << "EOF" > tmplfile
 {{!--ELSE/}}
 {{!-- ELSE /}}
 
-{{/IF/}}
-{{/IF /}}
-{{/IF--}}
-{{/IF --}}
-{{!--/IF}}
-{{!-- /IF }}
+{{ENDIF/}}
+{{ENDIF /}}
+{{ENDIF--}}
+{{ENDIF --}}
+{{!--ENDIF}}
+{{!-- ENDIF }}
 
-{{/LOOP/}}
-{{/LOOP /}}
-{{/LOOP--}}
-{{/LOOP --}}
-{{!--/LOOP}}
-{{!-- /LOOP }}
+{{ENDLOOP/}}
+{{ENDLOOP /}}
+{{ENDLOOP--}}
+{{ENDLOOP --}}
+{{!--ENDLOOP}}
+{{!-- ENDLOOP }}
 
 {{BREAK--}}
 {{BREAK --}}
@@ -827,103 +813,90 @@ check
 
 TEST=8  ########################################
 
-# Testing VAR tag with just "name =" attribute
+# Testing VAR tag with just " attribute
 
-cat << "EOF" > tmplfile
+cat << EOF" > tmplfile
 
-X{{VAR name="bogus"}}X
-X{{VAR name ="bogus"}}X
-X{{VAR name= "bogus"}}X
-X{{VAR name="bogus" }}X
-X{{VAR name = "bogus" }}X
-X{{VAR     name      =      "bogus"    }}X
+X{{VAR bogus}}X
+X{{VAR bogus}}X
+X{{VAR bogus}}X
+X{{VAR bogus }}X
+X{{VAR bogus }}X
+X{{VAR     bogus    }}X
 X{{VAR
-  name
-  =
-  "bogus"
+  bogus
   }}X
-X{{VAR name = "bogus"}}{{VAR name = "bogus"}}X
-X{{vAr NaMe = "bogus"}}X
+X{{VAR bogus}}{{VAR bogus}}X
+X{{vAr bogus}}X
 
-X{{VAR name="bogus"/}}X
-X{{VAR name ="bogus"/}}X
-X{{VAR name= "bogus"/}}X
-X{{VAR name="bogus" /}}X
-X{{VAR name = "bogus" /}}X
-X{{VAR     name      =      "bogus"    /}}X
+X{{VAR bogus/}}X
+X{{VAR bogus/}}X
+X{{VAR bogus/}}X
+X{{VAR bogus /}}X
+X{{VAR bogus /}}X
+X{{VAR     bogus    /}}X
 X{{VAR
-  name
-  =
-  "bogus"
+  bogus
   /}}X
-X{{VAR name = "bogus"/}}{{VAR name = "bogus"/}}X
-X{{vAr NaMe = "bogus"/}}X
+X{{VAR bogus/}}{{VAR bogus/}}X
+X{{vAr bogus/}}X
 
-X{{!--VAR name="bogus"--}}X
-X{{!-- VAR name="bogus"--}}X
-X{{!--VAR name ="bogus"--}}X
-X{{!--VAR name= "bogus"--}}X
-X{{!--VAR name="bogus" --}}X
-X{{!-- VAR name = "bogus" --}}X
-X{{!--   VAR     name      =      "bogus"    --}}X
+X{{!--VAR bogus--}}X
+X{{!-- VAR bogus--}}X
+X{{!--VAR bogus--}}X
+X{{!--VAR bogus--}}X
+X{{!--VAR bogus --}}X
+X{{!-- VAR bogus --}}X
+X{{!--   VAR     bogus    --}}X
 X{{!--
   VAR
-  name
-  =
-  "bogus"
+  bogus
   --}}X
-X{{!--VAR name = "bogus"--}}{{!--VAR name = "bogus"--}}X
-X{{!--vAr NaMe = "bogus"--}}X
+X{{!--VAR bogus--}}{{!--VAR bogus--}}X
+X{{!--vAr bogus--}}X
 
-X{{VAR name="var"}}X
-X{{VAR name ="var"}}X
-X{{VAR name= "var"}}X
-X{{VAR name="var" }}X
-X{{VAR name = "var" }}X
-X{{VAR     name      =      "var"    }}X
+X{{VAR var}}X
+X{{VAR var}}X
+X{{VAR var}}X
+X{{VAR var }}X
+X{{VAR var }}X
+X{{VAR     var    }}X
 X{{VAR
-  name
-  =
-  "var"
+  var
   }}X
-X{{VAR name = "var"}}{{VAR name = "var"}}X
-X{{vAr NaMe = "var"}}X
+X{{VAR var}}{{VAR var}}X
+X{{vAr var}}X
 
-X{{VAR name="var"/}}X
-X{{VAR name ="var"/}}X
-X{{VAR name= "var"/}}X
-X{{VAR name="var" /}}X
-X{{VAR name = "var" /}}X
-X{{VAR     name      =      "var"    /}}X
+X{{VAR var/}}X
+X{{VAR var/}}X
+X{{VAR var/}}X
+X{{VAR var /}}X
+X{{VAR var /}}X
+X{{VAR     var    /}}X
 X{{VAR
-  name
-  =
-  "var"
+  var
   /}}X
-X{{VAR name = "var"/}}{{VAR name = "var"/}}X
-X{{vAr NaMe = "var"/}}X
+X{{VAR var/}}{{VAR var/}}X
+X{{vAr var/}}X
 
-X{{!--VAR name="var"--}}X
-X{{!-- VAR name="var"--}}X
-X{{!--VAR name ="var"--}}X
-X{{!--VAR name= "var"--}}X
-X{{!--VAR name="var" --}}X
-X{{!-- VAR name = "var" --}}X
-X{{!--    VAR     name      =      "var"    --}}X
+X{{!--VAR var--}}X
+X{{!-- VAR var--}}X
+X{{!--VAR var--}}X
+X{{!--VAR var--}}X
+X{{!--VAR var --}}X
+X{{!-- VAR var --}}X
+X{{!--    VAR     var    --}}X
 X{{!--
   VAR
-  name
-  =
-  "var"
+  var
   --}}X
-X{{!--VAR name = "var"--}}{{!--VAR name = "var"--}}X
-X{{!--vAr NaMe = "var"--}}X
+X{{!--VAR var--}}{{!--VAR var--}}X
+X{{!--vAr var--}}X
 
-X{{VAR name = "var"}}{{VAR name = "bogus"}}X
-X{{VAR name = "bogus"}}{{VAR name = "var"}}X
+X{{VAR var}}{{VAR bogus}}X
+X{{VAR bogus}}{{VAR var}}X
 
-X{{VAR name =
-  "This variable has an extremely long, but nevertheless legal, name"}}X
+X{{VAR This variable has an extremely long, but nevertheless legal, name}}X
 
 EOF
 
@@ -1010,123 +983,111 @@ TEST=9  ########################################
 
 cat << "EOF" > tmplfile
 
-X{{VAR name="bogus"default="DEFAULT"}}X
-X{{VAR name ="bogus"default="DEFAULT"}}X
-X{{VAR name= "bogus"default="DEFAULT"}}X
-X{{VAR name="bogus" default="DEFAULT"}}X
-X{{VAR name="bogus"default ="DEFAULT"}}X
-X{{VAR name="bogus"default= "DEFAULT"}}X
-X{{VAR name="bogus"default="DEFAULT" }}X
-X{{VAR   name   =   "bogus"   default   =   "DEFAULT"   }}X
+X{{VAR bogusdefault="DEFAULT"}}X
+X{{VAR bogusdefault="DEFAULT"}}X
+X{{VAR bogusdefault="DEFAULT"}}X
+X{{VAR bogus default="DEFAULT"}}X
+X{{VAR bogusdefault ="DEFAULT"}}X
+X{{VAR bogusdefault= "DEFAULT"}}X
+X{{VAR bogusdefault="DEFAULT" }}X
+X{{VAR   bogus   default   =   "DEFAULT"   }}X
 X{{VAR
-  name
-  =
-  "bogus"
+  bogus
   default
   =
   "DEFAULT"
   }}X
-X{{VaR nAmE="bogus" DefAUlT="DEFAULT" /}}X
-X{{VAR default="DEFAULT" name = "bogus"/}}X
+X{{VaR bogus DefAUlT="DEFAULT" /}}X
+X{{VAR default="DEFAULT" bogus/}}X
 
-X{{VAR name="bogus"default="DEFAULT"/}}X
-X{{VAR name ="bogus"default="DEFAULT"/}}X
-X{{VAR name= "bogus"default="DEFAULT"/}}X
-X{{VAR name="bogus" default="DEFAULT"/}}X
-X{{VAR name="bogus"default ="DEFAULT"/}}X
-X{{VAR name="bogus"default= "DEFAULT"/}}X
-X{{VAR name="bogus"default="DEFAULT" /}}X
-X{{VAR   name   =   "bogus"   default   =   "DEFAULT"   /}}X
+X{{VAR bogusdefault="DEFAULT"/}}X
+X{{VAR bogusdefault="DEFAULT"/}}X
+X{{VAR bogusdefault="DEFAULT"/}}X
+X{{VAR bogus default="DEFAULT"/}}X
+X{{VAR bogusdefault ="DEFAULT"/}}X
+X{{VAR bogusdefault= "DEFAULT"/}}X
+X{{VAR bogusdefault="DEFAULT" /}}X
+X{{VAR   bogus   default   =   "DEFAULT"   /}}X
 X{{VAR
-  name
-  =
-  "bogus"
+  bogus
   default
   =
   "DEFAULT"
   /}}X
-X{{VaR nAmE="bogus" DefAUlT="DEFAULT" /}}X
-X{{VAR default="DEFAULT" name = "bogus"/}}X
+X{{VaR bogus DefAUlT="DEFAULT" /}}X
+X{{VAR default="DEFAULT" bogus/}}X
 
-X{{!--VAR name="bogus"default="DEFAULT"--}}X
-X{{!-- VAR name="bogus"default="DEFAULT"--}}X
-X{{!--VAR name ="bogus"default="DEFAULT"--}}X
-X{{!--VAR name= "bogus"default="DEFAULT"--}}X
-X{{!--VAR name="bogus" default="DEFAULT"--}}X
-X{{!--VAR name="bogus"default ="DEFAULT"--}}X
-X{{!--VAR name="bogus"default= "DEFAULT"--}}X
-X{{!--VAR name="bogus"default="DEFAULT" --}}X
-X{{!--  VAR   name   =   "bogus"   default   =   "DEFAULT"   --}}X
+X{{!--VAR bogusdefault="DEFAULT"--}}X
+X{{!-- VAR bogusdefault="DEFAULT"--}}X
+X{{!--VAR bogusdefault="DEFAULT"--}}X
+X{{!--VAR bogusdefault="DEFAULT"--}}X
+X{{!--VAR bogus default="DEFAULT"--}}X
+X{{!--VAR bogusdefault ="DEFAULT"--}}X
+X{{!--VAR bogusdefault= "DEFAULT"--}}X
+X{{!--VAR bogusdefault="DEFAULT" --}}X
+X{{!--  VAR   bogus   default   =   "DEFAULT"   --}}X
 X{{!--
   VAR
-  name
-  =
-  "bogus"
+  bogus
   default
   =
   "DEFAULT"
   --}}X
-X{{!--VaR nAmE="bogus" DefAUlT="DEFAULT"--}}X
-X{{!--VAR default="DEFAULT" name = "bogus"--}}X
+X{{!--VaR bogus DefAUlT="DEFAULT"--}}X
+X{{!--VAR default="DEFAULT" bogus--}}X
 
-X{{VAR name="var"default="DEFAULT"}}X
-X{{VAR name ="var"default="DEFAULT"}}X
-X{{VAR name= "var"default="DEFAULT"}}X
-X{{VAR name="var" default="DEFAULT"}}X
-X{{VAR name="var"default ="DEFAULT"}}X
-X{{VAR name="var"default= "DEFAULT"}}X
-X{{VAR name="var"default="DEFAULT" }}X
-X{{VAR   name   =   "var"   default   =   "DEFAULT"   }}X
+X{{VAR vardefault="DEFAULT"}}X
+X{{VAR vardefault="DEFAULT"}}X
+X{{VAR vardefault="DEFAULT"}}X
+X{{VAR var default="DEFAULT"}}X
+X{{VAR vardefault ="DEFAULT"}}X
+X{{VAR vardefault= "DEFAULT"}}X
+X{{VAR vardefault="DEFAULT" }}X
+X{{VAR   var   default   =   "DEFAULT"   }}X
 X{{VAR
-  name
-  =
-  "var"
+  var
   default
   =
   "DEFAULT"
   }}X
-X{{VaR nAmE="var" DefAUlT="DEFAULT"}}X
-X{{VAR default="DEFAULT" name="var"}}X
+X{{VaR var DefAUlT="DEFAULT"}}X
+X{{VAR default="DEFAULT" var}}X
 
-X{{VAR name="var"default="DEFAULT"/}}X
-X{{VAR name ="var"default="DEFAULT"/}}X
-X{{VAR name= "var"default="DEFAULT"/}}X
-X{{VAR name="var" default="DEFAULT"/}}X
-X{{VAR name="var"default ="DEFAULT"/}}X
-X{{VAR name="var"default= "DEFAULT"/}}X
-X{{VAR name="var"default="DEFAULT" /}}X
-X{{VAR   name   =   "var"   default   =   "DEFAULT"   /}}X
+X{{VAR vardefault="DEFAULT"/}}X
+X{{VAR vardefault="DEFAULT"/}}X
+X{{VAR vardefault="DEFAULT"/}}X
+X{{VAR var default="DEFAULT"/}}X
+X{{VAR vardefault ="DEFAULT"/}}X
+X{{VAR vardefault= "DEFAULT"/}}X
+X{{VAR vardefault="DEFAULT" /}}X
+X{{VAR   var   default   =   "DEFAULT"   /}}X
 X{{VAR
-  name
-  =
-  "var"
+  var
   default
   =
   "DEFAULT"
   /}}X
-X{{VaR nAmE="var" DefAUlT="DEFAULT"/}}X
-X{{VAR default="DEFAULT" name="var"/}}X
+X{{VaR var DefAUlT="DEFAULT"/}}X
+X{{VAR default="DEFAULT" var/}}X
 
-X{{!--VAR name="var"default="DEFAULT"--}}X
-X{{!-- VAR name="var"default="DEFAULT"--}}X
-X{{!--VAR name ="var"default="DEFAULT"--}}X
-X{{!--VAR name= "var"default="DEFAULT"--}}X
-X{{!--VAR name="var" default="DEFAULT"--}}X
-X{{!--VAR name="var"default ="DEFAULT"--}}X
-X{{!--VAR name="var"default= "DEFAULT"--}}X
-X{{!--VAR name="var"default="DEFAULT" --}}X
-X{{!--  VAR   name   =   "var"   default   =   "DEFAULT"   --}}X
+X{{!--VAR vardefault="DEFAULT"--}}X
+X{{!-- VAR vardefault="DEFAULT"--}}X
+X{{!--VAR vardefault="DEFAULT"--}}X
+X{{!--VAR vardefault="DEFAULT"--}}X
+X{{!--VAR var default="DEFAULT"--}}X
+X{{!--VAR vardefault ="DEFAULT"--}}X
+X{{!--VAR vardefault= "DEFAULT"--}}X
+X{{!--VAR vardefault="DEFAULT" --}}X
+X{{!--  VAR   var   default   =   "DEFAULT"   --}}X
 X{{!--
   VAR
-  name
-  =
-  "var"
+  var
   default
   =
   "DEFAULT"
   --}}X
-X{{!--VaR nAmE="var" DefAUlT="DEFAULT"--}}X
-X{{!--VAR default="DEFAULT" name="var"--}}X
+X{{!--VaR var DefAUlT="DEFAULT"--}}X
+X{{!--VAR default="DEFAULT" var--}}X
 
 EOF
 
@@ -1218,123 +1179,111 @@ TEST=10  ########################################
 
 cat << "EOF" > tmplfile
 
-X{{VAR name="bogus"fmt="entity"}}X
-X{{VAR name ="bogus"fmt="entity"}}X
-X{{VAR name= "bogus"fmt="entity"}}X
-X{{VAR name="bogus" fmt="entity"}}X
-X{{VAR name="bogus"fmt ="entity"}}X
-X{{VAR name="bogus"fmt= "entity"}}X
-X{{VAR name="bogus"fmt="entity" }}X
-X{{VAR   name   =   "bogus"   fmt   =   "entity"   }}X
+X{{VAR bogusfmt="entity"}}X
+X{{VAR bogusfmt="entity"}}X
+X{{VAR bogusfmt="entity"}}X
+X{{VAR bogus fmt="entity"}}X
+X{{VAR bogusfmt ="entity"}}X
+X{{VAR bogusfmt= "entity"}}X
+X{{VAR bogusfmt="entity" }}X
+X{{VAR   bogus   fmt   =   "entity"   }}X
 X{{VAR
-  name
-  =
-  "bogus"
+  bogus
   fmt
   =
   "entity"
   }}X
-X{{VaR nAmE="bogus" fMt="entity" }}X
-X{{VAR fmt="entity" name = "bogus"}}X
+X{{VaR bogus fMt="entity" }}X
+X{{VAR fmt="entity" bogus}}X
 
-X{{VAR name="bogus"fmt="entity"/}}X
-X{{VAR name ="bogus"fmt="entity"/}}X
-X{{VAR name= "bogus"fmt="entity"/}}X
-X{{VAR name="bogus" fmt="entity"/}}X
-X{{VAR name="bogus"fmt ="entity"/}}X
-X{{VAR name="bogus"fmt= "entity"/}}X
-X{{VAR name="bogus"fmt="entity" /}}X
-X{{VAR   name   =   "bogus"   fmt   =   "entity"   /}}X
+X{{VAR bogusfmt="entity"/}}X
+X{{VAR bogusfmt="entity"/}}X
+X{{VAR bogusfmt="entity"/}}X
+X{{VAR bogus fmt="entity"/}}X
+X{{VAR bogusfmt ="entity"/}}X
+X{{VAR bogusfmt= "entity"/}}X
+X{{VAR bogusfmt="entity" /}}X
+X{{VAR   bogus   fmt   =   "entity"   /}}X
 X{{VAR
-  name
-  =
-  "bogus"
+  bogus
   fmt
   =
   "entity"
   /}}X
-X{{VaR nAmE="bogus" fMt="entity" /}}X
-X{{VAR fmt="entity" name = "bogus"/}}X
+X{{VaR bogus fMt="entity" /}}X
+X{{VAR fmt="entity" bogus/}}X
 
-X{{!--VAR name="bogus"fmt="entity"--}}X
-X{{!-- VAR name="bogus"fmt="entity"--}}X
-X{{!--VAR name ="bogus"fmt="entity"--}}X
-X{{!--VAR name= "bogus"fmt="entity"--}}X
-X{{!--VAR name="bogus" fmt="entity"--}}X
-X{{!--VAR name="bogus"fmt ="entity"--}}X
-X{{!--VAR name="bogus"fmt= "entity"--}}X
-X{{!--VAR name="bogus"fmt="entity" --}}X
-X{{!--  VAR   name   =   "bogus"   fmt   =   "entity"   --}}X
+X{{!--VAR bogusfmt="entity"--}}X
+X{{!-- VAR bogusfmt="entity"--}}X
+X{{!--VAR bogusfmt="entity"--}}X
+X{{!--VAR bogusfmt="entity"--}}X
+X{{!--VAR bogus fmt="entity"--}}X
+X{{!--VAR bogusfmt ="entity"--}}X
+X{{!--VAR bogusfmt= "entity"--}}X
+X{{!--VAR bogusfmt="entity" --}}X
+X{{!--  VAR   bogus   fmt   =   "entity"   --}}X
 X{{!--
   VAR
-  name
-  =
-  "bogus"
+  bogus
   fmt
   =
   "entity"
   --}}X
-X{{!--VaR nAmE="bogus" FmT="entity"--}}X
-X{{!--VAR fmt="entity" name = "bogus"--}}X
+X{{!--VaR bogus FmT="entity"--}}X
+X{{!--VAR fmt="entity" bogus--}}X
 
-X{{VAR name="var"fmt="entity"}}X
-X{{VAR name ="var"fmt="entity"}}X
-X{{VAR name= "var"fmt="entity"}}X
-X{{VAR name="var" fmt="entity"}}X
-X{{VAR name="var"fmt ="entity"}}X
-X{{VAR name="var"fmt= "entity"}}X
-X{{VAR name="var"fmt="entity" }}X
-X{{VAR   name   =   "var"   fmt   =   "entity"   }}X
+X{{VAR varfmt="entity"}}X
+X{{VAR varfmt="entity"}}X
+X{{VAR varfmt="entity"}}X
+X{{VAR var fmt="entity"}}X
+X{{VAR varfmt ="entity"}}X
+X{{VAR varfmt= "entity"}}X
+X{{VAR varfmt="entity" }}X
+X{{VAR   var   fmt   =   "entity"   }}X
 X{{VAR
-  name
-  =
-  "var"
+  var
   fmt
   =
   "entity"
   }}X
-X{{VaR nAmE="var" fmT="entity"}}X
-X{{VAR fmt="entity" name="var"}}X
+X{{VaR var fmT="entity"}}X
+X{{VAR fmt="entity" var}}X
 
-X{{VAR name="var"fmt="entity"/}}X
-X{{VAR name ="var"fmt="entity"/}}X
-X{{VAR name= "var"fmt="entity"/}}X
-X{{VAR name="var" fmt="entity"/}}X
-X{{VAR name="var"fmt ="entity"/}}X
-X{{VAR name="var"fmt= "entity"/}}X
-X{{VAR name="var"fmt="entity" /}}X
-X{{VAR   name   =   "var"   fmt   =   "entity"   /}}X
+X{{VAR varfmt="entity"/}}X
+X{{VAR varfmt="entity"/}}X
+X{{VAR varfmt="entity"/}}X
+X{{VAR var fmt="entity"/}}X
+X{{VAR varfmt ="entity"/}}X
+X{{VAR varfmt= "entity"/}}X
+X{{VAR varfmt="entity" /}}X
+X{{VAR   var   fmt   =   "entity"   /}}X
 X{{VAR
-  name
-  =
-  "var"
+  var
   fmt
   =
   "entity"
   /}}X
-X{{VaR nAmE="var" fmT="entity"/}}X
-X{{VAR fmt="entity" name="var"/}}X
+X{{VaR var fmT="entity"/}}X
+X{{VAR fmt="entity" var/}}X
 
-X{{!--VAR name="var"fmt="entity"--}}X
-X{{!-- VAR name="var"fmt="entity"--}}X
-X{{!--VAR name ="var"fmt="entity"--}}X
-X{{!--VAR name= "var"fmt="entity"--}}X
-X{{!--VAR name="var" fmt="entity"--}}X
-X{{!--VAR name="var"fmt ="entity"--}}X
-X{{!--VAR name="var"fmt= "entity"--}}X
-X{{!--VAR name="var"fmt="entity" --}}X
-X{{!--  VAR   name   =   "var"   fmt   =   "entity"   --}}X
+X{{!--VAR varfmt="entity"--}}X
+X{{!-- VAR varfmt="entity"--}}X
+X{{!--VAR varfmt="entity"--}}X
+X{{!--VAR varfmt="entity"--}}X
+X{{!--VAR var fmt="entity"--}}X
+X{{!--VAR varfmt ="entity"--}}X
+X{{!--VAR varfmt= "entity"--}}X
+X{{!--VAR varfmt="entity" --}}X
+X{{!--  VAR   var   fmt   =   "entity"   --}}X
 X{{!--
   VAR
-  name
-  =
-  "var"
+  var
   fmt
   =
   "entity"
   --}}X
-X{{!--VaR nAmE="var" fMt="entity"--}}X
-X{{!--VAR fmt="entity" name="var"--}}X
+X{{!--VaR var fMt="entity"--}}X
+X{{!--VAR fmt="entity" var--}}X
 
 EOF
 
@@ -1426,47 +1375,47 @@ TEST=11  ########################################
 
 cat << "EOF" > tmplfile
 
-X{{VAR name="var" fmt="entity" default="<<DEFAULT>>"}}X
-X{{VAR name="var" default="<<DEFAULT>>" fmt="entity"}}X
-X{{VAR default="<<DEFAULT>>" name="var" fmt="entity"}}X
-X{{VAR default="<<DEFAULT>>" fmt="entity" name="var"}}X
-X{{VAR fmt="entity" name="var" default="<<DEFAULT>>"}}X
-X{{VAR fmt="entity" default="<<DEFAULT>>" name="var"}}X
+X{{VAR var fmt="entity" default="<<DEFAULT>>"}}X
+X{{VAR var default="<<DEFAULT>>" fmt="entity"}}X
+X{{VAR var default="<<DEFAULT>>" fmt="entity"}}X
+X{{VAR var default="<<DEFAULT>>" fmt="entity"}}X
+X{{VAR var fmt="entity" default="<<DEFAULT>>"}}X
+X{{VAR fmt="entity" default="<<DEFAULT>>" var}}X
 
-X{{VAR name="var" fmt="entity" default="<<DEFAULT>>"/}}X
-X{{VAR name="var" default="<<DEFAULT>>" fmt="entity"/}}X
-X{{VAR default="<<DEFAULT>>" name="var" fmt="entity"/}}X
-X{{VAR default="<<DEFAULT>>" fmt="entity" name="var"/}}X
-X{{VAR fmt="entity" name="var" default="<<DEFAULT>>"/}}X
-X{{VAR fmt="entity" default="<<DEFAULT>>" name="var"/}}X
+X{{VAR var fmt="entity" default="<<DEFAULT>>"/}}X
+X{{VAR var default="<<DEFAULT>>" fmt="entity"/}}X
+X{{VAR default="<<DEFAULT>>" var fmt="entity"/}}X
+X{{VAR default="<<DEFAULT>>" fmt="entity" var/}}X
+X{{VAR fmt="entity" var default="<<DEFAULT>>"/}}X
+X{{VAR fmt="entity" default="<<DEFAULT>>" var/}}X
 
-X{{!--VAR name="var" fmt="entity" default="<<DEFAULT>>"--}}X
-X{{!--VAR name="var" default="<<DEFAULT>>" fmt="entity"--}}X
-X{{!--VAR default="<<DEFAULT>>" name="var" fmt="entity"--}}X
-X{{!--VAR default="<<DEFAULT>>" fmt="entity" name="var"--}}X
-X{{!--VAR fmt="entity" name="var" default="<<DEFAULT>>"--}}X
-X{{!--VAR fmt="entity" default="<<DEFAULT>>" name="var"--}}X
+X{{!--VAR var fmt="entity" default="<<DEFAULT>>"--}}X
+X{{!--VAR var default="<<DEFAULT>>" fmt="entity"--}}X
+X{{!--VAR default="<<DEFAULT>>" var fmt="entity"--}}X
+X{{!--VAR default="<<DEFAULT>>" fmt="entity" var--}}X
+X{{!--VAR fmt="entity" var default="<<DEFAULT>>"--}}X
+X{{!--VAR fmt="entity" default="<<DEFAULT>>" var--}}X
 
-X{{VAR name="bogus" fmt="entity" default="<<DEFAULT>>"}}X
-X{{VAR name="bogus" default="<<DEFAULT>>" fmt="entity"}}X
-X{{VAR default="<<DEFAULT>>" name="bogus" fmt="entity"}}X
-X{{VAR default="<<DEFAULT>>" fmt="entity" name="bogus"}}X
-X{{VAR fmt="entity" name="bogus" default="<<DEFAULT>>"}}X
-X{{VAR fmt="entity" default="<<DEFAULT>>" name="bogus"}}X
+X{{VAR bogus fmt="entity" default="<<DEFAULT>>"}}X
+X{{VAR bogus default="<<DEFAULT>>" fmt="entity"}}X
+X{{VAR default="<<DEFAULT>>" bogus fmt="entity"}}X
+X{{VAR default="<<DEFAULT>>" fmt="entity" bogus}}X
+X{{VAR fmt="entity" bogus default="<<DEFAULT>>"}}X
+X{{VAR fmt="entity" default="<<DEFAULT>>" bogus}}X
 
-X{{VAR name="bogus" fmt="entity" default="<<DEFAULT>>"/}}X
-X{{VAR name="bogus" default="<<DEFAULT>>" fmt="entity"/}}X
-X{{VAR default="<<DEFAULT>>" name="bogus" fmt="entity"/}}X
-X{{VAR default="<<DEFAULT>>" fmt="entity" name="bogus"/}}X
-X{{VAR fmt="entity" name="bogus" default="<<DEFAULT>>"/}}X
-X{{VAR fmt="entity" default="<<DEFAULT>>" name="bogus"/}}X
+X{{VAR bogus fmt="entity" default="<<DEFAULT>>"/}}X
+X{{VAR bogus default="<<DEFAULT>>" fmt="entity"/}}X
+X{{VAR default="<<DEFAULT>>" bogus fmt="entity"/}}X
+X{{VAR default="<<DEFAULT>>" fmt="entity" bogus/}}X
+X{{VAR fmt="entity" bogus default="<<DEFAULT>>"/}}X
+X{{VAR fmt="entity" default="<<DEFAULT>>" bogus/}}X
 
-X{{!--VAR name="bogus" fmt="entity" default="<<DEFAULT>>"--}}X
-X{{!--VAR name="bogus" default="<<DEFAULT>>" fmt="entity"--}}X
-X{{!--VAR default="<<DEFAULT>>" name="bogus" fmt="entity"--}}X
-X{{!--VAR default="<<DEFAULT>>" fmt="entity" name="bogus"--}}X
-X{{!--VAR fmt="entity" name="bogus" default="<<DEFAULT>>"--}}X
-X{{!--VAR fmt="entity" default="<<DEFAULT>>" name="bogus"--}}X
+X{{!--VAR bogus fmt="entity" default="<<DEFAULT>>"--}}X
+X{{!--VAR bogus default="<<DEFAULT>>" fmt="entity"--}}X
+X{{!--VAR default="<<DEFAULT>>" bogus fmt="entity"--}}X
+X{{!--VAR default="<<DEFAULT>>" fmt="entity" bogus--}}X
+X{{!--VAR fmt="entity" bogus default="<<DEFAULT>>"--}}X
+X{{!--VAR fmt="entity" default="<<DEFAULT>>" bogus--}}X
 
 EOF
 
@@ -1526,11 +1475,11 @@ TEST=12  ########################################
 
 cat << "EOF" > tmplfile
 
-X{{VAR name="var" fmt="entity" default="DEFAULT"}}X
-X{{VAR name='var' fmt='entity' default='DEFAULT'}}X
-X{{VAR name=var   fmt=entity   default=DEFAULT}}X
-X{{VAR name="var" fmt='entity' default=DEFAULT}}X
-X{{VAR name=var   fmt="entity" default='DEFAULT'}}X
+X{{VAR var fmt="entity" default="DEFAULT"}}X
+X{{VAR var fmt='entity' default='DEFAULT'}}X
+X{{VAR var   fmt=entity   default=DEFAULT}}X
+X{{VAR var fmt='entity' default=DEFAULT}}X
+X{{VAR var   fmt="entity" default='DEFAULT'}}X
 
 EOF
 
@@ -1554,15 +1503,15 @@ TEST=13  ########################################
 
 cat << "EOF" > tmplfile
 
-{{VAR name = "var" fmt="entity"}}
-{{VAR name = "var" fmt="bogus1" /}}
-{{VAR fmt="entity" name = "var"}}
-{{VAR fmt="bogus2" name = "var"}}
+{{VAR var fmt="entity"}}
+{{VAR var fmt="bogus1" /}}
+{{VAR var fmt="entity" }}
+{{VAR var fmt="bogus2"}}
 {{!--
 
 
 
-VAR
+VAR var
 
 
 
@@ -1570,7 +1519,7 @@ fmt="bogus3"
 
 
 
-name="var"
+
 
 
 
@@ -1594,37 +1543,29 @@ TEST=14  ########################################
 
 cat << "EOF" > tmplfile
 
-X{{LOOP name="loop"}}X{{/LOOP}}X
-X{{LOOP name='loop'}}X{{/LOOP}}X
-X{{LOOP name=loop}}X{{/LOOP}}X
-X{{LOOP   name  =  "loop"  }}X{{/LOOP}}X
+X{{LOOP loop}}X{{ENDLOOP}}X
+X{{LOOP loop}}X{{ENDLOOP}}X
+X{{LOOP loop}}X{{ENDLOOP}}X
+X{{LOOP   loop  }}X{{ENDLOOP}}X
 X{{LOOP
 
-  name
+  loop
 
-  =
+  }}X{{ENDLOOP}}X
+X{{LoOp loop}}X{{ENDLOOP}}X
 
-  "loop"
-
-  }}X{{/LOOP}}X
-X{{LoOp NaMe = "loop"}}X{{/LOOP}}X
-
-X{{!--LOOP name="loop"--}}X{{/LOOP}}X
-X{{!--LOOP name='loop'--}}X{{/LOOP}}X
-X{{!--LOOP name=loop --}}X{{/LOOP}}X
-X{{!--   LOOP   name  =  "loop"  --}}X{{/LOOP}}X
+X{{!--LOOP loop--}}X{{ENDLOOP}}X
+X{{!--LOOP loop--}}X{{ENDLOOP}}X
+X{{!--LOOP loop --}}X{{ENDLOOP}}X
+X{{!--   LOOP   loop  --}}X{{ENDLOOP}}X
 X{{!--
 
   LOOP
 
-  name
+  loop
 
-  =
-
-  "loop"
-
-  --}}X{{/LOOP}}X
-X{{!--LoOp NaMe = "loop"--}}X{{/LOOP}}X
+  --}}X{{ENDLOOP}}X
+X{{!--LoOp loop--}}X{{ENDLOOP}}X
 
 EOF
 
@@ -1652,28 +1593,28 @@ check
 
 TEST=15  ########################################
 
-# Testing accepted {{/LOOP}} tag syntax
+# Testing accepted {{ENDLOOP}} tag syntax
 
 cat << "EOF" > tmplfile
 
-X{{LOOP name=loop}}X{{/LOOP}}X
-X{{LOOP name=loop}}X{{/LOOP }}X
-X{{LOOP name=loop}}X{{/LOOP   }}X
-X{{LOOP name=loop}}X{{/LOOP
+X{{LOOP loop}}X{{ENDLOOP}}X
+X{{LOOP loop}}X{{ENDLOOP }}X
+X{{LOOP loop}}X{{ENDLOOP   }}X
+X{{LOOP loop}}X{{ENDLOOP
 
 }}X
-X{{LOOP name=loop}}X{{/LooP}}X
+X{{LOOP loop}}X{{ENDLOOP}}X
 
-X{{LOOP name=loop}}X{{!--/LOOP--}}X
-X{{LOOP name=loop}}X{{!-- /LOOP --}}X
-X{{LOOP name=loop}}X{{!--   /LOOP   --}}X
-X{{LOOP name=loop}}X{{!--
+X{{LOOP loop}}X{{!--ENDLOOP--}}X
+X{{LOOP loop}}X{{!-- ENDLOOP --}}X
+X{{LOOP loop}}X{{!--   ENDLOOP   --}}X
+X{{LOOP loop}}X{{!--
 
 
-/LOOP
+ENDLOOP
 
 --}}X
-X{{LOOP name=loop}}X{{!--/lOOp--}}X
+X{{LOOP loop}}X{{!--ENDLOOP--}}X
 
 EOF
 
@@ -1705,52 +1646,40 @@ cp /dev/null inclfile1
 
 cat << "EOF" > tmplfile
 
-X{{INCLUDE name="inclfile1"}}X
-X{{INCLUDE name='inclfile1'}}X
-X{{INCLUDE name=inclfile1}}X
-X{{INCLUDE   name  =  "inclfile1"  }}X
+X{{INCLUDE inclfile1}}X
+X{{INCLUDE inclfile1}}X
+X{{INCLUDE inclfile1}}X
+X{{INCLUDE   inclfile1  }}X
 X{{INCLUDE
 
-  name
-  
-  =
-
-  "inclfile1"
+  inclfile1
 
   }}X
-X{{InCluDe NAMe="inclfile1"}}X
+X{{InCluDe inclfile1}}X
 
-X{{INCLUDE name="inclfile1"/}}X
-X{{INCLUDE name='inclfile1'/}}X
-X{{INCLUDE name=inclfile1/}}X
-X{{INCLUDE   name  =  "inclfile1"  /}}X
+X{{INCLUDE inclfile1/}}X
+X{{INCLUDE inclfile1/}}X
+X{{INCLUDE inclfile1/}}X
+X{{INCLUDE   inclfile1  /}}X
 X{{INCLUDE
 
-  name
-  
-  =
-
-  "inclfile1"
+  inclfile1
 
   /}}X
-X{{InCluDe NAMe="inclfile1"/}}X
+X{{InCluDe inclfile1/}}X
 
-X{{!--INCLUDE name="inclfile1"--}}X
-X{{!--INCLUDE name='inclfile1'--}}X
-X{{!--INCLUDE name=inclfile1 --}}X
-X{{!--INCLUDE   name  =  "inclfile1"  --}}X
+X{{!--INCLUDE inclfile1--}}X
+X{{!--INCLUDE inclfile1--}}X
+X{{!--INCLUDE inclfile1 --}}X
+X{{!--INCLUDE   inclfile1  --}}X
 X{{!--
 
   INCLUDE
 
-  name
-
-  =
-
-  "inclfile1"
+  inclfile1
 
   --}}X
-X{{!--InClUDe NaMe="inclfile1"--}}X
+X{{!--InClUDe inclfile1--}}X
 
 EOF
 
@@ -1789,84 +1718,64 @@ TEST=17  ########################################
 
 cat << "EOF" > tmplfile
 
-X{{IF name="var"}}X{{/IF}}X
-X{{IF name='var'}}X{{/IF}}X
-X{{IF name=var}}X{{/IF}}X
-X{{IF   name  =  "var"  }}X{{/IF}}X
+X{{IF var}}X{{ENDIF}}X
+X{{IF var}}X{{ENDIF}}X
+X{{IF var}}X{{ENDIF}}X
+X{{IF   var  }}X{{ENDIF}}X
 X{{IF
 
-  name
+  var
 
-  =
+  }}X{{ENDIF}}X
+X{{IF var}}X{{ENDIF}}X
 
-  "var"
-
-  }}X{{/IF}}X
-X{{if NaMe = "var"}}X{{/IF}}X
-
-X{{!--IF name="var"--}}X{{/IF}}X
-X{{!--IF name='var'--}}X{{/IF}}X
-X{{!--IF name=var --}}X{{/IF}}X
-X{{!--   IF   name  =  "var"  --}}X{{/IF}}X
+X{{!--IF var--}}X{{ENDIF}}X
+X{{!--IF var--}}X{{ENDIF}}X
+X{{!--IF var --}}X{{ENDIF}}X
+X{{!--   IF   var  --}}X{{ENDIF}}X
 X{{!--
 
   IF
 
-  name
+  var
 
-  =
+  --}}X{{ENDIF}}X
+X{{!--iF var--}}X{{ENDIF}}X
 
-  "var"
-
-  --}}X{{/IF}}X
-X{{!--iF NaMe = "var"--}}X{{/IF}}X
-
-X{{IF name="var" value="testvalue"}}X{{/IF}}X
-X{{IF name="var" value='testvalue'}}X{{/IF}}X
-X{{IF name="var" value=testvalue}}X{{/IF}}X
-X{{IF name=var value=testvalue}}X{{/IF}}X
-X{{IF   name  =  "var"  value   =  "testvalue"  }}X{{/IF}}X
+X{{IF var =="testvalue"}}X{{ENDIF}}X
+X{{IF var == 'testvalue'}}X{{ENDIF}}X
+X{{IF var ==testvalue}}X{{ENDIF}}X
+X{{IF var ==testvalue}}X{{ENDIF}}X
+X{{IF   var  ==  "testvalue"  }}X{{ENDIF}}X
 X{{IF
 
-  name
+  var
 
-  =
-
-  "var"
-
-  value
-
-  =
+  ==
 
   "testvalue"
 
-  }}X{{/IF}}X
-X{{if NaMe = "var" vAluE="testvalue"}}X{{/IF}}X
-X{{IF value="testvalue" name="var"}}X{{/IF}}X
+  }}X{{ENDIF}}X
+X{{IF var =="testvalue"}}X{{ENDIF}}X
+X{{IF var=="testvalue"}}X{{ENDIF}}X
 
-X{{!--IF name="var" value="testvalue"--}}X{{/IF}}X
-X{{!--IF name="var" value='testvalue'--}}X{{/IF}}X
-X{{!--IF name="var" value=testvalue --}}X{{/IF}}X
-X{{!--IF name=var value=testvalue --}}X{{/IF}}X
-X{{!--IF   name  =  "var"  value   =  "testvalue"   --}}X{{/IF}}X
+X{{!--IF var =="testvalue"--}}X{{ENDIF}}X
+X{{!--IF var =='testvalue'--}}X{{ENDIF}}X
+X{{!--IF var ==testvalue --}}X{{ENDIF}}X
+X{{!--IF var ==testvalue --}}X{{ENDIF}}X
+X{{!--IF   var  ==  "testvalue"   --}}X{{ENDIF}}X
 X{{!--
   IF
 
-  name
+  var
 
-  =
-
-  "var"
-
-  value
-
-  =
+  ==
 
   "testvalue"
 
-  --}}X{{/IF}}X
-X{{!--if NaMe = "var" vAluE="testvalue"--}}X{{/IF}}X
-X{{!--IF value="testvalue" name="var"--}}X{{/IF}}X
+  --}}X{{ENDIF}}X
+X{{!--if var =="testvalue"--}}X{{ENDIF}}X
+X{{!--IF var =="testvalue"--}}X{{ENDIF}}X
 
 EOF
 
@@ -1916,122 +1825,92 @@ TEST=18  ########################################
 
 cat << "EOF" > tmplfile
 
-X{{IF name=x}}X{{ELSIF name="var"}}X{{/IF}}X
-X{{IF name=x}}X{{ELSIF name='var'}}X{{/IF}}X
-X{{IF name=x}}X{{ELSIF name=var}}X{{/IF}}X
-X{{IF name=x}}X{{ELSIF   name  =  "var"  }}X{{/IF}}X
-X{{IF name=x}}X{{ELSIF
+X{{IF x}}X{{ELSIF var}}X{{ENDIF}}X
+X{{IF x}}X{{ELSIF var}}X{{ENDIF}}X
+X{{IF x}}X{{ELSIF var}}X{{ENDIF}}X
+X{{IF x}}X{{ELSIF   var  }}X{{ENDIF}}X
+X{{IF x}}X{{ELSIF
 
-  name
+  var
 
-  =
+  }}X{{ENDIF}}X
+X{{IF x}}X{{ElSif var}}X{{ENDIF}}X
 
-  "var"
+X{{IF x}}X{{ELSIF var/}}X{{ENDIF}}X
+X{{IF x}}X{{ELSIF var/}}X{{ENDIF}}X
+X{{IF x}}X{{ELSIF var/}}X{{ENDIF}}X
+X{{IF x}}X{{ELSIF   var  /}}X{{ENDIF}}X
+X{{IF x}}X{{ELSIF
 
-  }}X{{/IF}}X
-X{{IF name=x}}X{{ElSif NaMe = "var"}}X{{/IF}}X
+  var
 
-X{{IF name=x}}X{{ELSIF name="var"/}}X{{/IF}}X
-X{{IF name=x}}X{{ELSIF name='var'/}}X{{/IF}}X
-X{{IF name=x}}X{{ELSIF name=var/}}X{{/IF}}X
-X{{IF name=x}}X{{ELSIF   name  =  "var"  /}}X{{/IF}}X
-X{{IF name=x}}X{{ELSIF
+  /}}X{{ENDIF}}X
+X{{IF x}}X{{ElSif var/}}X{{ENDIF}}X
 
-  name
-
-  =
-
-  "var"
-
-  /}}X{{/IF}}X
-X{{IF name=x}}X{{ElSif NaMe = "var"/}}X{{/IF}}X
-
-X{{IF name=x}}X{{!--ELSIF name="var"--}}X{{/IF}}X
-X{{IF name=x}}X{{!--ELSIF name='var'--}}X{{/IF}}X
-X{{IF name=x}}X{{!--ELSIF name=var --}}X{{/IF}}X
-X{{IF name=x}}X{{!--   ELSIF   name  =  "var"  --}}X{{/IF}}X
-X{{IF name=x}}X{{!--
+X{{IF x}}X{{!--ELSIF var--}}X{{ENDIF}}X
+X{{IF x}}X{{!--ELSIF var--}}X{{ENDIF}}X
+X{{IF x}}X{{!--ELSIF var --}}X{{ENDIF}}X
+X{{IF x}}X{{!--   ELSIF   var  --}}X{{ENDIF}}X
+X{{IF x}}X{{!--
 
   ELSIF
 
-  name
+  var
 
-  =
+  --}}X{{ENDIF}}X
+X{{IF x}}X{{!--eLSiF var--}}X{{ENDIF}}X
 
-  "var"
+X{{IF x}}X{{ELSIF var =="testvalue"}}X{{ENDIF}}X
+X{{IF x}}X{{ELSIF var =='testvalue'}}X{{ENDIF}}X
+X{{IF x}}X{{ELSIF var ==testvalue}}X{{ENDIF}}X
+X{{IF x}}X{{ELSIF var ==testvalue}}X{{ENDIF}}X
+X{{IF x}}X{{ELSIF   var  ==  "testvalue"  }}X{{ENDIF}}X
+X{{IF x}}X{{ELSIF
 
-  --}}X{{/IF}}X
-X{{IF name=x}}X{{!--eLSiF NaMe = "var"--}}X{{/IF}}X
+  var
 
-X{{IF name=x}}X{{ELSIF name="var" value="testvalue"}}X{{/IF}}X
-X{{IF name=x}}X{{ELSIF name="var" value='testvalue'}}X{{/IF}}X
-X{{IF name=x}}X{{ELSIF name="var" value=testvalue}}X{{/IF}}X
-X{{IF name=x}}X{{ELSIF name=var value=testvalue}}X{{/IF}}X
-X{{IF name=x}}X{{ELSIF   name  =  "var"  value   =  "testvalue"  }}X{{/IF}}X
-X{{IF name=x}}X{{ELSIF
-
-  name
-
-  =
-
-  "var"
-
-  value
-
-  =
+  ==
 
   "testvalue"
 
-  }}X{{/IF}}X
-X{{IF name=x}}X{{eLSif NaMe = "var" vAluE="testvalue"}}X{{/IF}}X
-X{{IF name=x}}X{{ELSIF value="testvalue" name="var"}}X{{/IF}}X
+  }}X{{ENDIF}}X
+X{{IF x}}X{{eLSif var =="testvalue"}}X{{ENDIF}}X
+X{{IF x}}X{{ELSIF var =="testvalue"}}X{{ENDIF}}X
 
-X{{IF name=x}}X{{ELSIF name="var" value="testvalue"/}}X{{/IF}}X
-X{{IF name=x}}X{{ELSIF name="var" value='testvalue'/}}X{{/IF}}X
-X{{IF name=x}}X{{ELSIF name="var" value=testvalue/}}X{{/IF}}X
-X{{IF name=x}}X{{ELSIF name=var value=testvalue/}}X{{/IF}}X
-X{{IF name=x}}X{{ELSIF   name  =  "var"  value   =  "testvalue"  /}}X{{/IF}}X
-X{{IF name=x}}X{{ELSIF
+X{{IF x}}X{{ELSIF var =="testvalue"/}}X{{ENDIF}}X
+X{{IF x}}X{{ELSIF var =='testvalue'/}}X{{ENDIF}}X
+X{{IF x}}X{{ELSIF var ==testvalue/}}X{{ENDIF}}X
+X{{IF x}}X{{ELSIF var ==testvalue/}}X{{ENDIF}}X
+X{{IF x}}X{{ELSIF   var  ==  "testvalue"  /}}X{{ENDIF}}X
+X{{IF x}}X{{ELSIF
 
-  name
+  var
 
-  =
-
-  "var"
-
-  value
-
-  =
+  ==
 
   "testvalue"
 
-  /}}X{{/IF}}X
-X{{IF name=x}}X{{eLSif NaMe = "var" vAluE="testvalue"/}}X{{/IF}}X
-X{{IF name=x}}X{{ELSIF value="testvalue" name="var"/}}X{{/IF}}X
+  /}}X{{ENDIF}}X
+X{{IF x}}X{{eLSif var =="testvalue"/}}X{{ENDIF}}X
+X{{IF x}}X{{ELSIF var =="testvalue" /}}X{{ENDIF}}X
 
-X{{IF name=x}}X{{!--ELSIF name="var" value="testvalue"--}}X{{/IF}}X
-X{{IF name=x}}X{{!--ELSIF name="var" value='testvalue'--}}X{{/IF}}X
-X{{IF name=x}}X{{!--ELSIF name="var" value=testvalue --}}X{{/IF}}X
-X{{IF name=x}}X{{!--ELSIF name=var value=testvalue --}}X{{/IF}}X
-X{{IF name=x}}X{{!--ELSIF   name  =  "var"  value   =  "testvalue"   --}}X{{/IF}}X
-X{{IF name=x}}X{{!--
+X{{IF x}}X{{!--ELSIF var =="testvalue"--}}X{{ENDIF}}X
+X{{IF x}}X{{!--ELSIF var --}}X{{ENDIF}}X
+X{{IF x}}X{{!--ELSIF var ==testvalue --}}X{{ENDIF}}X
+X{{IF x}}X{{!--ELSIF var ==testvalue --}}X{{ENDIF}}X
+X{{IF x}}X{{!--ELSIF   var  ==  "testvalue"   --}}X{{ENDIF}}X
+X{{IF x}}X{{!--
   ELSIF
 
-  name
+  var
 
-  =
-
-  "var"
-
-  value
-
-  =
+  ==
 
   "testvalue"
 
-  --}}X{{/IF}}X
-X{{IF name=x}}X{{!--ElSif NaMe = "var" vAluE="testvalue"--}}X{{/IF}}X
-X{{IF name=x}}X{{!--ELSIF value="testvalue" name="var"--}}X{{/IF}}X
+  --}}X{{ENDIF}}X
+X{{IF x}}X{{!--ElSif var =="testvalue"--}}X{{ENDIF}}X
+X{{IF x}}X{{!--ELSIF var =="testvalue"--}}X{{ENDIF}}X
 
 EOF
 
@@ -2097,31 +1976,31 @@ TEST=19  ########################################
 
 cat << "EOF" > tmplfile
 
-X{{IF name=x}}X{{ELSE}}X{{/IF}}X
-X{{IF name=x}}X{{ELSE }}X{{/IF}}X
-X{{IF name=x}}X{{ELSE   }}X{{/IF}}X
-X{{IF name=x}}X{{ELSE
+X{{IF x}}X{{ELSE}}X{{ENDIF}}X
+X{{IF x}}X{{ELSE }}X{{ENDIF}}X
+X{{IF x}}X{{ELSE   }}X{{ENDIF}}X
+X{{IF x}}X{{ELSE
 
-}}X{{/IF}}X
-X{{IF name=x}}X{{eLSe}}X{{/IF}}X
+}}X{{ENDIF}}X
+X{{IF x}}X{{eLSe}}X{{ENDIF}}X
 
-X{{IF name=x}}X{{ELSE/}}X{{/IF}}X
-X{{IF name=x}}X{{ELSE /}}X{{/IF}}X
-X{{IF name=x}}X{{ELSE   /}}X{{/IF}}X
-X{{IF name=x}}X{{ELSE
+X{{IF x}}X{{ELSE/}}X{{ENDIF}}X
+X{{IF x}}X{{ELSE /}}X{{ENDIF}}X
+X{{IF x}}X{{ELSE   /}}X{{ENDIF}}X
+X{{IF x}}X{{ELSE
 
-/}}X{{/IF}}X
-X{{IF name=x}}X{{eLSe/}}X{{/IF}}X
+/}}X{{ENDIF}}X
+X{{IF x}}X{{eLSe/}}X{{ENDIF}}X
 
-X{{IF name=x}}X{{!--ELSE--}}X{{/IF}}X
-X{{IF name=x}}X{{!-- ELSE --}}X{{/IF}}X
-X{{IF name=x}}X{{!--   ELSE   --}}X{{/IF}}X
-X{{IF name=x}}X{{!--
+X{{IF x}}X{{!--ELSE--}}X{{ENDIF}}X
+X{{IF x}}X{{!-- ELSE --}}X{{ENDIF}}X
+X{{IF x}}X{{!--   ELSE   --}}X{{ENDIF}}X
+X{{IF x}}X{{!--
 
 ELSE
 
---}}X{{/IF}}X
-X{{IF name=x}}X{{!--ElSe--}}X{{/IF}}X
+--}}X{{ENDIF}}X
+X{{IF x}}X{{!--ElSe--}}X{{ENDIF}}X
 
 EOF
 
@@ -2153,27 +2032,27 @@ check
 
 TEST=20  ########################################
 
-# Testing accepted {{/IF}} tag syntax
+# Testing accepted {{ENDIF}} tag syntax
 
 cat << "EOF" > tmplfile
 
-X{{IF name=var}}X{{/IF}}X
-X{{IF name=var}}X{{/IF }}X
-X{{IF name=var}}X{{/IF   }}X
-X{{IF name=var}}X{{/IF
+X{{IF var}}X{{ENDIF}}X
+X{{IF var}}X{{ENDIF }}X
+X{{IF var}}X{{ENDIF   }}X
+X{{IF var}}X{{ENDIF
 
 }}X
-X{{IF name=var}}X{{/iF}}X
+X{{IF var}}X{{ENDIF}}X
 
-X{{IF name=var}}X{{!--/IF--}}X
-X{{IF name=var}}X{{!-- /IF --}}X
-X{{IF name=var}}X{{!--   /IF   --}}X
-X{{IF name=var}}X{{!--
+X{{IF var}}X{{!--ENDIF--}}X
+X{{IF var}}X{{!-- ENDIF --}}X
+X{{IF var}}X{{!--   ENDIF   --}}X
+X{{IF var}}X{{!--
 
-/IF
+ENDIF
 
 --}}X
-X{{IF name=var}}X{{!--/If--}}X
+X{{IF var}}X{{!--ENDIF--}}X
 
 EOF
 
@@ -2202,8 +2081,8 @@ TEST=21  ########################################
 # Testing setting variable multiple times
 
 cat << "EOF" > tmplfile
-var1 = {{var name = "var1"}}
-var2 = {{var name = "var2"}}
+var1 = {{var var1}}
+var2 = {{var var2}}
 EOF
 
 cat << "EOF" > expected
@@ -2227,9 +2106,9 @@ cat << "EOF" > tmplfile
  * comment
  *}}Before comment{{*
   Inside comment
-  {{VAR name = "var"}}
-  {{/if}}
-  {{/loop}}
+  {{VAR var}}
+  {{ENDIF}}
+  {{ENDLOOP}}
 *}}After comment{{*
 another comment *}}
 Before comment{{*
@@ -2261,7 +2140,7 @@ cat << "EOF" > tmplfile
 Before outer comment
 {{*
   Begin outer comment
-  {{VAR name = "var"}}
+  {{VAR var}}
   Before inner comment
   {{* Inside inner comment *}}
   After inner comment
@@ -2289,23 +2168,23 @@ TEST=24  ########################################
 
 cat << "EOF" > inclfile1
 Begin include file 1
-{{var name = "var"}}
+{{var var}}
 End include file 1
 EOF
 
 cat << "EOF" > inclfile2
 Begin include file 2
 Including file 1 from file 2
-{{include name = "./inclfile1"}}
+{{include ./inclfile1}}
 End include file 2
 EOF
 
 cat << "EOF" > tmplfile
 Begin template
 Including file 1
-{{INCLUDE name="inclfile1"}}
+{{INCLUDE inclfile1}}
 Including file 2
-{{INCLUDE name = "./inclfile2"}}
+{{INCLUDE ./inclfile2}}
 End template
 EOF
 
@@ -2338,23 +2217,23 @@ TEST=25  ########################################
 
 cat << "EOF" > inclfile1
 Begin include file 1
-{{var name = "var"}}
+{{var var}}
 End include file 1
 EOF
 
 cat << "EOF" > inclfile2
 Begin include file 2
 Including file 1 from file 2
-{{include name = ".../inclfile1"}}
+{{include .../inclfile1}}
 End include file 2
 EOF
 
 cat << "EOF" > tmplfile
 Begin template
 Including file 1
-{{INCLUDE name=".../inclfile1"}}
+{{INCLUDE .../inclfile1}}
 Including file 2
-{{INCLUDE name = ".../inclfile2"}}
+{{INCLUDE .../inclfile2}}
 End template
 EOF
 
@@ -2405,14 +2284,14 @@ TEST=26  ########################################
 cat << "EOF" > tmplfile
 Begin template
 Including file 1
-{{include name = "inclfile1" }}
+{{include inclfile1 }}
 End template
 EOF
 
 cat << "EOF" > inclfile1
 Begin include file 1
 Including file 1 from file 1
-{{INCLUDE name="inclfile1"}}
+{{INCLUDE inclfile1}}
 End include file 1
 EOF
 
@@ -2431,21 +2310,21 @@ TEST=27  ########################################
 cat << "EOF" > inclfile1
 Begin include file 1
 Including file 2 from file 1
-{{include name = "inclfile2"}}
+{{include inclfile2}}
 End include file 1
 EOF
 
 cat << "EOF" > inclfile2
 Begin include file 2
 Including file 1 from file 2
-{{include name = "./inclfile1"}}
+{{include ./inclfile1}}
 End include file 2
 EOF
 
 cat << "EOF" > tmplfile
 Begin template
 Including file 1
-{{INCLUDE name="inclfile1"}}
+{{INCLUDE inclfile1}}
 End template
 EOF
 
@@ -2464,7 +2343,7 @@ TEST=28  ########################################
 cat << "EOF" > tmplfile
 Begin template
 Including nonexistent file
-{{include name = "non existent file"}}
+{{include non existent file}}
 End template
 EOF
 
@@ -2482,10 +2361,10 @@ TEST=29  ########################################
 
 cat << "EOF" > tmplfile
 Begin template
-{{if name = "bogus"}}
+{{IF bogus}}
   Including nonexistent file
-  {{include name = "non existent file"}}
-{{/if}}
+  {{include non existent file}}
+{{ENDIF}}
 End template
 EOF
 
@@ -2514,12 +2393,12 @@ Here is a continued \
 line.
 At end of line we should have a single \\
 At end of line we should have a double \\\
-{{var name = "var"}}\
-{{var name = "var"}}\
+{{var var}}\
+{{var var}}\
 \
 \
 \
-{{var name = "var"}}\
+{{var var}}\
 End template
 \
 \
@@ -2549,7 +2428,7 @@ cat << "EOF" > tmplfile
 \
 \
 \
-{{var name = "bogus"}}{{*
+{{var bogus}}{{*
 
 Inside the comment
 
@@ -2570,7 +2449,7 @@ TEST=32  ########################################
 
 printf '{{*
   Inside the comment
-  *}}{{var name = "bogus"}}' > tmplfile
+  *}}{{var bogus}}' > tmplfile
 
 cp /dev/null expected
 
@@ -2586,129 +2465,129 @@ cat << "EOF" > tmplfile
 
 Testing simple if statement
 
-X{{IF name = "var"}}TRUE{{/IF}}X
-X{{IF name = "bogus"}}TRUE{{/IF}}X
-X{{IF name = "null"}}TRUE{{/IF}}X
-X{{if name = "var" value = ""}}TRUE{{/if}}X
-X{{if name = "var" value = "wrong"}}TRUE{{/if}}X
-X{{if name = "var" value = "testvalue"}}TRUE{{/if}}X
-X{{if value = "testvalue" name = "var"}}TRUE{{/if}}X
-X{{if name = "null" value = ""}}TRUE{{/if}}X
-X{{if name = "null" value = "wrong"}}TRUE{{/if}}X
-X{{if name = "bogus" value = ""}}TRUE{{/if}}X
-X{{if name = "bogus" value = "wrong"}}TRUE{{/if}}X
-X{{if name = "var"}}{{/if}}X
-X{{if name = "bogus"}}{{/if}}X
+X{{IF var}}TRUE{{ENDIF}}X
+X{{IF bogus}}TRUE{{ENDIF}}X
+X{{IF null}}TRUE{{ENDIF}}X
+X{{IF var == ""}}TRUE{{ENDIF}}X
+X{{IF var == "wrong"}}TRUE{{ENDIF}}X
+X{{IF var == "testvalue"}}TRUE{{ENDIF}}X
+X{{if var == "testvalue"}}TRUE{{ENDIF}}X
+X{{IF null == ""}}TRUE{{ENDIF}}X
+X{{IF null == "wrong"}}TRUE{{ENDIF}}X
+X{{IF bogus == ""}}TRUE{{ENDIF}}X
+X{{IF bogus == "wrong"}}TRUE{{ENDIF}}X
+X{{IF var}}{{ENDIF}}X
+X{{IF bogus}}{{ENDIF}}X
 
 Testing if with else clause
 
-X{{IF name = "var"}}TRUE{{else}}FALSE{{/if}}X
-X{{IF name = "bogus"}}TRUE{{else}}FALSE{{/if}}X
-X{{IF name = "null"}}TRUE{{else}}FALSE{{/if}}X
-X{{if name = "var" value = ""}}TRUE{{else}}FALSE{{/if}}X
-X{{if name = "var" value = "wrong"}}TRUE{{else}}FALSE{{/if}}X
-X{{if name = "var" value = "testvalue"}}TRUE{{else}}FALSE{{/if}}X
-X{{if value = "testvalue" name = "var"}}TRUE{{else}}FALSE{{/if}}X
-X{{if name = "null" value = ""}}TRUE{{else}}FALSE{{/if}}X
-X{{if name = "null" value = "wrong"}}TRUE{{else}}FALSE{{/if}}X
-X{{if name = "bogus" value = ""}}TRUE{{else}}FALSE{{/if}}X
-X{{if name = "bogus" value = "wrong"}}TRUE{{else}}FALSE{{/if}}X
-X{{if name = "var"}}{{else}}{{/if}}X
-X{{if name = "bogus"}}{{else}}{{/if}}X
+X{{IF var}}TRUE{{else}}FALSE{{ENDIF}}X
+X{{IF bogus}}TRUE{{else}}FALSE{{ENDIF}}X
+X{{IF null}}TRUE{{else}}FALSE{{ENDIF}}X
+X{{IF var == ""}}TRUE{{else}}FALSE{{ENDIF}}X
+X{{IF var == "wrong"}}TRUE{{else}}FALSE{{ENDIF}}X
+X{{IF var == "testvalue"}}TRUE{{else}}FALSE{{ENDIF}}X
+X{{if var == "testvalue"}}TRUE{{else}}FALSE{{ENDIF}}X
+X{{IF null == ""}}TRUE{{else}}FALSE{{ENDIF}}X
+X{{IF null == "wrong"}}TRUE{{else}}FALSE{{ENDIF}}X
+X{{IF bogus == ""}}TRUE{{else}}FALSE{{ENDIF}}X
+X{{IF bogus == "wrong"}}TRUE{{else}}FALSE{{ENDIF}}X
+X{{IF var}}{{else}}{{ENDIF}}X
+X{{IF bogus}}{{else}}{{ENDIF}}X
 
 Testing if with elseif clauses
 
-X{{IF name = "var"}}
+X{{IF var}}
   IF BRANCH
-{{ELSIF name = "var" }}
+{{ELSIF var }}
   ELSIF BRANCH 1
-{{ELSIF name = "var" value = "testvalue"}}
+{{ELSIF var == "testvalue"}}
   ELSIF BRANCH 2
 {{ELSE}}
   ELSE BRANCH
-{{/IF}}X
+{{ENDIF}}X
 
-X{{IF name = "bogus"}}
+X{{IF bogus}}
   IF BRANCH
-{{ELSIF name = "var" }}
+{{ELSIF var }}
   ELSIF BRANCH 1
-{{ELSIF name = "var" value = "testvalue"}}
+{{ELSIF var == "testvalue"}}
   ELSIF BRANCH 2
 {{ELSE}}
   ELSE BRANCH
-{{/IF}}X
+{{ENDIF}}X
 
-X{{IF name = "bogus"}}
+X{{IF bogus}}
   IF BRANCH
-{{ELSIF name = "var" value = "wrong"}}
+{{ELSIF var == "wrong"}}
   ELSIF BRANCH 1
-{{ELSIF value = "testvalue2" name = "var2"}}
+{{ELSIF var2 == "testvalue2"}}
   ELSIF BRANCH 2
 {{ELSE}}
   ELSE BRANCH
-{{/IF}}X
+{{ENDIF}}X
 
-X{{IF name = "bogus"}}
+X{{IF bogus}}
   IF BRANCH
-{{ELSIF name = "var" value = "wrong"}}
+{{ELSIF var == "wrong"}}
   ELSIF BRANCH 1
-{{ELSIF name = "var2" value = ""}}
+{{ELSIF var2 == ""}}
   ELSIF BRANCH 2
 {{ELSE}}
   ELSE BRANCH
-{{/IF}}X
+{{ENDIF}}X
 
-X{{if name = "var"}}{{elsif name = "var2"}}{{else}}{{/if}}X
+X{{IF var}}{{elsif var2}}{{else}}{{ENDIF}}X
 
 Testing nested simple if statements
 
-X{{IF name = "var"}}
+X{{IF var}}
   Inside IF 1
-  X{{IF name = "var2" value = "testvalue2"}}
+  X{{IF var2 == "testvalue2"}}
     Inside IF 2
-  {{/if}}X
-{{/if}}X
+  {{ENDIF}}X
+{{ENDIF}}X
 
-X{{IF name = "bogus"}}
+X{{IF bogus}}
   Inside IF 1
-  X{{IF name = "var2" value = "testvalue2"}}
+  X{{IF var2 == "testvalue2"}}
     Inside IF 2
-  {{/if}}X
-{{/if}}X
+  {{ENDIF}}X
+{{ENDIF}}X
 
 Testing nested if with else clauses
 
-X{{IF name = "bogus"}}
+X{{IF bogus}}
   Inside IF BRANCH 1
-  X{{IF name = "var" value = "testvalue"}}
+  X{{IF var == "testvalue"}}
     Inside IF BRANCH 2
   {{/else}}
     Inside ELSE BRANCH 2
-  {{/if}}X
+  {{ENDIF}}X
 {{else}}
   Inside ELSE BRANCH 1
-  X{{if name = "bogus"}}
+  X{{IF bogus}}
     Inside IF BRANCH 3
   {{else}}
     Inside ELSE BRANCH 3
-  {{/if}}X
-{{/if}}X
+  {{ENDIF}}X
+{{ENDIF}}X
 
-X{{IF name = "var"}}
+X{{IF var}}
   Inside IF BRANCH 1
-  X{{IF name = "var" value = "wrong"}}
+  X{{IF var == "wrong"}}
     Inside IF BRANCH 2
   {{else}}
     Inside ELSE BRANCH 2
-  {{/if}}X
+  {{ENDIF}}X
 {{else}}
   Inside ELSE BRANCH 1
-  X{{if name = "bogus"}}
+  X{{IF bogus}}
     Inside IF BRANCH 3
   {{else}}
     Inside ELSE BRANCH 3
-  {{/if}}X
-{{/if}}X
+  {{ENDIF}}X
+{{ENDIF}}X
 EOF
 
 cat << "EOF" > expected
@@ -2724,7 +2603,7 @@ XTRUEX
 XTRUEX
 XTRUEX
 XX
-XTRUEX
+XX
 XX
 XX
 XX
@@ -2740,7 +2619,7 @@ XTRUEX
 XTRUEX
 XTRUEX
 XFALSEX
-XTRUEX
+XFALSEX
 XFALSEX
 XX
 XX
@@ -2803,38 +2682,38 @@ TEST=34  ########################################
 
 cat << "EOF" > tmplfile
 Begin template
-var1 = {{var name = "var1"}}
+var1 = {{var var1}}
 
-X{{loop name = "loop1"}}{{/loop}}X
-X{{loop name = "bogus"}}{{/loop}}X
+X{{loop loop1}}{{ENDLOOP}}X
+X{{loop bogus}}{{ENDLOOP}}X
 
-X{{loop name = "loop1"}}
-  var1 = {{var name = "var1"}}
-  var2 = {{var name = "var2"}}
-{{/loop}}X
+X{{loop loop1}}
+  var1 = {{var var1}}
+  var2 = {{var var2}}
+{{ENDLOOP}}X
 
-X{{loop name = "bogus"}}
-  var1 = {{var name = "var1"}}
-  var2 = {{var name = "var2"}}
-{{/loop}}X
+X{{loop bogus}}
+  var1 = {{var var1}}
+  var2 = {{var var2}}
+{{ENDLOOP}}X
 
-X{{loop name = "var1"}}
-  var1 = {{var name = "var1"}}
-  var2 = {{var name = "var2"}}
-{{/loop}}X
+X{{loop var1}}
+  var1 = {{var var1}}
+  var2 = {{var var2}}
+{{ENDLOOP}}X
 
-X{{loop name = "loop1"}}
+X{{loop loop1}}
   Begin outer loop
-  var1 = {{var name = "var1"}}
-  var2 = {{var name = "var2"}}
-  X{{loop name = "loop1"}}
+  var1 = {{var var1}}
+  var2 = {{var var2}}
+  X{{loop loop1}}
     Begin inner loop
-    var1 = {{var name = "var1"}}
-    var2 = {{var name = "var2"}}
+    var1 = {{var var1}}
+    var2 = {{var var2}}
     End inner loop
-  {{/loop}}X
+  {{ENDLOOP}}X
   End outer loop
-{{/loop}}X
+{{ENDLOOP}}X
 End template
 EOF
 
@@ -2983,21 +2862,21 @@ TEST=35  ########################################
 
 cat << "EOF" > tmplfile
 Begin template
-var1 = {{var name = "var1"}}
+var1 = {{var var1}}
 
-X{{loop name = "outer"}}
+X{{loop outer}}
   Begin outer loop
-  var1 = {{var name = "var1"}}
-  var2 = {{var name = "var2"}}
-  X{{loop name = "inner"}}
+  var1 = {{var var1}}
+  var2 = {{var var2}}
+  X{{loop inner}}
     Begin inner loop
-    var1 = {{var name = "var1"}}
-    var2 = {{var name = "var2"}}
-    var3 = {{var name = "var3"}}
+    var1 = {{var var1}}
+    var2 = {{var var2}}
+    var3 = {{var var3}}
     End inner loop
-  {{/loop}}X
+  {{ENDLOOP}}X
   End outer loop
-{{/loop}}X
+{{ENDLOOP}}X
 End template
 EOF
 
@@ -3101,19 +2980,19 @@ TEST=36  ########################################
 
 cat << "EOF" > inclfile1
 Begin include file
-var1 = {{var name = "var1"}}
-var2 = {{var name = "var2"}}
+var1 = {{var var1}}
+var2 = {{var var2}}
 End include file
 EOF
 
 cat << "EOF" > tmplfile
 Begin template
-{{loop name = "loop"}}
+{{loop loop}}
   Begin loop
   Including file 1
-  {{include name = "inclfile1"}}
+  {{include inclfile1}}
   End loop
-{{/loop}}
+{{ENDLOOP}}
 End template
 EOF
 
@@ -3162,35 +3041,35 @@ TEST=37  ########################################
 
 cat << "EOF" > tmplfile
 
-X{{if name = "var"}}{{loop name = "loop"}}{{/loop}}{{/if}}X
-X{{if name = "bogus"}}{{loop name = "loop"}}{{/loop}}{{/if}}X
-X{{loop name = "loop"}}{{if name = "var"}}{{/if}}{{/loop}}X
-X{{loop name = "bogus"}}{{if name = "var"}}{{/if}}{{/loop}}X
+X{{IF var}}{{loop loop}}{{ENDLOOP}}{{ENDIF}}X
+X{{IF bogus}}{{loop loop}}{{ENDLOOP}}{{ENDIF}}X
+X{{loop loop}}{{IF var}}{{ENDIF}}{{ENDLOOP}}X
+X{{loop bogus}}{{IF var}}{{ENDIF}}{{ENDLOOP}}X
 
-X{{if name = "loop"}}
+X{{IF loop}}
   Inside if 1
-  {{loop name = "loop"}}
+  {{loop loop}}
     Inside loop 1
-    {{if name = "bogus"}}
-      Inside if 2: bogus = {{var name = "bogus"}}
-    {{/if}}
-    {{if name = "var2"}}
-      Inside if 3: var2 = {{var name = "var2"}}
-    {{/if}}
-  {{/loop}}
-{{/if}}X
-X{{if name = "bogus"}}
+    {{IF bogus}}
+      Inside if 2: bogus = {{var bogus}}
+    {{ENDIF}}
+    {{IF var2}}
+      Inside if 3: var2 = {{var var2}}
+    {{ENDIF}}
+  {{ENDLOOP}}
+{{ENDIF}}X
+X{{IF bogus}}
   Inside if 4
-  {{loop name = "loop"}}
+  {{loop loop}}
     Inside loop 2
-    {{if name = "bogus"}}
-      Inside if 5: bogus = {{var name = "bogus"}}
-    {{/if}}
-    {{if name = "var2"}}
-      Inside if 6: var2 = {{var name = "var2"}}
-    {{/if}}
-  {{/loop}}
-{{/if}}X
+    {{IF bogus}}
+      Inside if 5: bogus = {{var bogus}}
+    {{ENDIF}}
+    {{IF var2}}
+      Inside if 6: var2 = {{var var2}}
+    {{ENDIF}}
+  {{ENDLOOP}}
+{{ENDIF}}X
 EOF
 
 cat << "EOF" > expected
@@ -3230,39 +3109,39 @@ TEST=38  ########################################
 
 cat << "EOF" > tmplfile
 BEGIN
-{{loop name=outer}}\
+{{loop outer}}\
   BEGIN outer        (CONTINUE 3 comes here)
-  o = {{var name=o}}
-{{loop name=middle}}\
+  o = {{var o}}
+{{loop middle}}\
     BEGIN middle     (CONTINUE 2 comes here)
-    m = {{var name=m}}
-{{loop name=inner}}\
+    m = {{var m}}
+{{loop inner}}\
       BEGIN inner    (CONTINUE 1 comes here)
-      i = {{var name=i}}
-{{if name=i value=b1}}\
+      i = {{var i}}
+{{if i ==b1}}\
       BREAK 1
-{{break}}{{/if}}\
-{{if name=i value=b2}}\
+{{break}}{{ENDIF}}\
+{{if i ==b2}}\
       BREAK 2
-{{break level=2}}{{/if}}\
-{{if name=i value=b3}}\
+{{break level=2}}{{ENDIF}}\
+{{if i ==b3}}\
       BREAK 3
-{{break level=3}}{{/if}}\
-{{if name=i value=c1}}\
+{{break level=3}}{{ENDIF}}\
+{{if i ==c1}}\
       CONTINUE 1
-{{continue}}{{/if}}\
-{{if name=i value=c2}}\
+{{continue}}{{ENDIF}}\
+{{if i ==c2}}\
       CONTINUE 2
-{{continue level=2}}{{/if}}\
-{{if name=i value=c3}}\
+{{continue level=2}}{{ENDIF}}\
+{{if i ==c3}}\
       CONTINUE 3
-{{continue level=3}}{{/if}}\
+{{continue level=3}}{{ENDIF}}\
       END inner
-{{/loop}}\
+{{ENDLOOP}}\
     END middle       (BREAK 1 comes here)
-{{/loop}}\
+{{ENDLOOP}}\
   END outer          (BREAK 2 comes here)
-{{/loop}}\
+{{ENDLOOP}}\
 END                  (BREAK 3 comes here)
 EOF
 
@@ -3368,23 +3247,23 @@ TEST=39  ########################################
 # Testing missing statement terminators
 
 cat << "EOF" > tmplfile
-{{if name = "var"}}
+{{IF var}}
   Inside if 1
-{{elsif name = "var"}}
+{{elsif var}}
   Inside elsif 1
 {{else}}
   Inside else 1
-{{loop name = "loop"}}
+{{loop loop}}
   Inside the loop statement
   {{*
-{{/loop}} *}}{{* this
+{{ENDLOOP}} *}}{{* this
 comment is not terminated
 EOF
 
 cat << "EOF" > expected
 "{{*" in file "tmplfile" line 10 has no "*}}"
-LOOP tag in file "tmplfile" line 7 has no /LOOP tag
-IF tag in file "tmplfile" line 1 has no /IF tag
+LOOP tag in file "tmplfile" line 7 has no ENDLOOP tag
+IF tag in file "tmplfile" line 1 has no ENDIF tag
 EOF
 
 template tmplfile var testvalue > /dev/null 2> result
@@ -3396,21 +3275,21 @@ TEST=40  ########################################
 # Testing missing statement terminators
 
 cat << "EOF" > tmplfile
-{{if name = "var"}}
+{{IF var}}
   Inside if 1
-  {{loop name = "loop"}}
+  {{loop loop}}
     Inside loop 1
-{{/if}}
-{{loop name = "loop"}}
+{{ENDIF}}
+{{loop loop}}
   Inside loop 2
-  {{if name = "var"}}
+  {{IF var}}
     Inside if 2
-{{/loop}}
+{{ENDLOOP}}
 EOF
 
 cat << "EOF" > expected
-LOOP tag in file "tmplfile" line 3 has no /LOOP tag
-IF tag in file "tmplfile" line 8 has no /IF tag
+LOOP tag in file "tmplfile" line 3 has no ENDLOOP tag
+IF tag in file "tmplfile" line 8 has no ENDIF tag
 EOF
 
 template tmplfile var testvalue > /dev/null 2> result
@@ -3422,49 +3301,49 @@ TEST=41  ########################################
 # Testing extraneous and misplaced tags
 
 cat << "EOF" > tmplfile
-{{if name = "var"}}
+{{IF var}}
   Inside if 1
 {{else}}
   Inside else 1
-{{elsif name = "var"}}
+{{elsif var}}
   Inside misplaced elsif
-{{/if}}
+{{ENDIF}}
 
-{{if name = "var"}}
+{{IF var}}
   Inside if 2
-{{elsif name = "var"}}
+{{elsif var}}
   Inside elsif 2
 {{else}}
   Inside else 2
 {{else}}
   Inside misplaced else
-{{/if}}
+{{ENDIF}}
 
-{{elsif name = "var"}}
+{{elsif var}}
   Inside elsif 3
 {{else}}
   Inside else 3
-{{/if}}
+{{ENDIF}}
 
-{{/loop}}
+{{ENDLOOP}}
 
 {{break}}
 {{break level=2 /}}
 {{continue}}
 {{continue level=2/}}
 
-{{loop name="outer"}}
+{{loop outer}}
   {{break level = 0}}
   {{break level = 2}}
   {{break level = "non-numeric"}}
   {{continue level = 0}}
   {{continue level = 2}}
   {{continue level = "non-numeric"}}
-  {{loop name="inner"}}
+  {{loop inner}}
     {{break level = 3}}
     {{continue level = 3}}
-  {{/loop}}
-{{/loop}}
+  {{ENDLOOP}}
+{{ENDLOOP}}
 
 {{*
   Inside comment
@@ -3478,8 +3357,8 @@ Unexpected ELSIF tag in file "tmplfile" line 5
 Unexpected ELSE tag in file "tmplfile" line 15
 Unexpected ELSIF tag in file "tmplfile" line 19
 Unexpected ELSE tag in file "tmplfile" line 21
-Unexpected /IF tag in file "tmplfile" line 23
-Unexpected /LOOP tag in file "tmplfile" line 25
+Unexpected ENDIF tag in file "tmplfile" line 23
+Unexpected ENDLOOP tag in file "tmplfile" line 25
 Ignoring bad BREAK tag (not inside a loop) in file "tmplfile" line 27
 Ignoring bad BREAK tag (not inside a loop) in file "tmplfile" line 28
 Ignoring bad CONTINUE tag (not inside a loop) in file "tmplfile" line 29
@@ -3503,41 +3382,41 @@ TEST=42  ########################################
 # Testing incorrect statement nesting
 
 cat << "EOF" > tmplfile
-{{if name = "var"}}
+{{IF var}}
   Inside  if 1
-  {{loop name = "loop"}}
+  {{loop loop}}
     Inside loop 1
-  {{/if}}
-{{/loop}}
+  {{ENDIF}}
+{{ENDLOOP}}
 
-{{loop name = "loop"}}
+{{loop loop}}
   Inside loop 2
-  {{if name = "var"}}
+  {{IF var}}
     Inside if 2
-  {{/loop}}
-{{/if}}
+  {{ENDLOOP}}
+{{ENDIF}}
 
-{{if name = "var"}}
+{{IF var}}
   Inside if 3
-{{elsif name = "bogus"}}
+{{elsif bogus}}
   Inside elsif 1
-  {{if name = "var"}}
+  {{IF var}}
     Inside if 4
   {{else}}
     Inside else 1
-  {{elsif name = "var"}}
+  {{elsif var}}
     Inside elsif 2
-  {{/if}}
-{{/if}}
+  {{ENDIF}}
+{{ENDIF}}
 EOF
 
 cat << "EOF" > expected
-LOOP tag in file "tmplfile" line 3 has no /LOOP tag
-Unexpected /LOOP tag in file "tmplfile" line 6
-IF tag in file "tmplfile" line 10 has no /IF tag
-Unexpected /IF tag in file "tmplfile" line 13
-IF tag in file "tmplfile" line 19 has no /IF tag
-Unexpected /IF tag in file "tmplfile" line 26
+LOOP tag in file "tmplfile" line 3 has no ENDLOOP tag
+Unexpected ENDLOOP tag in file "tmplfile" line 6
+IF tag in file "tmplfile" line 10 has no ENDIF tag
+Unexpected ENDIF tag in file "tmplfile" line 13
+IF tag in file "tmplfile" line 19 has no ENDIF tag
+Unexpected ENDIF tag in file "tmplfile" line 26
 EOF
 
 template tmplfile var testvalue > /dev/null 2> result
